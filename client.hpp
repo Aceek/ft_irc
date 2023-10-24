@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 05:48:22 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:14:15 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ public:
 	int							getClientFd() const;
 	const struct sockaddr_in&	getClientAddress() const;
 	const std::string			&getClientCommand() const;
-	bool						addToCommand(const char *buffer);
+	
+	void						addToCommand(const char *buffer);
 	void						printCommand(); // test function
+	bool						handleCommand();
 };
 
 #endif  // CLIENT_HPP

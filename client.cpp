@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 05:48:57 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:41:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,8 @@ const struct sockaddr_in& Client::getClientAddress() const {
 	return (this->_clientAdress);
 }
 
-bool	Client::addToCommand(const char *buffer) {
+void	Client::addToCommand(const char *buffer) {
 	this->_command += buffer;
-	if (_command.size() >= BUFFER_SIZE) {
-		this->_command.clear();
-		return (false);
-	}
-	return (true);
 }
 
 const std::string	&Client::getClientCommand() const {
@@ -45,4 +40,17 @@ const std::string	&Client::getClientCommand() const {
 void	Client::printCommand() {
 	std::cout << this->_command << std::endl;
 	this->_command.clear();
+}
+
+bool	Client::handleCommand() {
+	
+	if (this->_command.size() >= BUFFER_SIZE) {
+		std::cerr << "Error command size : reseting command" << std::endl;
+		this->_command.clear();
+		return (false);
+	} else if (this->_command.find("\n") == std::string::npos) {
+		std::cerr << "error pas de caractere de fin" << std::endl;
+		return (false);
+	}
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 06:05:30 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:36:24 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,25 +99,21 @@ Server::~Server() {
 void	Server::processComand(const int &clientFd) {
 	
 	char	buffer[MAX_COMMAND_SIZE + 1] = "";
-	Client	client = this->_clients[clientFd];
+	Client	&client = this->_clients[clientFd];
 
 	memset(buffer, 0, sizeof(buffer));
 
 	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
-	if (bytesReceived == -1) {
+	if (bytesReceived == -1) { // a faire
 		std::cerr << "Error receiving message from client" << std::endl;
 		return ;
-	} else if (bytesReceived == 0) {
+	} else if (bytesReceived == 0) { // a faire
 		std::cerr << "Error receiving message ... 0" << std::endl;
 		return ;
 	}
-	if (client.addToCommand(buffer)) {
-		if (client.getClientCommand().find("\n") != std::string::npos) {
-			client.printCommand();
-		}
-		
-	} else {
-		std::cerr << "Error command lenth" << std::endl;
+	client.addToCommand(buffer);
+	if (client.handleCommand()) {
+		client.printCommand();
 	}
 
 }

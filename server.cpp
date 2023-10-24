@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/14 17:21:24 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:05:30 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,17 @@ void	Server::routine() {
 			if (_fds[i].revents & POLLIN) { // operation et pour savoir si le fd est en mode POLLIN
 				if (_fds[i].fd == this->_serverFd) { // new client
 					acceptClient();
+				} else {
+					processComand(_fds[i].fd);
 				}
 			}
 		}
-		
-
-		
 	}
 	// Close socket function ?
 	// freeSocket();
 }
 
-void	Server::acceptClient() {
+int	Server::acceptClient() {
 	struct sockaddr_in	clientAdress;
 	socklen_t			clientAdressSize = sizeof(clientAdress);
 	
@@ -83,15 +82,42 @@ void	Server::acceptClient() {
 	}
 	
 	Client newClient(clientFd, clientAdress);
-	this->_clients.push_back(newClient);
+	this->_clients[clientFd] = newClient;
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
 	addToPoll(clientFd, POLLIN);
 	std::cout << "new client on server" << std::endl;
 	
+	return (clientFd);
 }
 
 Server::Server() {};
 Server::~Server() {
 	close(this->_serverFd);
 };
+
+void	Server::processComand(const int &clientFd) {
+	
+	char	buffer[MAX_COMMAND_SIZE + 1] = "";
+	Client	client = this->_clients[clientFd];
+
+	memset(buffer, 0, sizeof(buffer));
+
+	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
+	if (bytesReceived == -1) {
+		std::cerr << "Error receiving message from client" << std::endl;
+		return ;
+	} else if (bytesReceived == 0) {
+		std::cerr << "Error receiving message ... 0" << std::endl;
+		return ;
+	}
+	if (client.addToCommand(buffer)) {
+		if (client.getClientCommand().find("\n") != std::string::npos) {
+			client.printCommand();
+		}
+		
+	} else {
+		std::cerr << "Error command lenth" << std::endl;
+	}
+
+}

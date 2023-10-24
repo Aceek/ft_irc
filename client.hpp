@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/14 17:26:23 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:48:22 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,25 @@
 
 class Server;
 
+#define BUFFER_SIZE 512
+
 class Client {
 private:
 	int							_clientFd;
 	struct sockaddr_in			_clientAdress;
 	std::string					_username;
+	std::string					_command;
 
 public:
 	Client();
 	Client(int fd, const struct sockaddr_in &addr);
 	~Client();
 
-	int	getClientFd() const;
-	const struct sockaddr_in& getClientAddress() const;
+	int							getClientFd() const;
+	const struct sockaddr_in&	getClientAddress() const;
+	const std::string			&getClientCommand() const;
+	bool						addToCommand(const char *buffer);
+	void						printCommand(); // test function
 };
 
 #endif  // CLIENT_HPP

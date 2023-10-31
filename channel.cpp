@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/10/31 04:12:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/10/31 05:32:04 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,31 @@ void Channel::delUser(Client &user) {
    this->_operatorsList.erase(&user);
 }
 
+bool Channel::isUser(Client &user) {
+    return this->_usersList.find(&user) != this->_usersList.end();
+}
+
+bool Channel::isOperator(Client &user) {
+    return this->_operatorsList.find(&user) != this->_operatorsList.end();
+
+}
+
 std::string const &Channel::getTopic(void) {
     return this->_topicName;
 }
 
 void Channel::setTopic(std::string const &topicName) {
     this->_topicName = topicName;
+}
+
+// char * and not string ?
+void Channel::addAllBufToCommand(char const *buffer) {
+	for (std::set<Client *>::iterator it = this->_usersList.begin();
+		it != this->_usersList.end(); ++it) {
+			(*it)->addToCommand(buffer);
+	}
+	for (std::set<Client *>::iterator it = this->_operatorsList.begin();
+		it != this->_operatorsList.end(); ++it) {
+			(*it)->addToCommand(buffer);
+	}
 }

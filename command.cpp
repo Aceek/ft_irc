@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 04:48:09 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/02 08:41:42 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,30 +106,47 @@ void Command::exec(std::string const &cmd) {
 /* ************************************************************************** */
 
 void Command::INVITE(Command const &cmd) {
+	(void)cmd;
 }
 
 void Command::JOIN(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::KICK(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::MODE(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::NICK(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::OPER(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::PART(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::PONG(Command const &cmd) {
+	(void)cmd;
+
 }
 
 void Command::PRIVMSG(Command const &cmd) {
+	(void)cmd;
+
 }
 
 

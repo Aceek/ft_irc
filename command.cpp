@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 03:23:17 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/02 04:48:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@
 Command::Command(void) {}
 
 Command::Command(std::string const &line, Client *user) : _client(user) {
+	_map["INVITE"] = Command::INVITE;
+    _map["JOIN"] = Command::JOIN;
+    _map["KICK"] = Command::KICK;
+    _map["MODE"] = Command::MODE;
+    _map["NICK"] = Command::NICK;
+    _map["OPER"] = Command::OPER;
+    _map["PART"] = Command::PART;
+    _map["PONG"] = Command::PONG;
+    _map["PRIVMSG"] = Command::PRIVMSG;
+	
 	std::vector<std::string> tab = ft_split(line, " ");
  	std::vector<std::string>::iterator it = tab.begin();
 
@@ -82,3 +92,44 @@ void Command::printArguments(void) const {
         std::cout << "Trailing: " << _trailing << std::endl;
     }
 }
+
+void Command::exec(std::string const &cmd) {
+    std::map<std::string, cmdFt>::iterator it = _map.find(cmd);
+
+    if (it != _map.end()) {
+        it->second(*this);
+    } else {
+		throw std::runtime_error("Error: Unkown command");
+	}
+}
+
+/* ************************************************************************** */
+
+void Command::INVITE(Command const &cmd) {
+}
+
+void Command::JOIN(Command const &cmd) {
+}
+
+void Command::KICK(Command const &cmd) {
+}
+
+void Command::MODE(Command const &cmd) {
+}
+
+void Command::NICK(Command const &cmd) {
+}
+
+void Command::OPER(Command const &cmd) {
+}
+
+void Command::PART(Command const &cmd) {
+}
+
+void Command::PONG(Command const &cmd) {
+}
+
+void Command::PRIVMSG(Command const &cmd) {
+}
+
+

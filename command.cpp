@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 08:53:44 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/02 09:15:33 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ Command::Command(std::string const &line, Client *user) : _client(user) {
 
 	while (!tab.empty()) {
 		if ((*it)[0] == ':') {
-			this->_trailing = it->substr(1);
+			this->_trailor = it->substr(1);
 			tab.erase(it);
 			while (!tab.empty()) {
-				this->_trailing += " " + tab.front();
+				this->_trailor += " " + tab.front();
 				tab.erase(tab.begin());		
 			}
 		} else {
@@ -63,7 +63,9 @@ Command::Command(std::string const &line, Client *user) : _client(user) {
 Command::Command(Command const &rhs) :
 	_prefix(rhs._prefix),
 	_name(rhs._name),
-	_args(rhs._args) {}
+	_args(rhs._args),
+	_trailor(rhs._trailor),
+	_client(rhs._client) {}
 
 Command &Command::operator=(Command const  &rhs) {
     if (this == &rhs) {
@@ -73,6 +75,8 @@ Command &Command::operator=(Command const  &rhs) {
 	this->_prefix = rhs._prefix;
 	this->_name = rhs._name;
 	this->_args = rhs._args;
+	this->_trailor = rhs._trailor;
+	this->_client = rhs._client;
 
     return *this;
 }
@@ -91,8 +95,8 @@ void Command::printArguments(void) const {
     }
     std::cout << std::endl;
 
-    if (!_trailing.empty()) {
-        std::cout << "Trailing: " << _trailing << std::endl;
+    if (!_trailor.empty()) {
+        std::cout << "Trailing: " << _trailor << std::endl;
     }
 }
 

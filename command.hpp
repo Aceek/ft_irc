@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 01:11:54 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/02 03:22:23 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,15 @@ class Command {
 		Command &operator=(Command const &rhs);
 		~Command(void);
 	
+	    void printArguments(void) const;
 
 	private:
 		std::string					_prefix;
-		std::string					_cmdName;
-		std::vector<std::string>	_cmdArgs;
+		std::string					_name;
+		std::vector<std::string>	_args;
+		std::string					_trailing;
+
+		Client	*_client;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 01:03:06 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 01:13:57 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/02 02:30:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,10 @@ std::vector<std::string>	ft_split(std::string const &str, std::string const &del
     tab.push_back(str.substr(start));
 	
 	return tab;
+}
+
+void toUpperCase(std::string &str) {
+    for (std::string::iterator it = str.begin(); it != str.end(); ++it) {
+        *it = std::toupper(*it);
+    }
 }

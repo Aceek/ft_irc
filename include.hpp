@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 05:24:58 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 07:19:00 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 #include <poll.h>
 #include <vector>
 #include <map>
+#include <sstream>
+#include <string>
 #include <client.hpp>
 
 #endif // INCLUDE_HPP

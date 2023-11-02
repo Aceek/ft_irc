@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 06:36:24 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 07:26:58 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	Server::processComand(const int &clientFd) {
 	if (bytesReceived == -1) { // a faire
 		std::cerr << "Error receiving message from client" << std::endl;
 		return ;
-	} else if (bytesReceived == 0) { // a faire
+	} else if (bytesReceived == 0) { // a faire connection ferme par le client
 		std::cerr << "Error receiving message ... 0" << std::endl;
 		return ;
 	}

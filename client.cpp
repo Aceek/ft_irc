@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 06:41:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/10/24 07:25:21 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,23 @@ bool	Client::handleCommand() {
 		std::cerr << "Error command size : reseting command" << std::endl;
 		this->_command.clear();
 		return (false);
-	} else if (this->_command.find("\n") == std::string::npos) {
+	} else if (this->_command.find("\r\n") == std::string::npos) {
 		std::cerr << "error pas de caractere de fin" << std::endl;
 		return (false);
 	}
+
+	std::istringstream	iss(this->_command);
+	std::string			prefix, command, params;
+	if (this->_command[0] == ':') {
+		iss >> prefix; // extract prefix
+		prefix = prefix.substr(1);
+	}
+	iss >> command; // extract command
+	std::getline(iss, params); // extract params
+
+	std::cout << "Prefix: " << prefix << std::endl;
+    std::cout << "Command: " << command << std::endl;
+    std::cout << "Params: " << params << std::endl;
+	
 	return (true);
 }

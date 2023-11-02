@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 09:15:33 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/02 09:16:17 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ Command::Command(Command const &rhs) :
 	_trailor(rhs._trailor),
 	_client(rhs._client) {}
 
-Command &Command::operator=(Command const  &rhs) {
+Command &Command::operator=(Command const &rhs) {
     if (this == &rhs) {
         return *this;
     }

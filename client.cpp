@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 06:41:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/02 05:42:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ bool	Client::handleCommand() {
 	} else if (this->_command.find("\n") == std::string::npos) {
 		std::cerr << "error pas de caractere de fin" << std::endl;
 		return (false);
-	}
+	} 
 	return (true);
 }

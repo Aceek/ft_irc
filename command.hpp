@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 02:52:48 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 06:53:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ class Command {
 		static void PRIVMSG(Command const &cmd);
 		static void TOPIC(Command const &cmd);
 
+		std::string const				&getPrefix(void) const;
+		std::string const				&getName(void) const;
+		std::vector<std::string> const	&getArgs(void) const;
+		std::string const				&getTrailor(void) const;
+
 	private:
 		std::string					_prefix;
 		std::string					_name;
@@ -52,7 +57,6 @@ class Command {
 
 		typedef void (*cmdFt)(Command const &cmd);
 		static std::map<std::string, cmdFt>	_map;
-
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 02:54:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 06:52:01 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,32 @@ void Command::exec(void) {
 
 /* ************************************************************************** */
 
+std::string const &Command::getPrefix(void) const {
+    return this->_prefix;
+}
+
+std::string const &Command::getName(void) const {
+    return this->_name;
+}
+
+std::vector<std::string> const &Command::getArgs(void) const {
+    return this->_args;
+}
+
+std::string const &Command::getTrailor(void) const {
+    return this->_trailor;
+}
+
+/* ************************************************************************** */
+
 void Command::INVITE(Command const &cmd) {
 	(void)cmd;
 }
 
 void Command::JOIN(Command const &cmd) {
-	(void)cmd;
+	if (cmd.getArgs().size() < 1) {
+		throw std::runtime_error("Error: Not enough arguments");
+	}
 }
 
 void Command::KICK(Command const &cmd) {

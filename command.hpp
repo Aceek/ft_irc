@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 02:12:04 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 02:52:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Command {
 		Command &operator=(Command const &rhs);
 		~Command(void);
 	
-		void initCmdMap(void);
+		void initMap(void);
 	    void printArgs(void) const;
 		void exec(void);
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 02:22:45 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 02:54:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ std::map<std::string, Command::cmdFt> Command::_map;
 Command::Command(void) {}
 
 Command::Command(std::string const &line, Client *user) : _client(user) {
-	initCmdMap();
+	initMap();
 	
 	std::vector<std::string> tab = ft_split(line, " ");
  	std::vector<std::string>::iterator it = tab.begin();
@@ -77,7 +77,7 @@ Command::~Command(void) {}
 
 /* ************************************************************************** */
 
-void Command::initCmdMap(void) {
+void Command::initMap(void) {
     _map["INVITE"] = Command::INVITE;
     _map["JOIN"] = Command::JOIN;
     _map["KICK"] = Command::KICK;
@@ -123,7 +123,6 @@ void Command::INVITE(Command const &cmd) {
 
 void Command::JOIN(Command const &cmd) {
 	(void)cmd;
-
 }
 
 void Command::KICK(Command const &cmd) {

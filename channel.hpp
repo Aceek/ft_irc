@@ -6,17 +6,19 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/10/31 05:29:36 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 06:07:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "client.hpp"
 
 #include <string>
 #include <set>
 
-#include "client.hpp"
-
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
+
+class Client;
 
 class Channel {
 	public:
@@ -34,6 +36,8 @@ class Channel {
 		std::string const	&getTopic(void);
 		void				setTopic(std::string const &topicName);
 
+		int		getUserNumber(void);
+		
 		void	addAllBufToCommand(char const *buffer);
 
 	private:

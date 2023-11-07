@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/10/31 05:32:04 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 06:06:51 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ std::string const &Channel::getTopic(void) {
 
 void Channel::setTopic(std::string const &topicName) {
     this->_topicName = topicName;
+}
+
+int Channel::getUserNumber(void) {
+	return (this->_usersList.size() + this->_operatorsList.size());
 }
 
 // char * and not string ?

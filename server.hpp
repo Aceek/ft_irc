@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/10/24 05:27:00 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/07 05:30:26 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "include.hpp"
 
 class Client;
+// class Channel;
 
 #define MAX_COMMAND_SIZE 512
 
@@ -26,6 +27,9 @@ private:
 	struct sockaddr_in			_serverAdress;
 	std::vector<struct pollfd>	_fds; // Stockez les FD et les evenements associés
 	std::map<const int, Client> _clients;
+
+	std::map<std::string, Channel> _channels;
+	
 public:
 	Server(int port);
 	Server(/* args */);
@@ -35,6 +39,9 @@ public:
 	void	routine();
 	int		acceptClient();
 	void	processComand(const int &clientFd);
+
+	void	joinChannel(std::string const &channelName, Client &client);
+	void	leaveChannel(std::string const &channelName, Client &client);
 };
 
 #endif // SERVER_HPP

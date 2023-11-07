@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/02 09:16:17 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 02:22:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,7 @@ std::map<std::string, Command::cmdFt> Command::_map;
 Command::Command(void) {}
 
 Command::Command(std::string const &line, Client *user) : _client(user) {
-	_map["INVITE"] = Command::INVITE;
-    _map["JOIN"] = Command::JOIN;
-    _map["KICK"] = Command::KICK;
-    _map["MODE"] = Command::MODE;
-    _map["NICK"] = Command::NICK;
-    _map["OPER"] = Command::OPER;
-    _map["PART"] = Command::PART;
-    _map["PONG"] = Command::PONG;
-    _map["PRIVMSG"] = Command::PRIVMSG;
+	initCmdMap();
 	
 	std::vector<std::string> tab = ft_split(line, " ");
  	std::vector<std::string>::iterator it = tab.begin();
@@ -85,23 +77,36 @@ Command::~Command(void) {}
 
 /* ************************************************************************** */
 
-void Command::printArguments(void) const {
-    std::cout << "Prefix: " << _prefix << std::endl;
-    std::cout << "Name: " << _name << std::endl;
+void Command::initCmdMap(void) {
+    _map["INVITE"] = Command::INVITE;
+    _map["JOIN"] = Command::JOIN;
+    _map["KICK"] = Command::KICK;
+    _map["MODE"] = Command::MODE;
+    _map["NICK"] = Command::NICK;
+    _map["OPER"] = Command::OPER;
+    _map["PART"] = Command::PART;
+    _map["PONG"] = Command::PONG;
+    _map["PRIVMSG"] = Command::PRIVMSG;
+    _map["TOPIC"] = Command::TOPIC;
+}
+
+void Command::printArgs(void) const {
+    std::cout << "Prefix: " << this->_prefix << std::endl;
+    std::cout << "Name: " << this->_name << std::endl;
 
     std::cout << "Arguments:";
-    for (size_t i = 0; i < _args.size(); ++i) {
-        std::cout << " " << _args[i];
+    for (size_t i = 0; i < this->_args.size(); ++i) {
+        std::cout << " " << this->_args[i];
     }
     std::cout << std::endl;
 
     if (!_trailor.empty()) {
-        std::cout << "Trailing: " << _trailor << std::endl;
+        std::cout << "Trailing: " << this->_trailor << std::endl;
     }
 }
 
-void Command::exec(std::string const &cmd) {
-    std::map<std::string, cmdFt>::iterator it = _map.find(cmd);
+void Command::exec(void) {
+    std::map<std::string, cmdFt>::iterator it = _map.find(this->_name);
 
     if (it != _map.end()) {
         it->second(*this);
@@ -156,4 +161,6 @@ void Command::PRIVMSG(Command const &cmd) {
 
 }
 
-
+void Command::TOPIC(Command const &cmd) {
+	(void)cmd;
+}

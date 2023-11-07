@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 06:52:01 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:48:39 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,28 @@
 
 std::map<std::string, Command::cmdFt> Command::_map;
 
-Command::Command(void) {}
+// Command::Command(void) {} (pas de constructeur par default pour ref client)
 
-Command::Command(std::string const &line, Client *user) : _client(user) {
+Command::Command(std::string const &line, Client &client) : _client(client) {
 	initMap();
 	
-	std::vector<std::string> tab = ft_split(line, " ");
- 	std::vector<std::string>::iterator it = tab.begin();
+	std::istringstream	iss(line);
+	if (line[0] == ':') {
+		iss >> this->_prefix; // extract prefix
+		this->_prefix = this->_prefix.substr(1);
+	}
+	iss >> this->_name; // extract command
+	toUpperCase(this->_name);
 
-    if (it != tab.end() && (*it)[0] == ':') {
-        this->_prefix = it->substr(1);
-        tab.erase(it);
-    }
 
-	if (!tab.empty()) {
-        this->_name = tab.front();
-		toUpperCase(this->_name);
-        tab.erase(tab.begin());
-    }
-
-	while (!tab.empty()) {
-		if ((*it)[0] == ':') {
-			this->_trailor = it->substr(1);
-			tab.erase(it);
-			while (!tab.empty()) {
-				this->_trailor += " " + tab.front();
-				tab.erase(tab.begin());		
-			}
-		} else {
-			this->_args.push_back(tab.front());
-			tab.erase(tab.begin());
+	std::string arg;
+	while (iss >> arg) {
+		if (!arg.empty() && arg[0] == ':') { // Trailing detected
+			std::getline(iss, this->_trailor);
+			this->_trailor = arg + this->_trailor;
+			break;
 		}
+		this->_args.push_back(arg);
 	}
 }
 

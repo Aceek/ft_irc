@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/07 05:59:05 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:41:46 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,24 +112,9 @@ void	Server::processComand(const int &clientFd) {
 		return ;
 	}
 	client.addToCommand(buffer);
-	if (client.handleCommand()) {
-		client.printCommand();
-	}
-}
-
-void	Server::joinChannel(std::string const &channelName, Client &client) {
-	Channel &channel = this->_channels[channelName];
-	channel.addUser(client, channel.isOperator(client));
-}
-
-void	Server::leaveChannel(std::string const &channelName, Client &client) {
-	std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
-	
-	if (it != this->_channels.end()) {
-		it->second.delUser(client);
-		
-		if (it->second.getUserNumber() < 1) {
-			this->_channels.erase(it);	
-		}
+	if (client.verifyCommand()) {
+		Command command(client.getClientCommand(), client);
+		command.printArgs();
+		client.clearCommand();
 	}
 }

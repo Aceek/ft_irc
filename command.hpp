@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 06:53:20 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:08:46 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 class Command {
 	public:
 		Command(void);
-		Command(std::string const &line, Client *user);
+		Command(std::string const &line, Client &client);
 		Command(Command const &rhs);
 		Command &operator=(Command const &rhs);
 		~Command(void);
@@ -53,7 +53,7 @@ class Command {
 		std::vector<std::string>	_args;
 		std::string					_trailor;
 
-		Client	*_client;
+		Client	&_client;
 
 		typedef void (*cmdFt)(Command const &cmd);
 		static std::map<std::string, cmdFt>	_map;

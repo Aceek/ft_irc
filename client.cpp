@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/02 08:40:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/07 09:27:50 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,13 @@ const std::string	&Client::getClientCommand() const {
 
 void	Client::printCommand() {
 	std::cout << this->_command << std::endl;
+}
+
+void	Client::clearCommand() {
 	this->_command.clear();
 }
 
-bool	Client::handleCommand() {
+bool	Client::verifyCommand() {
 	
 	if (this->_command.size() >= BUFFER_SIZE) {
 		std::cerr << "Error command size : reseting command" << std::endl;
@@ -53,18 +56,5 @@ bool	Client::handleCommand() {
 		return (false);
 	}
 
-	std::istringstream	iss(this->_command);
-	std::string			prefix, command, params;
-	if (this->_command[0] == ':') {
-		iss >> prefix; // extract prefix
-		prefix = prefix.substr(1);
-	}
-	iss >> command; // extract command
-	std::getline(iss, params); // extract params
-
-	std::cout << "Prefix: " << prefix << std::endl;
-    std::cout << "Command: " << command << std::endl;
-    std::cout << "Params: " << params << std::endl;
-	
 	return (true);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 09:11:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 12:59:54 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,30 @@ private:
 	std::map<std::string, Channel> _channels;
 	
 public:
-	Server(int port);
-	Server(/* args */);
-	~Server();
+				Server(int port);
+				Server(/* args */);
+				~Server();
 
-	void	addToPoll(int fd, short events);
-	void	routine();
-	int		acceptClient();
-	void	processComand(const int &clientFd);
+	void		addToPoll(int fd, short events);
+	void		routine();
+	void		processComand(const int &clientFd);
+	int			acceptClient();
 
 	void		addChannel(std::string const &channelName);
 	void		delChannel(std::string const &channelName);
-	Channel		*getChannel(std::string const &channelName);
 	void 		printAllChannels(void);
+	Channel		*getChannel(std::string const &channelName);
 
+	void		sendMessage(const Client &client, const std::string &message) const;
+	std::string	getErrorMessage(int errorCode);
+
+	enum		ErrorCode {
+		ERR_NONICKNAMEGIVEN = 431,
+		ERR_ERRONEUSNICKNAME = 432,
+		ERR_NICKNAMEINUSE = 433,
+		ERR_NICKCOLLISION = 436,
+
+	};
 };
 
 #endif // SERVER_HPP

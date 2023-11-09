@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 09:18:59 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 13:00:45 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,40 @@ void	Server::processComand(const int &clientFd) {
 	if (client.verifyCommand()) {
 		Command command(client.getClientCommand(), client, *this);
 		command.printArgs();
+		command.exec();
 		client.clearCommand();
 	}
 }
+
+/* ************************************************************************** */
+
+void Server::sendMessage(const Client &client, const std::string &message) const {
+	int bytesSent = send(client.getClientFd(), message.c_str(), message.size(), 0);
+
+	if (bytesSent == -1) {
+		// gestion erreur a faire !
+		std::cerr << "Error sending message to client" << std::endl;
+	}
+}
+
+std::string Server::getErrorMessage(int errorCode) {
+	// need add system add nickname of user .. 
+	switch (errorCode)
+	{
+	case ERR_NONICKNAMEGIVEN:
+		return (" 431:No nickname given");
+	case ERR_ERRONEUSNICKNAME:
+		return (" 432:Erroneus nickname");
+	case ERR_NICKNAMEINUSE:
+		return (" 433:Nickname is already in use");
+	case ERR_NICKCOLLISION:
+		return (" 436::Nickname collision KILL");
+	default:
+		return ("Error non connu");
+	}
+}
+
+/* ************************************************************************** */
 
 void	Server::addChannel(std::string const &channelName) {
 	this->_channels[channelName] = Channel();

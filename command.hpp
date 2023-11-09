@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 05:37:40 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 13:52:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,18 @@ class Command {
 	    void printArgs(void) const;
 		void exec(void);
 
-		static void INVITE(Command const &cmd);
-		static void JOIN(Command const &cmd);
-		static void KICK(Command const &cmd);
-		static void MODE(Command const &cmd);
-		static void NICK(Command const &cmd);
-		static void OPER(Command const &cmd);
-		static void PART(Command const &cmd);
-		static void PONG(Command const &cmd);
-		static void PRIVMSG(Command const &cmd);
-		static void TOPIC(Command const &cmd);
+		void INVITE();
+		void JOIN();
+		void KICK();
+		void MODE();
+		void OPER();
+		void PART();
+		void PONG();
+		void PRIVMSG();
+		void TOPIC();
+		void NICK();
+		
+
 
 		std::string const				&getPrefix(void) const;
 		std::string const				&getName(void) const;
@@ -59,8 +61,9 @@ class Command {
 		Client	&_client;
 		Server	&_server;
 
-		typedef void (*cmdFt)(Command const &cmd);
-		static std::map<std::string, cmdFt>	_map;
+		typedef void (Command::*cmdFt)();
+		std::map<std::string, cmdFt>	_map;
+
 };
 
 #endif

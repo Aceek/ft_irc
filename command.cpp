@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 04:18:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 04:20:22 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void Command::JOIN(Command const &cmd) {
 
     for (size_t i = 0; i < channels.size(); ++i) {
         std::string const &channel = channels[i];
-        std::string key; // Default empty key if not provided
+        std::string key;
 
         if (i < keys.size()) {
             key = keys[i];
@@ -152,7 +152,6 @@ void Command::JOIN(Command const &cmd) {
 
         channelKeyMap[channel] = key;
 
-        // Debug print to show the association
         std::cout << "Channel: " << channel << " | Key: " << key << std::endl;
     }
 

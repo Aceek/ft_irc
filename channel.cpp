@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 06:06:51 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 06:15:51 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 Channel::Channel(void) {}
 
 Channel::Channel(Channel const &rhs) :
-	_topicName(rhs._topicName),
+	_topic(rhs._topic),
 	_usersList(rhs._usersList),
 	_operatorsList(rhs._operatorsList) {}
 
@@ -24,7 +24,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
         return *this;
     }
 
-	this->_topicName = rhs._topicName;
+	this->_topic = rhs._topic;
 	this->_usersList = rhs._usersList;
 	this->_operatorsList = rhs._operatorsList;
 
@@ -62,11 +62,11 @@ bool Channel::isOperator(Client &user) {
 }
 
 std::string const &Channel::getTopic(void) {
-    return this->_topicName;
+    return this->_topic;
 }
 
-void Channel::setTopic(std::string const &topicName) {
-    this->_topicName = topicName;
+void Channel::setTopic(std::string const &topic) {
+    this->_topic = topic;
 }
 
 int Channel::getUserNumber(void) {

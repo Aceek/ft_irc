@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 06:07:07 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 06:14:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class Channel {
 		void	addAllBufToCommand(char const *buffer);
 
 	private:
-		std::string			_topicName;
+		std::string			_topic;
 		std::set<Client *>	_usersList;
 		std::set<Client *>	_operatorsList;
 };

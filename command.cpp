@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/07 09:48:39 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/09 04:18:38 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ std::map<std::string, Command::cmdFt> Command::_map;
 // Command::Command(void) {} (pas de constructeur par default pour ref client)
 
 Command::Command(std::string const &line, Client &client) : _client(client) {
-	initMap();
+	initCmdMap();
 	
 	std::istringstream	iss(line);
 	if (line[0] == ':') {
@@ -68,7 +68,7 @@ Command::~Command(void) {}
 
 /* ************************************************************************** */
 
-void Command::initMap(void) {
+void Command::initCmdMap(void) {
     _map["INVITE"] = Command::INVITE;
     _map["JOIN"] = Command::JOIN;
     _map["KICK"] = Command::KICK;
@@ -91,7 +91,7 @@ void Command::printArgs(void) const {
     }
     std::cout << std::endl;
 
-    if (!_trailor.empty()) {
+    if (!this->_trailor.empty()) {
         std::cout << "Trailing: " << this->_trailor << std::endl;
     }
 }
@@ -131,9 +131,31 @@ void Command::INVITE(Command const &cmd) {
 }
 
 void Command::JOIN(Command const &cmd) {
-	if (cmd.getArgs().size() < 1) {
-		throw std::runtime_error("Error: Not enough arguments");
-	}
+    if (cmd.getArgs().size() < 1) {
+        throw std::runtime_error("Error: Not enough arguments");
+    }
+
+    std::map<std::string, std::string> channelKeyMap;
+    std::vector<std::string> channels = ft_split(cmd.getArgs()[0], ",");    
+    std::vector<std::string> keys;
+    if (cmd.getArgs().size() > 1) {
+        keys = ft_split(cmd.getArgs()[1], ",");
+    }
+
+    for (size_t i = 0; i < channels.size(); ++i) {
+        std::string const &channel = channels[i];
+        std::string key; // Default empty key if not provided
+
+        if (i < keys.size()) {
+            key = keys[i];
+        }
+
+        channelKeyMap[channel] = key;
+
+        // Debug print to show the association
+        std::cout << "Channel: " << channel << " | Key: " << key << std::endl;
+    }
+
 }
 
 void Command::KICK(Command const &cmd) {

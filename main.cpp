@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:04:29 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 06:05:21 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 09:19:49 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	main() {
 	} catch(const std::exception& e) {
 		std::cerr << e.what() << '\n';
 	}
-	
 }
+
 
 // int main() {
 // 	try {
@@ -50,9 +50,15 @@ int	main() {
 
 // /*******TEST JOIN**********/
 // 	Command myCommand(":WiZ JOIN #foo,#bar fubar,foobar", client, server);
-// 	Command myCommand2(":WiZ JOIN #foo,&bar fubar ", client, server);
+// 	Command myCommand2(":WiZ JOIN #zooooo,#bar fubar ", client, server);
+// 	// Command myCommand3(":WiZ JOIN #zooooo,&bar fubar ", client, server);
+// 	// myCommand.printArgs();
+// 	myCommand2.printArgs();
 // 	myCommand.exec();
 // 	myCommand2.exec();
+// 	// myCommand3.exec();
+
+// 	server.printAllChannels();
 
 // 	} catch(const std::exception& e) {
 // 		std::cerr << e.what() << '\n';

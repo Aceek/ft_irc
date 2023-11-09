@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 06:04:54 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 09:11:39 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,39 +147,43 @@ void Command::JOIN(Command const &cmd) {
         throw std::runtime_error("Error: Not enough arguments");
     }
 
-    std::map<std::string, std::string> channelKeyMap;
-    std::vector<std::string> channels = ft_split(cmd.getArgs()[0], ",");    
+    std::vector<std::string> channels = ft_split(cmd.getArgs()[0], ",");
     std::vector<std::string> keys;
+
     if (cmd.getArgs().size() > 1) {
         keys = ft_split(cmd.getArgs()[1], ",");
     }
 
     for (size_t i = 0; i < channels.size(); ++i) {
-        std::string const &channel = channels[i];
+        std::string const &channelName = channels[i];
         std::string key;
 
         if (i < keys.size()) {
             key = keys[i];
         }
 
-        channelKeyMap[channel] = key;
+        if (channelName[0] != '#') {
+            throw std::runtime_error("Error: Channel name must start with #");
+        }
 
-        std::cout << "Channel: " << channel << " | Key: " << key << std::endl;
+        Channel *channel = cmd.getServer().getChannel(channelName);
+        Client &client = cmd.getClient();
+
+        if (!channel) {
+            cmd.getServer().addChannel(channelName);
+            channel = cmd.getServer().getChannel(channelName);
+
+            if (!key.empty()) {
+                channel->setKey(key);
+            }
+        } else if (!key.empty() && key != channel->getKey()) {
+            throw std::runtime_error("Error: Wrong channel password");
+        }
+
+        channel->addUser(client, channel->isOperator(client));
+
+        // Write message to all channel users
     }
-
-	for (std::map<std::string, std::string>::iterator it = channelKeyMap.begin();
-		it != channelKeyMap.end(); ++it) {
-			
-		if (it->first[0] != '#') {
-        	throw std::runtime_error("Error: Channel name must start with #");
-		}
-		
-		cmd.getServer().joinChannel(it->first, cmd.getClient());
-		
-		//write message to all channel users
-	
-	}
-	
 }
 
 void Command::KICK(Command const &cmd) {
@@ -212,19 +216,24 @@ void Command::PART(Command const &cmd) {
 	for (std::vector<std::string>::iterator it = channels.begin();
 		it != channels.end(); ++it) {
 		
-		if (!cmd._server.getChannel(*it)) {
-        	throw std::runtime_error("Error: Channel does not exist");
-		} else if (!cmd.getServer().getChannel(*it)->isUser(cmd.getClient())) {
-        	throw std::runtime_error("Error: User not in channel");
-		}
+      	Channel *channel = cmd.getServer().getChannel(*it);
+		Client &client = cmd.getClient();
+		
+		if (!channel) {
+            throw std::runtime_error("Error: Channel does not exist");
+        } else if (!channel->isUser(client)) {
+            throw std::runtime_error("Error: User not in channel");
+        }
 
-		cmd.getServer().leaveChannel((*it), cmd.getClient());
+		channel->delUser(client);
+		
+		if (channel->getUserNumber() < 0) {
+			cmd.getServer().delChannel((*it));
+		}
 		
 		//write message to all channel users
 
 	}
-	
-
 }
 
 void Command::PONG(Command const &cmd) {

@@ -1,5 +1,5 @@
 CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 SRCS = main.cpp server.cpp client.cpp channel.cpp command.cpp utils.cpp
 OBJS = $(SRCS:.cpp=.o)

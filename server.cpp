@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 05:49:16 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 09:18:59 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,30 +119,38 @@ void	Server::processComand(const int &clientFd) {
 	}
 }
 
-void	Server::joinChannel(std::string const &channelName, Client &client) {
-	Channel &channel = this->_channels[channelName];
-	channel.addUser(client, channel.isOperator(client));
+void	Server::addChannel(std::string const &channelName) {
+	this->_channels[channelName] = Channel();
 }
 
-void	Server::leaveChannel(std::string const &channelName, Client &client) {
+void	Server::delChannel(std::string const &channelName) {
 	std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
 	
 	if (it != this->_channels.end()) {
-		it->second.delUser(client);
-		
-		if (it->second.getUserNumber() < 1) {
 			this->_channels.erase(it);	
-		}
 	}
 }
 
 Channel	*Server::getChannel(std::string const &channelName) {
-	for (std::map<std::string, Channel>::iterator it = this->_channels.begin();
-		it != this->_channels.end(); ++it) {
-			
-			if (it->first == channelName) {
-				return &it->second;
-			}
+	std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
+		
+	if (it->first == channelName) {
+		return &it->second;
 	}
+	
 	return NULL;
 }
+
+void Server::printAllChannels(void) {
+    std::cout << "List of Channels:" << std::endl;
+	std::cout << std::endl;
+
+    for (std::map<std::string, Channel>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
+        std::cout << "Channel Name: " << it->first << std::endl;
+		if (!it->second.getKey().empty()) {
+        	std::cout << "Key: " << it->second.getKey() << std::endl;
+		}
+		std::cout << std::endl;
+	}
+}
+

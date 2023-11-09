@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 13:52:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:15:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,26 @@ class Command {
 	
 		void initCmdMap(void);
 	    void printArgs(void) const;
-		void exec(void);
+		int exec(void);
 
-		void INVITE();
-		void JOIN();
-		void KICK();
-		void MODE();
-		void OPER();
-		void PART();
-		void PONG();
-		void PRIVMSG();
-		void TOPIC();
-		void NICK();
+		int INVITE();
+		int JOIN();
+		int KICK();
+		int MODE();
+		int OPER();
+		int PART();
+		int PONG();
+		int PRIVMSG();
+		int TOPIC();
+		int USER();
+		int	NICK();
+		int	PASS();
+
+		// utilitaire
+		bool isValidNickname() const;
+		bool isNicknameOrUsernameAvailable(bool useNickname) const;
+		bool isValidRealName() const;
+		bool isValidPassword() const;
 		
 
 
@@ -61,7 +69,7 @@ class Command {
 		Client	&_client;
 		Server	&_server;
 
-		typedef void (Command::*cmdFt)();
+		typedef int (Command::*cmdFt)();
 		std::map<std::string, cmdFt>	_map;
 
 };

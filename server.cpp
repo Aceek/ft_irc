@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 13:00:45 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:21:09 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "client.hpp"
 
 
-Server::Server(int port) : _port(port) {
+Server::Server(int port, std::string password) : _port(port), _password(password) {
 	
 	// Creer la socket et on la relie a un fd
 	this->_serverFd = socket(AF_INET, SOCK_STREAM, 0);
@@ -100,6 +100,7 @@ void	Server::processComand(const int &clientFd) {
 	
 	char	buffer[MAX_COMMAND_SIZE + 1] = "";
 	Client	&client = this->_clients[clientFd];
+	int		errorCode = 0;
 
 	memset(buffer, 0, sizeof(buffer));
 
@@ -113,17 +114,26 @@ void	Server::processComand(const int &clientFd) {
 	}
 	client.addToCommand(buffer);
 	if (client.verifyCommand()) {
-		Command command(client.getClientCommand(), client, *this);
-		command.printArgs();
-		command.exec();
+		try {
+			Command command(client.getClientCommand(), client, *this);
+			command.printArgs();
+			if ((errorCode = command.exec())) {
+				sendMessage(client, getErrorMessage(errorCode));
+			}
+		} catch(const std::exception& e) {
+			sendMessage(client, getErrorMessage(ERR_PASSNEEDED));
+		}
 		client.clearCommand();
+
+
 	}
 }
 
 /* ************************************************************************** */
 
 void Server::sendMessage(const Client &client, const std::string &message) const {
-	int bytesSent = send(client.getClientFd(), message.c_str(), message.size(), 0);
+	std::string newMessage = message + "\n";
+	int bytesSent = send(client.getClientFd(), newMessage.c_str(), newMessage.size(), 0);
 
 	if (bytesSent == -1) {
 		// gestion erreur a faire !
@@ -136,17 +146,38 @@ std::string Server::getErrorMessage(int errorCode) {
 	switch (errorCode)
 	{
 	case ERR_NONICKNAMEGIVEN:
-		return (" 431:No nickname given");
+		return ("[Nick] 431:No nickname given");
 	case ERR_ERRONEUSNICKNAME:
-		return (" 432:Erroneus nickname");
+		return ("[Nick] 432:Erroneus nickname");
 	case ERR_NICKNAMEINUSE:
-		return (" 433:Nickname is already in use");
+		return ("[Nick] 433:Nickname is already in use");
 	case ERR_NICKCOLLISION:
-		return (" 436::Nickname collision KILL");
+		return ("[Nick] 436:Nickname collision KILL");
+	case ERR_NEEDMOREPARAMS:
+		return ("[command] 461:Not enough parameters");
+	case ERR_REALNAME:
+		return ("[realName] 1::Real Name bad format (max 25 char) + alnum char only");
+	case ERR_PASSFORMAT:
+		return ("[password] 2:Password bad format (max 25 char) + alnum char only");
+	case ERR_PASSNEEDED:
+		return ("[password] 3:server password required to log");
+	case ERR_PASSWRONG:
+		return ("[password] 4:Password not match with server's password");
+	case ERR_ALREADYREGISTRED:
+		return ("[password] 462:You may not reregister (already done)");
 	default:
 		return ("Error non connu");
 	}
 }
+
+const std::map<const int, Client> &Server::getClients() const {
+	return (this->_clients);
+}
+
+const std::string	&Server::getPassword() const {
+	return (this->_password);
+}
+
 
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:04:29 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 09:19:49 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 17:34:44 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 #include "command.hpp"
 #include "utils.hpp"
 
-int	main() {
+int	main(int ac, char **av) {
+	
+	if (ac != 3 || !av[1] || !av[2]) {
+		std::cerr <<
+		"Error: format is : ./ft_irc [ports] [password]" << std::endl;
+		return (-1); // erreur a definir
+	}
 	
 	try {
-		Server test(6138);
+		Server test(atoi(av[1]), av[2]);
 		test.routine();
 	} catch(const std::exception& e) {
 		std::cerr << e.what() << '\n';

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 12:59:54 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:22:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ class Client;
 
 #define MAX_COMMAND_SIZE 512
 
+typedef std::map<const int, Client> ClientMap;
+
 class Server {
 private:
 	int 						_port;
+	std::string					_password;
 	int							_serverFd;
 	struct sockaddr_in			_serverAdress;
 	std::vector<struct pollfd>	_fds; // Stockez les FD et les evenements associés
@@ -31,30 +34,27 @@ private:
 	std::map<std::string, Channel> _channels;
 	
 public:
-				Server(int port);
-				Server(/* args */);
-				~Server();
+						Server(int port, std::string password);
+						Server(/* args */);
+						~Server();
+		
+	void				addToPoll(int fd, short events);
+	void				routine();
+	void				processComand(const int &clientFd);
+	void				addChannel(std::string const &channelName);
+	void				delChannel(std::string const &channelName);
+	void 				printAllChannels(void);
+	void				sendMessage(const Client &client,
+						const std::string &message) const;
+	int					acceptClient();
 
-	void		addToPoll(int fd, short events);
-	void		routine();
-	void		processComand(const int &clientFd);
-	int			acceptClient();
+	Channel				*getChannel(std::string const &channelName);
+	const ClientMap		&getClients() const;
+	const std::string	&getPassword() const;
+	std::string			getErrorMessage(int errorCode);
 
-	void		addChannel(std::string const &channelName);
-	void		delChannel(std::string const &channelName);
-	void 		printAllChannels(void);
-	Channel		*getChannel(std::string const &channelName);
 
-	void		sendMessage(const Client &client, const std::string &message) const;
-	std::string	getErrorMessage(int errorCode);
 
-	enum		ErrorCode {
-		ERR_NONICKNAMEGIVEN = 431,
-		ERR_ERRONEUSNICKNAME = 432,
-		ERR_NICKNAMEINUSE = 433,
-		ERR_NICKCOLLISION = 436,
-
-	};
 };
 
 #endif // SERVER_HPP

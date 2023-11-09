@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/07 08:20:31 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:18:15 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,21 @@
 #include <client.hpp>
 #include <channel.hpp>
 #include <command.hpp>
+
+
+enum		ErrorCode {
+	ERR_NONE = 0,
+	ERR_NONICKNAMEGIVEN = 431,
+	ERR_ERRONEUSNICKNAME = 432,
+	ERR_NICKNAMEINUSE = 433,
+	ERR_NICKCOLLISION = 436,
+	ERR_NEEDMOREPARAMS = 461,
+	ERR_REALNAME = 1, // variable perso
+	ERR_PASSFORMAT = 2, // variable perso
+	ERR_PASSNEEDED = 3, // variable perso
+	ERR_PASSWRONG = 4, // variable perso
+	ERR_ALREADYREGISTRED = 462,
+
+};
 
 #endif // INCLUDE_HPP

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 01:52:40 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 05:49:16 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	Server::processComand(const int &clientFd) {
 	}
 	client.addToCommand(buffer);
 	if (client.verifyCommand()) {
-		Command command(client.getClientCommand(), client);
+		Command command(client.getClientCommand(), client, *this);
 		command.printArgs();
 		client.clearCommand();
 	}
@@ -134,4 +134,15 @@ void	Server::leaveChannel(std::string const &channelName, Client &client) {
 			this->_channels.erase(it);	
 		}
 	}
+}
+
+Channel	*Server::getChannel(std::string const &channelName) {
+	for (std::map<std::string, Channel>::iterator it = this->_channels.begin();
+		it != this->_channels.end(); ++it) {
+			
+			if (it->first == channelName) {
+				return &it->second;
+			}
+	}
+	return NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 03:31:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 05:37:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define COMMAND_HPP
 
 #include "client.hpp"
+#include "server.hpp"
 #include "utils.hpp"
 
 #include <string>
@@ -22,7 +23,7 @@
 class Command {
 	public:
 		Command(void);
-		Command(std::string const &line, Client &client);
+		Command(std::string const &line, Client &client, Server &server);
 		Command(Command const &rhs);
 		Command &operator=(Command const &rhs);
 		~Command(void);
@@ -46,6 +47,8 @@ class Command {
 		std::string const				&getName(void) const;
 		std::vector<std::string> const	&getArgs(void) const;
 		std::string const				&getTrailor(void) const;
+		Client							&getClient(void) const;
+    	Server							&getServer(void) const;
 
 	private:
 		std::string					_prefix;
@@ -54,6 +57,7 @@ class Command {
 		std::string					_trailor;
 
 		Client	&_client;
+		Server	&_server;
 
 		typedef void (*cmdFt)(Command const &cmd);
 		static std::map<std::string, cmdFt>	_map;

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/07 05:30:26 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 05:49:21 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ public:
 	int		acceptClient();
 	void	processComand(const int &clientFd);
 
-	void	joinChannel(std::string const &channelName, Client &client);
-	void	leaveChannel(std::string const &channelName, Client &client);
+	void			joinChannel(std::string const &channelName, Client &client);
+	void			leaveChannel(std::string const &channelName, Client &client);
+	Channel			*getChannel(std::string const &channelName);
 };
 
 #endif // SERVER_HPP

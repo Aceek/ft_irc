@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 04:20:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/09 06:04:54 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ std::map<std::string, Command::cmdFt> Command::_map;
 
 // Command::Command(void) {} (pas de constructeur par default pour ref client)
 
-Command::Command(std::string const &line, Client &client) : _client(client) {
+Command::Command(std::string const &line, Client &client, Server &server) : 
+	_client(client),
+	_server(server) {
 	initCmdMap();
 	
 	std::istringstream	iss(line);
@@ -48,7 +50,8 @@ Command::Command(Command const &rhs) :
 	_name(rhs._name),
 	_args(rhs._args),
 	_trailor(rhs._trailor),
-	_client(rhs._client) {}
+	_client(rhs._client),
+	_server(rhs._server) {}
 
 Command &Command::operator=(Command const &rhs) {
     if (this == &rhs) {
@@ -60,6 +63,7 @@ Command &Command::operator=(Command const &rhs) {
 	this->_args = rhs._args;
 	this->_trailor = rhs._trailor;
 	this->_client = rhs._client;
+	this->_server = rhs._server;
 
     return *this;
 }
@@ -124,6 +128,14 @@ std::string const &Command::getTrailor(void) const {
     return this->_trailor;
 }
 
+Client &Command::getClient(void) const {
+    return this->_client;
+}
+
+Server &Command::getServer(void) const {
+    return this->_server;
+}
+
 /* ************************************************************************** */
 
 void Command::INVITE(Command const &cmd) {
@@ -155,6 +167,19 @@ void Command::JOIN(Command const &cmd) {
         std::cout << "Channel: " << channel << " | Key: " << key << std::endl;
     }
 
+	for (std::map<std::string, std::string>::iterator it = channelKeyMap.begin();
+		it != channelKeyMap.end(); ++it) {
+			
+		if (it->first[0] != '#') {
+        	throw std::runtime_error("Error: Channel name must start with #");
+		}
+		
+		cmd.getServer().joinChannel(it->first, cmd.getClient());
+		
+		//write message to all channel users
+	
+	}
+	
 }
 
 void Command::KICK(Command const &cmd) {
@@ -178,7 +203,27 @@ void Command::OPER(Command const &cmd) {
 }
 
 void Command::PART(Command const &cmd) {
-	(void)cmd;
+    if (cmd.getArgs().size() < 1) {
+        throw std::runtime_error("Error: Not enough arguments");
+    }
+
+    std::vector<std::string> channels = ft_split(cmd.getArgs()[0], ",");    
+	
+	for (std::vector<std::string>::iterator it = channels.begin();
+		it != channels.end(); ++it) {
+		
+		if (!cmd._server.getChannel(*it)) {
+        	throw std::runtime_error("Error: Channel does not exist");
+		} else if (!cmd.getServer().getChannel(*it)->isUser(cmd.getClient())) {
+        	throw std::runtime_error("Error: User not in channel");
+		}
+
+		cmd.getServer().leaveChannel((*it), cmd.getClient());
+		
+		//write message to all channel users
+
+	}
+	
 
 }
 

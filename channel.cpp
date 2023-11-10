@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/10 06:20:55 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/10 06:24:12 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ std::string const Channel::getUsersNick(void) {
 
 /* ************************************************************************** */
 
-// char * and not string ?
 void Channel::sendMessageToAll(const std::string &message) {
 	
 	for (std::set<Client *>::iterator it = this->_membersList.begin();

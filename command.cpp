@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/10 04:27:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/10 06:17:01 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,11 @@ int Command::JOIN() {
 							" " + channelName;
 								
 		channel->sendMessageToAll(msg);
-				
+		
+		channel->RPL_TOPIC(client);
+		channel->RPL_NAMREPLY(client);
+		channel->RPL_ENDOFNAMES(client);
+
     }
 	return (ERR_NONE);
 }
@@ -302,7 +306,7 @@ int Command::PART() {
 
 		channel->delUser(client);
 		
-		if (channel->getUserNumber() < 1) {
+		if (channel->getUsersNumber() < 1) {
 			this->getServer().delChannel((channelName));
 		}
 		

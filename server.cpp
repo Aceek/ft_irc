@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/10 03:58:05 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/10 06:03:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,4 +215,3 @@ void Server::printAllChannels(void) {
 		std::cout << std::endl;
 	}
 }
-

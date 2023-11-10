@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 18:17:54 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/10 04:27:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,13 @@ int Command::JOIN() {
         }
 
         channel->addUser(client, channel->isOperator(client));
-
-        // Write message to all channel users
+		
+		std::string msg =	":" + this->getClient().getNicknameOrUsername(true) +
+							" " + this->getName() + 
+							" " + channelName;
+								
+		channel->sendMessageToAll(msg);
+				
     }
 	return (ERR_NONE);
 }
@@ -283,10 +288,10 @@ int Command::PART() {
 
     std::vector<std::string> channels = ft_split(this->getArgs()[0], ",");    
 	
-	for (std::vector<std::string>::iterator it = channels.begin();
-		it != channels.end(); ++it) {
+    for (size_t i = 0; i < channels.size(); ++i) {
+        std::string const &channelName = channels[i];
 		
-      	Channel *channel = this->getServer().getChannel(*it);
+      	Channel *channel = this->getServer().getChannel(channelName);
 		Client &client = this->getClient();
 		
 		if (!channel) {
@@ -297,10 +302,15 @@ int Command::PART() {
 
 		channel->delUser(client);
 		
-		if (channel->getUserNumber() < 0) {
-			this->getServer().delChannel((*it));
+		if (channel->getUserNumber() < 1) {
+			this->getServer().delChannel((channelName));
 		}
-		//write message to all channel users
+		
+		std::string msg =	":" + this->getClient().getNicknameOrUsername(true) +
+					" " + this->getName() + 
+					" " + channelName;
+								
+		channel->sendMessageToAll(msg);
 
 	}
 	return(ERR_NONE);

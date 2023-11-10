@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:04:29 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 17:34:44 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/10 04:33:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av) {
 // int main() {
 // 	try {
 // 		Client client;
-// 		Server server(6138);
+// 		Server server;
 
 // /*******TEST SPLIT**********/
 // //     std::string input = "This is a sample string";
@@ -56,10 +56,10 @@ int	main(int ac, char **av) {
 
 // /*******TEST JOIN**********/
 // 	Command myCommand(":WiZ JOIN #foo,#bar fubar,foobar", client, server);
-// 	Command myCommand2(":WiZ JOIN #zooooo,#bar fubar ", client, server);
+// 	Command myCommand2(":WiZ PART #bar fubar ", client, server);
 // 	// Command myCommand3(":WiZ JOIN #zooooo,&bar fubar ", client, server);
 // 	// myCommand.printArgs();
-// 	myCommand2.printArgs();
+// 	// myCommand2.printArgs();
 // 	myCommand.exec();
 // 	myCommand2.exec();
 // 	// myCommand3.exec();

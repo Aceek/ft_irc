@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 18:21:09 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/10 03:58:05 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ const std::string	&Server::getPassword() const {
 /* ************************************************************************** */
 
 void	Server::addChannel(std::string const &channelName) {
-	this->_channels[channelName] = Channel();
+	this->_channels[channelName] = Channel(this);
 }
 
 void	Server::delChannel(std::string const &channelName) {

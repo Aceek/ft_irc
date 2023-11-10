@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 08:12:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/10 04:15:49 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 Channel::Channel(void) {}
 
+Channel::Channel(Server *server) : _server(server) {}
+
 Channel::Channel(Channel const &rhs) :
 	_topic(rhs._topic),
 	_key(rhs._key),
 	_usersList(rhs._usersList),
-	_operatorsList(rhs._operatorsList) {}
+	_operatorsList(rhs._operatorsList),
+	_server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const  &rhs) {
     if (this == &rhs) {
@@ -29,6 +32,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
 	this->_key = rhs._key;
 	this->_usersList = rhs._usersList;
 	this->_operatorsList = rhs._operatorsList;
+	this->_server = rhs._server;
 
     return *this;
 }
@@ -90,13 +94,14 @@ int Channel::getUserNumber(void) {
 /* ************************************************************************** */
 
 // char * and not string ?
-void Channel::addAllBufToCommand(char const *buffer) {
+void Channel::sendMessageToAll(const std::string &message) {
+	
 	for (std::set<Client *>::iterator it = this->_usersList.begin();
 		it != this->_usersList.end(); ++it) {
-			(*it)->addToCommand(buffer);
+			this->_server->sendMessage(*(*it), message);
 	}
 	for (std::set<Client *>::iterator it = this->_operatorsList.begin();
 		it != this->_operatorsList.end(); ++it) {
-			(*it)->addToCommand(buffer);
+			this->_server->sendMessage(*(*it), message);
 	}
 }

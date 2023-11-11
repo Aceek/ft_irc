@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 06:06:01 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 14:47:15 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,51 @@ void	Server::routine() {
 		if (ready == -1) { // A FAIRE !! cas d'erreur de poll (alocation memoire trop courte, fd invalide cela doit etre non blocant)
 			break;
 		}
-
-		for (long unsigned int i = 0; i < this->_fds.size(); i++) {
-			if (_fds[i].revents & POLLIN) { // operation et pour savoir si le fd est en mode POLLIN
-				if (_fds[i].fd == this->_serverFd) { // new client
+		unsigned int i = 0;
+		while (i < this->_fds.size()) {
+			if (_fds[i].revents & POLLIN) {
+				if (_fds[i].fd == this->_serverFd) {
 					acceptClient();
 				} else {
-					processComand(_fds[i].fd);
+					if (!processCommand(_fds[i].fd)) {
+						removeClient(_fds[i].fd);
+						continue;
+					}
 				}
 			}
+			++i;  // Incrémente i uniquement si l'itération n'a pas été interrompue par removeClient
 		}
 	}
 	// Close socket function ?
 	// freeSocket();
 }
+
+void Server::removeClient(const int clientFd) {
+	
+
+	// Suppression client dans pollfd 
+	std::vector<pollfd>::iterator itPoll = this->_fds.begin();
+	while (itPoll != _fds.end())
+	{
+		if (itPoll->fd == clientFd) {
+			itPoll = this->_fds.erase(itPoll);
+		} else {
+			itPoll++;
+		}
+	}
+	
+	// Suppression client dans map client
+	ClientMap::iterator itClient = this->_clients.find(clientFd);
+	if (itClient != this->_clients.end()) {
+		this->_clients.erase(clientFd);
+	}
+
+	if (close (clientFd) == -1) {
+		std::cerr << "Error closing fdclient" << std::endl;
+	}
+
+	std::cout << "Client supprimé du server" << std::endl;
+}	
 
 int	Server::acceptClient() {
 	struct sockaddr_in	clientAdress;
@@ -96,7 +127,7 @@ Server::~Server() {
 	close(this->_serverFd);
 };
 
-void	Server::processComand(const int &clientFd) {
+bool	Server::processCommand(const int &clientFd) {
 	
 	char	buffer[MAX_COMMAND_SIZE + 1] = "";
 	Client	&client = this->_clients[clientFd];
@@ -107,10 +138,10 @@ void	Server::processComand(const int &clientFd) {
 	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
 	if (bytesReceived == -1) { // a faire
 		std::cerr << "Error receiving message from client" << std::endl;
-		return ;
+		return (false);
 	} else if (bytesReceived == 0) { // a faire connection ferme par le client
 		std::cerr << "Error receiving message ... 0" << std::endl;
-		return ;
+		return (false);
 	}
 	client.addToCommand(buffer);
 	if (client.verifyCommand()) {
@@ -124,9 +155,8 @@ void	Server::processComand(const int &clientFd) {
 			sendMessage(client, getErrorMessage(ERR_PASSNEEDED));
 		}
 		client.clearCommand();
-
-
 	}
+	return (true);
 }
 
 void Server::sendMessage(const Client &client, const std::string &message) const {

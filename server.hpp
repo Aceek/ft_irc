@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 03:17:13 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 14:34:14 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ public:
 		
 	void				addToPoll(int fd, short events);
 	void				routine();
-	void				processComand(const int &clientFd);
+	bool				processCommand(const int &clientFd);
+	void				removeClient(const int clientFd);
 	int					acceptClient();
 	void				sendMessage(const Client &client,
 						const std::string &message) const;

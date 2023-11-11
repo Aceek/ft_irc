@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 05:02:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 06:27:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,14 +152,14 @@ int Command::INVITE() {
     }
 
     std::string nickname = getArgs()[0];
-    std::string channel = getArgs()[1];
+    std::string channelName = getArgs()[1];
 
-    Channel *targetChannel = getServer().getChannel(channel);
-    if (!targetChannel) {
+    Channel *channel = getServer().getChannel(channelName);
+    if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
 
-    if (!targetChannel->isOperator(getClient())) {
+    if (!channel->isOperator(getClient())) {
         return ERR_CHANOPRIVSNEEDED;
     }
 
@@ -168,16 +168,16 @@ int Command::INVITE() {
     	return ERR_NOSUCHNICK;
     }
 
-	if (targetChannel->isClientPresent(*client)) {
+	if (channel->isClientPresent(*client)) {
         return ERR_USERONCHANNEL;
     }
 
     std::string inviteMessage =	":" + this->getClient().getNicknameOrUsername(true) +
                         		" " + this->getName() +
 								" " + nickname +
-								" " + channel;
+								" " + channelName;
 								
-	targetChannel->sendMessageToAll(inviteMessage);
+	channel->sendMessageToAll(inviteMessage);
 	this->getServer().sendMessage(*client, inviteMessage);
 
     return ERR_NONE;
@@ -244,16 +244,16 @@ int Command::KICK() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string channel = this->getArgs()[0];
+    std::string channelName = this->getArgs()[0];
     std::string nickname = this->getArgs()[1];
     std::string comment = this->getTrailor();
 
-    Channel *targetChannel = this->getServer().getChannel(channel);
-    if (!targetChannel) {
+    Channel *channel = this->getServer().getChannel(channelName);
+    if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
 
-    if (!targetChannel->isOperator(this->getClient())) {
+    if (!channel->isOperator(this->getClient())) {
         return ERR_CHANOPRIVSNEEDED;
     }
 	
@@ -262,19 +262,22 @@ int Command::KICK() {
     	return ERR_NOSUCHNICK;
     }
 	
-    if (!targetChannel->isClientPresent(*client)) {
+    if (!channel->isClientPresent(*client)) {
         return ERR_NOTONCHANNEL;
     }
 
     std::string kickMessage =	":" + this->getClient().getNicknameOrUsername(true) +
 								" " + this->getName() +
-								" " + channel + 
-								" " + nickname + 
-								" :" + this->_trailor;
+								" " + channelName + 
+								" " + nickname;
+
+	if (!this->_trailor.empty()) {
+    	kickMessage += " :" + this->_trailor;
+	}
 								
-    targetChannel->sendMessageToAll(kickMessage);
+    channel->sendMessageToAll(kickMessage);
     
-	targetChannel->delUser(*client);
+	channel->delUser(*client);
 
     return ERR_NONE;
 }
@@ -389,9 +392,41 @@ int Command::PRIVMSG() {
 }
 
 int Command::TOPIC() {
-/*	Parameters: <channel> [<topic>]	*/
-	return ERR_NONE;
+    /* Parameters: <channel> [<topic>] */
+    if (this->getArgs().size() < 1) {
+        return ERR_NEEDMOREPARAMS;
+    }
 
+    std::string channelName = this->getArgs()[0];
+    Channel *channel = this->getServer().getChannel(channelName);
+
+    if (!channel) {
+        return ERR_NOTONCHANNEL;
+    }
+
+	if (this->getTrailor().empty()) {
+		if (channel->getTopic().empty()) {
+			channel->RPL_NOTOPIC(this->getClient());
+		} else {
+			channel->RPL_TOPIC(this->getClient());
+		}
+	} else {
+		if (!channel->isOperator(this->getClient())) {
+			return ERR_CHANOPRIVSNEEDED;
+		}
+		
+        std::string newTopic = this->getTrailor();
+        channel->setTopic(newTopic);
+
+        std::string topicMessage = ":" + this->getClient().getNicknameOrUsername(true) +
+                                   " " + this->getName() +
+								   " " + channelName + 
+								   " :" + newTopic;
+       
+	    channel->sendMessageToAll(topicMessage);
+    }
+
+    return ERR_NONE;
 }
 
 int Command::NAMES() {

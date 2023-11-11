@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 03:49:59 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 06:06:01 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ const ChannelMap &Server::getChannels() {
 /* ************************************************************************** */
 
 void	Server::addChannel(std::string const &channelName) {
-	this->_channels[channelName] = Channel(this);
+	this->_channels[channelName] = Channel(channelName, this);
 }
 
 void	Server::delChannel(std::string const &channelName) {

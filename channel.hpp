@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 02:48:30 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 06:06:58 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Server;
 class Channel {
 	public:
 		Channel(void);
-		Channel(Server *server);
+		Channel(std::string const &name, Server *server);
 		Channel(Channel const &rhs);
 		Channel &operator=(Channel const &rhs);
 		~Channel(void);
@@ -45,11 +45,13 @@ class Channel {
 		std::string const	getNicknames(void) const;
 		
 		void	sendMessageToAll(const std::string &message) const;
-   		void	RPL_TOPIC(Client &client) const;
+   		void 	RPL_NOTOPIC(Client &client) const;
+		void	RPL_TOPIC(Client &client) const;
     	void	RPL_NAMREPLY(Client &client) const;
     	void	RPL_ENDOFNAMES(Client &client) const;
 
 	private:
+		std::string			_name;
 		std::string			_topic;
 		std::string			_key;
 		std::set<Client *>	_users;

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 04:29:42 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 06:16:51 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 Channel::Channel(void) {}
 
-Channel::Channel(Server *server) : _server(server) {}
+Channel::Channel(std::string const &name, Server *server) : 
+	_name(name),
+	_server(server) {}
 
 Channel::Channel(Channel const &rhs) :
+	_name(rhs._name),
 	_topic(rhs._topic),
 	_key(rhs._key),
 	_users(rhs._users),
@@ -28,6 +31,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
         return *this;
     }
 
+	this->_name = rhs._name;
 	this->_topic = rhs._topic;
 	this->_key = rhs._key;
 	this->_users = rhs._users;
@@ -127,21 +131,38 @@ void Channel::sendMessageToAll(const std::string &message) const {
 }
 
 //!!!real server name to add - Maybe add clean Server reply functions in server class ??
+void 	Channel::RPL_NOTOPIC(Client &client) const {
+	std::string RPL_NOTOPIC =	":server " +
+								this->_name +
+							 	" :No topic is set";
+							
+	this->_server->sendMessage(client, RPL_NOTOPIC);	
+}
+
 void Channel::RPL_TOPIC(Client &client) const {
-    if (!this->_topic.empty()) {
-        this->_server->sendMessage(client, ":server_name " + 
-			client.getNicknameOrUsername(true) + " " + this->_topic);
-    }
+    if (!this->_topic.empty()) { 
+		std::string RPL_TOPIC =	":server " +
+								this->_name +
+								" :" + this->_topic;
+								
+		this->_server->sendMessage(client, RPL_TOPIC);
+	}
 }
 
 void Channel::RPL_NAMREPLY(Client &client) const {
-    std::string namReply = ":server_name "  + 
-		client.getNicknameOrUsername(true) + " = " + this->_topic + " :";
+    std::string RPL_NAMREPLY =	":server " + 
+								client.getNicknameOrUsername(true) + 
+								" = " + this->_name +
+								" :" + getNicknames();
 
-   this->_server->sendMessage(client, namReply + getNicknames());
+   this->_server->sendMessage(client, RPL_NAMREPLY);
 }
 
 void Channel::RPL_ENDOFNAMES(Client &client) const {
-    this->_server->sendMessage(client, ":server_name " + 
-		client.getNicknameOrUsername(true) + " " + this->_topic + " :End of /NAMES list.");
+    std::string RPL_ENDOFNAMES =	":server " +
+								client.getNicknameOrUsername(true) +
+								" " + this->_name +
+								" :End of /NAMES list.";
+								
+	this->_server->sendMessage(client, RPL_ENDOFNAMES);
 }

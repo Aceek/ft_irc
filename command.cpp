@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 09:41:20 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 16:58:37 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void Command::initCmdMap(void) {
     _map["PRIVMSG"] = &Command::PRIVMSG;
     _map["TOPIC"] = &Command::TOPIC;
     _map["NAMES"] = &Command::NAMES;
+    _map["QUIT"] = &Command::QUIT;
 }
 
 void Command::printArgs(void) const {
@@ -326,6 +327,10 @@ int Command::USER() {
 }
 
 int	Command::PASS() {
+
+	if (this->_client.isPasswordSetUp()) {
+		return (ERR_ALREADYREGISTRED);
+	}	
 	if (this->_args.empty() || this->_args[0].empty()) {
 		return (ERR_NEEDMOREPARAMS);
 	}
@@ -457,6 +462,12 @@ int Command::NAMES() {
     }
 
     return ERR_NONE;
+}
+
+int	Command::QUIT() {
+	// message de depart dans le trailor a traiter
+	this->_server.setClientToRemove(this->_client.getClientFd());
+	return (ERR_NONE);
 }
 
 /* ************************************************************************** */

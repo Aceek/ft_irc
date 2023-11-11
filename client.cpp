@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/09 18:16:41 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:56:41 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	Client::setRegister() {
 	this->_register = true;
 }
 
+
 bool	Client::isPasswordSetUp() const {
 	return (this->_passRegister);
 }
@@ -72,7 +73,6 @@ bool	Client::isPasswordSetUp() const {
 bool	Client::isRegister() const {
 	return (this->_register);
 }
-
 
 void	Client::printCommand() {
 	std::cout << this->_command << std::endl;
@@ -88,8 +88,10 @@ bool	Client::verifyCommand() {
 		std::cerr << "Error command size : reseting command" << std::endl;
 		this->_command.clear();
 		return (false);
-	} else if (this->_command.find("\r\n") == std::string::npos) {
+	// } else if (this->_command.find("\r\n") == std::string::npos) {
+	} else if (this->_command.find("\n") == std::string::npos) {
 		std::cerr << "error pas de caractere de fin" << std::endl;
+		std::cerr << "Command :" << this->_command << std::endl;
 		return (false);
 	}
 

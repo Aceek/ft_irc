@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 01:03:06 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 02:59:45 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 15:24:05 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,3 +36,4 @@ void toUpperCase(std::string &str) {
         *it = std::toupper(*it);
     }
 }
+

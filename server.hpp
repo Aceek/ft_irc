@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 14:34:14 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:57:33 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class Channel;
 
 #define MAX_COMMAND_SIZE 512
 
+extern bool	serverShutdown;
 typedef std::map<const int, Client> ClientMap;
 typedef std::map<std::string, Channel> ChannelMap;
 
@@ -32,6 +33,7 @@ private:
 	std::vector<struct pollfd>		_fds; // Stockez les FD et les evenements associés
 	std::map<const int, Client> 	_clients;
 	std::map<std::string, Channel>	_channels;
+	std::vector<int>				_clientsToRemove;
 	
 public:
 						Server(int port, std::string password);
@@ -42,9 +44,12 @@ public:
 	void				routine();
 	bool				processCommand(const int &clientFd);
 	void				removeClient(const int clientFd);
+	void				removeClients();
 	int					acceptClient();
 	void				sendMessage(const Client &client,
 						const std::string &message) const;
+
+	void				setClientToRemove(const int clientFd);
 
 	std::string			getErrorMessage(int errorCode);
 	const std::string	&getPassword() const;

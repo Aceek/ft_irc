@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 02:44:33 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 16:22:09 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 #include <client.hpp>
 #include <channel.hpp>
 #include <command.hpp>
+#include <csignal>
+#include <cstdlib>
 
 
 enum ErrorCode {

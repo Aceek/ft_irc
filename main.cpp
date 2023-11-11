@@ -3,16 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:04:29 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/10 04:33:40 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 16:10:44 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "command.hpp"
 #include "utils.hpp"
+
+bool serverShutdown = false;
+
+void handleCtrlC(int signal) {
+	(void)signal;
+
+	serverShutdown = true;
+}
 
 int	main(int ac, char **av) {
 	
@@ -22,6 +30,7 @@ int	main(int ac, char **av) {
 		return (-1); // erreur a definir
 	}
 	
+	std::signal(SIGINT, handleCtrlC);
 	try {
 		Server test(atoi(av[1]), av[2]);
 		test.routine();

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 14:47:15 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:03:53 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,34 @@ void	Server::addToPoll(int fd, short events) {
 }
 
 void	Server::routine() {
-	while (true) {
+	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
 
-		if (ready == -1) { // A FAIRE !! cas d'erreur de poll (alocation memoire trop courte, fd invalide cela doit etre non blocant)
+		if (ready == -1) {
 			break;
 		}
-		unsigned int i = 0;
-		while (i < this->_fds.size()) {
+		for (unsigned int i = 0; i < this->_fds.size(); i++) {
 			if (_fds[i].revents & POLLIN) {
 				if (_fds[i].fd == this->_serverFd) {
 					acceptClient();
 				} else {
 					if (!processCommand(_fds[i].fd)) {
-						removeClient(_fds[i].fd);
-						continue;
+						this->_clientsToRemove.push_back(_fds[i].fd);
 					}
 				}
 			}
-			++i;  // Incrémente i uniquement si l'itération n'a pas été interrompue par removeClient
 		}
+		removeClients();
 	}
-	// Close socket function ?
-	// freeSocket();
+	close(this->_serverFd);
+	std::cout << "Closing Server ..." << std::endl;
+}
+
+void	Server::removeClients() {
+	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
+		removeClient(this->_clientsToRemove[i]);
+	}
+	
 }
 
 void Server::removeClient(const int clientFd) {
@@ -99,6 +104,7 @@ void Server::removeClient(const int clientFd) {
 		std::cerr << "Error closing fdclient" << std::endl;
 	}
 
+	// ajouter gestion message de retrait server A FAIRE ?
 	std::cout << "Client supprimé du server" << std::endl;
 }	
 
@@ -136,11 +142,8 @@ bool	Server::processCommand(const int &clientFd) {
 	memset(buffer, 0, sizeof(buffer));
 
 	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
-	if (bytesReceived == -1) { // a faire
-		std::cerr << "Error receiving message from client" << std::endl;
-		return (false);
-	} else if (bytesReceived == 0) { // a faire connection ferme par le client
-		std::cerr << "Error receiving message ... 0" << std::endl;
+	if (bytesReceived == -1 || bytesReceived == 0) { // a faire
+		std::cerr << "Error: receving message from client. Deconection" << std::endl;
 		return (false);
 	}
 	client.addToCommand(buffer);
@@ -273,4 +276,8 @@ void Server::printAllChannels(void) {
 		}
 		std::cout << std::endl;
 	}
+}
+
+void	Server::setClientToRemove(const int clientFd) {
+	this->_clientsToRemove.push_back(clientFd);
 }

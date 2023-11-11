@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 16:58:37 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 23:27:41 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
-#include "include.hpp"
-
-#include <string>
-#include <vector>
-#include <map>
 
 // Command::Command(void) {} (pas de constructeur par default pour ref client)
 
@@ -88,7 +83,6 @@ void Command::initCmdMap(void) {
     _map["PRIVMSG"] = &Command::PRIVMSG;
     _map["TOPIC"] = &Command::TOPIC;
     _map["NAMES"] = &Command::NAMES;
-    _map["QUIT"] = &Command::QUIT;
 }
 
 void Command::printArgs(void) const {
@@ -148,14 +142,14 @@ Server &Command::getServer(void) const {
 
 int Command::INVITE() {
 /*   Parameters: <nickname> <channel>	*/
-    if (this->getArgs().size() < 2) {
+    if (this->_args.size() < 2) {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string nickname = this->getArgs()[0];
-    std::string channelName = this->getArgs()[1];
+    std::string nickname = getArgs()[0];
+    std::string channelName = getArgs()[1];
 
-    Channel *channel = this->getServer().getChannel(channelName);
+    Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
@@ -164,7 +158,7 @@ int Command::INVITE() {
         return ERR_CHANOPRIVSNEEDED;
     }
 
-	Client *client = this->getServer().getClientByNickname(nickname);
+	Client *client = this->_server.getClientByNickname(nickname);
 	if (!client) {
     	return ERR_NOSUCHNICK;
     }
@@ -173,28 +167,28 @@ int Command::INVITE() {
         return ERR_USERONCHANNEL;
     }
 
-    std::string inviteMessage =	":" + this->getClient().getNicknameOrUsername(true) +
-                        		" " + this->getName() +
+    std::string inviteMessage =	":" + this->_client.getNicknameOrUsername(true) +
+                        		" " + this->_name +
 								" " + nickname +
 								" " + channelName;
 								
 	channel->sendMessageToAll(inviteMessage);
-	this->getServer().sendMessage(*client, inviteMessage);
+	this->_server.sendMessage(*client, inviteMessage);
 
     return ERR_NONE;
 }
 
 int Command::JOIN() {
 /*   Parameters: <channel>{,<channel>} [<key>{,<key>}]	*/
-    if (this->getArgs().size() < 1) {
+    if (this->_args.size() < 1) {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::vector<std::string> channels = ft_split(this->getArgs()[0], ",");
+    std::vector<std::string> channels = ft_split(this->_args[0], ",");
     std::vector<std::string> keys;
 
-    if (this->getArgs().size() > 1) {
-        keys = ft_split(this->getArgs()[1], ",");
+    if (this->_args.size() > 1) {
+        keys = ft_split(this->_args[1], ",");
     }
 
     for (size_t i = 0; i < channels.size(); ++i) {
@@ -209,12 +203,10 @@ int Command::JOIN() {
             return ERR_BADCHANMASK;
         }
 
-        Channel *channel = this->getServer().getChannel(channelName);
-        Client &client = this->getClient();
-
+        Channel *channel = this->_server.getChannel(channelName);
         if (!channel) {
-            this->getServer().addChannel(channelName);
-            channel = this->getServer().getChannel(channelName);
+            this->_server.addChannel(channelName);
+            channel = this->_server.getChannel(channelName);
 
             if (!key.empty()) {
                 channel->setKey(key);
@@ -223,17 +215,17 @@ int Command::JOIN() {
         	return ERR_BADCHANNELKEY;
         }
 
-        channel->addUser(client, false);
+        channel->addUser(this->_client, false);
 		
-		std::string joinMessage =	":" + this->getClient().getNicknameOrUsername(true) +
-									" " + this->getName() + 
+		std::string joinMessage =	":" + this->_client.getNicknameOrUsername(true) +
+									" " + this->_name + 
 									" " + channelName;
 								
 		channel->sendMessageToAll(joinMessage);
 		
-		channel->RPL_TOPIC(client);
-		channel->RPL_NAMREPLY(client);
-		channel->RPL_ENDOFNAMES(client);
+		channel->RPL_TOPIC(this->_client);
+		channel->RPL_NAMREPLY(this->_client);
+		channel->RPL_ENDOFNAMES(this->_client);
     }
 	
 	return ERR_NONE;
@@ -241,24 +233,24 @@ int Command::JOIN() {
 
 int Command::KICK() {
 /*   Parameters: <channel> <user> [<comment>]	*/
-    if (this->getArgs().size() < 2) {
+    if (this->_args.size() < 2) {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string channelName = this->getArgs()[0];
-    std::string nickname = this->getArgs()[1];
-    std::string comment = this->getTrailor();
+    std::string channelName = this->_args[0];
+    std::string nickname = this->_args[1];
+    std::string comment = this->_trailor;
 
-    Channel *channel = this->getServer().getChannel(channelName);
+    Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
 
-    if (!channel->isOperator(this->getClient())) {
+    if (!channel->isOperator(this->_client)) {
         return ERR_CHANOPRIVSNEEDED;
     }
 	
-	Client *client = this->getServer().getClientByNickname(nickname);
+	Client *client = this->_server.getClientByNickname(nickname);
 	if (!client) {
     	return ERR_NOSUCHNICK;
     }
@@ -267,8 +259,8 @@ int Command::KICK() {
         return ERR_NOTONCHANNEL;
     }
 
-    std::string kickMessage =	":" + this->getClient().getNicknameOrUsername(true) +
-								" " + this->getName() +
+    std::string kickMessage =	":" + this->_client.getNicknameOrUsername(true) +
+								" " + this->_name +
 								" " + channelName + 
 								" " + nickname;
 
@@ -327,10 +319,6 @@ int Command::USER() {
 }
 
 int	Command::PASS() {
-
-	if (this->_client.isPasswordSetUp()) {
-		return (ERR_ALREADYREGISTRED);
-	}	
 	if (this->_args.empty() || this->_args[0].empty()) {
 		return (ERR_NEEDMOREPARAMS);
 	}
@@ -353,17 +341,17 @@ int Command::OPER() {
 
 int Command::PART() {
 /*   Parameters: <channel>{,<channel>}	*/
-    if (this->getArgs().size() < 1) {
+    if (this->_args.size() < 1) {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::vector<std::string> channels = ft_split(this->getArgs()[0], ",");    
+    std::vector<std::string> channels = ft_split(this->_args[0], ",");    
 	
     for (size_t i = 0; i < channels.size(); ++i) {
         std::string const &channelName = channels[i];
 		
-      	Channel *channel = this->getServer().getChannel(channelName);
-		Client &client = this->getClient();
+      	Channel *channel = this->_server.getChannel(channelName);
+		Client &client = this->_client;
 		
 		if (!channel) {
         	return ERR_NOSUCHCHANNEL;
@@ -374,11 +362,11 @@ int Command::PART() {
 		channel->delUser(client);
 		
 		if (channel->getCount() < 1) {
-			this->getServer().delChannel((channelName));
+			this->_server.delChannel((channelName));
 		}
 		
-		std::string partMessage =	":" + this->getClient().getNicknameOrUsername(true) +
-									" " + this->getName() + 
+		std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
+									" " + this->_name + 
 									" " + channelName;
 								
 		channel->sendMessageToAll(partMessage);
@@ -398,33 +386,33 @@ int Command::PRIVMSG() {
 
 int Command::TOPIC() {
     /* Parameters: <channel> [<topic>] */
-    if (this->getArgs().size() < 1) {
+    if (this->_args.size() < 1) {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string channelName = this->getArgs()[0];
-    Channel *channel = this->getServer().getChannel(channelName);
+    std::string channelName = this->_args[0];
+    Channel *channel = this->_server.getChannel(channelName);
 
     if (!channel) {
         return ERR_NOTONCHANNEL;
     }
 
-	if (this->getTrailor().empty()) {
+	if (this->_trailor.empty()) {
 		if (channel->getTopic().empty()) {
-			channel->RPL_NOTOPIC(this->getClient());
+			channel->RPL_NOTOPIC(this->_client);
 		} else {
-			channel->RPL_TOPIC(this->getClient());
+			channel->RPL_TOPIC(this->_client);
 		}
 	} else {
-		if (!channel->isOperator(this->getClient())) {
+		if (!channel->isOperator(this->_client)) {
 			return ERR_CHANOPRIVSNEEDED;
 		}
 		
-        std::string newTopic = this->getTrailor();
+        std::string newTopic = this->_trailor;
         channel->setTopic(newTopic);
 
-        std::string topicMessage = ":" + this->getClient().getNicknameOrUsername(true) +
-                                   " " + this->getName() +
+        std::string topicMessage = ":" + this->_client.getNicknameOrUsername(true) +
+                                   " " + this->_name +
 								   " " + channelName + 
 								   " :" + newTopic;
        
@@ -436,38 +424,32 @@ int Command::TOPIC() {
 
 int Command::NAMES() {
 /*	Parameters: [<channel>{,<channel>}]	*/
-    if (this->getArgs().empty()) {
-        for (std::map<std::string, Channel>::const_iterator it = this->getServer().getChannels().begin();
-		 	it != this->getServer().getChannels().end(); ++it) {
+    if (this->_args.empty()) {
+        for (std::map<std::string, Channel>::const_iterator it = this->_server.getChannels().begin();
+		 	it != this->_server.getChannels().end(); ++it) {
             Channel const &channel = it->second;
 
-            if (channel.isClientPresent(this->getClient())) {
-                channel.RPL_NAMREPLY(this->getClient());
+            if (channel.isClientPresent(this->_client)) {
+                channel.RPL_NAMREPLY(this->_client);
             }
         }
         return ERR_NONE;
     }
 
-    for (size_t i = 0; i < this->getArgs().size(); ++i) {
-        std::string const &channelName = this->getArgs()[i];
-        Channel* channel = this->getServer().getChannel(channelName);
+    for (size_t i = 0; i < this->_args.size(); ++i) {
+        std::string const &channelName = this->_args[i];
+        Channel* channel = this->_server.getChannel(channelName);
 
         if (!channel) {
             return ERR_NOSUCHCHANNEL;
         }
 
-        if (channel->isClientPresent(this->getClient())) {
-            channel->RPL_NAMREPLY(this->getClient());
+        if (channel->isClientPresent(this->_client)) {
+            channel->RPL_NAMREPLY(this->_client);
         }
     }
 
     return ERR_NONE;
-}
-
-int	Command::QUIT() {
-	// message de depart dans le trailor a traiter
-	this->_server.setClientToRemove(this->_client.getClientFd());
-	return (ERR_NONE);
 }
 
 /* ************************************************************************** */

@@ -6,15 +6,11 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 06:06:58 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 23:27:03 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.hpp"
-#include "server.hpp"
-
-#include <string>
-#include <set>
+#include "include.hpp"
 
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP

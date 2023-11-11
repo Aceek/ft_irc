@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 16:22:09 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 23:29:04 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@
 #include <poll.h>
 #include <vector>
 #include <map>
+#include <set>
 #include <sstream>
 #include <string>
-#include <client.hpp>
 #include <channel.hpp>
+#include <client.hpp>
 #include <command.hpp>
+#include <server.hpp>
 #include <csignal>
 #include <cstdlib>
 

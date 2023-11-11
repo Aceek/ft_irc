@@ -3,22 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 16:29:48 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 23:27:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include "client.hpp"
-#include "server.hpp"
 #include "utils.hpp"
-
-#include <string>
-#include <vector>
 
 class Command {
 	public:

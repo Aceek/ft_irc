@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 01:03:06 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 15:24:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 23:28:04 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
-
-#include <string>
-#include <vector>
 
 std::vector<std::string>	ft_split(std::string const &str, std::string const &del) {
 	size_t start = 0;

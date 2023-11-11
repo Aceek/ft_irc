@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 23:27:59 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 00:36:25 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,10 @@ std::string Server::getErrorMessage(int errorCode) {
         return "[Channel] 442: You're not on that channel";
     case ERR_NOSUCHNICK:
         return "[User] 401: No such nick";
+	// case ERR_NOOPERHOST:
+    //         return "[Oper] 491: No O-lines for your host";
+    case ERR_PASSWDMISMATCH:
+    	  return "[Oper] 464: Password incorrect";
     default:
         return "Unknown error";
     }
@@ -247,6 +251,20 @@ Channel	*Server::getChannel(std::string const &channelName) {
 
 const ChannelMap &Server::getChannels() {
 	return this->_channels;
+}
+
+/* ************************************************************************** */
+
+void Server::grantOperatorStatus(int clientFd) {
+    this->_operatorClients.insert(clientFd);
+}
+
+void Server::revokeOperatorStatus(int clientFd) {
+    this->_operatorClients.erase(clientFd);
+}
+
+bool Server::isOperator(int clientFd) const {
+    return this->_operatorClients.count(clientFd);
 }
 
 /* ************************************************************************** */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 16:56:41 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/12 00:26:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 Client::Client() : _clientFd(), _clientAdress(), _nickname() {}
 Client::~Client() {}
-
-
 
 Client::Client(int fd, const struct sockaddr_in &addr)
 		: _clientFd(fd), _clientAdress(addr), _passRegister(false), _register(false) {

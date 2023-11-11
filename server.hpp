@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/11 16:57:33 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/12 00:29:32 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ private:
 	struct sockaddr_in				_serverAdress;
 	std::vector<struct pollfd>		_fds; // Stockez les FD et les evenements associés
 	std::map<const int, Client> 	_clients;
-	std::map<std::string, Channel>	_channels;
 	std::vector<int>				_clientsToRemove;
+	std::set<int> 					_operatorClients;
+	std::map<std::string, Channel>	_channels;
 	
 public:
 						Server(int port, std::string password);
@@ -57,6 +58,10 @@ public:
 	const ClientMap		&getClients() const;
 	Channel				*getChannel(std::string const &channelName);
 	const ChannelMap	&getChannels();
+
+    void 				grantOperatorStatus(int clientFd);
+    void 				revokeOperatorStatus(int clientFd);
+    bool 				isOperator(int clientFd) const;
 
 	void				addChannel(std::string const &channelName);
 	void				delChannel(std::string const &channelName);

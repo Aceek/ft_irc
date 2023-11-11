@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 23:27:41 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 00:39:38 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,8 @@ int Command::JOIN() {
         	return ERR_BADCHANNELKEY;
         }
 
-        channel->addUser(this->_client, false);
+        channel->addUser(this->_client, 
+			this->_server.isOperator(this->_client.getClientFd()));
 		
 		std::string joinMessage =	":" + this->_client.getNicknameOrUsername(true) +
 									" " + this->_name + 
@@ -335,8 +336,29 @@ int	Command::PASS() {
 }
 
 int Command::OPER() {
-	return(ERR_NONE);
+    /* Parameters: <user> <password> */
+    if (this->_args.size() < 2) {
+        return ERR_NEEDMOREPARAMS;
+    }
 
+    std::string nickname = this->_args[0];
+    std::string password = this->_args[1];
+
+    ///!!! should we use nickname or username ???
+	Client *client = this->_server.getClientByNickname(nickname);
+    if (!client) {
+        return ERR_NOSUCHNICK;
+    }
+
+    if (password != this->_server.getPassword()) {
+        return ERR_PASSWDMISMATCH;
+	}
+
+	this->_server.grantOperatorStatus(client->getClientFd());
+
+    this->_server.sendMessage(*client, "You are now an operator");
+
+    return ERR_NONE;
 }
 
 int Command::PART() {

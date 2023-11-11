@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 06:27:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 08:29:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,10 +151,10 @@ int Command::INVITE() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string nickname = getArgs()[0];
-    std::string channelName = getArgs()[1];
+    std::string nickname = this->getArgs()[0];
+    std::string channelName = this->getArgs()[1];
 
-    Channel *channel = getServer().getChannel(channelName);
+    Channel *channel = this->getServer().getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }

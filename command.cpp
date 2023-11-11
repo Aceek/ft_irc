@@ -6,11 +6,12 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/10 06:17:01 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 05:02:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
+#include "include.hpp"
 
 #include <string>
 #include <vector>
@@ -30,7 +31,6 @@ Command::Command(std::string const &line, Client &client, Server &server) :
 	}
 	iss >> this->_name; // extract command
 	toUpperCase(this->_name);
-
 
 	std::string arg;
 	while (iss >> arg) {
@@ -87,6 +87,7 @@ void Command::initCmdMap(void) {
     _map["PONG"] = &Command::PONG;
     _map["PRIVMSG"] = &Command::PRIVMSG;
     _map["TOPIC"] = &Command::TOPIC;
+    _map["NAMES"] = &Command::NAMES;
 }
 
 void Command::printArgs(void) const {
@@ -145,13 +146,47 @@ Server &Command::getServer(void) const {
 /* ************************************************************************** */
 
 int Command::INVITE() {
-	return(ERR_NONE);
+/*   Parameters: <nickname> <channel>	*/
+    if (this->getArgs().size() < 2) {
+        return ERR_NEEDMOREPARAMS;
+    }
 
+    std::string nickname = getArgs()[0];
+    std::string channel = getArgs()[1];
+
+    Channel *targetChannel = getServer().getChannel(channel);
+    if (!targetChannel) {
+        return ERR_NOSUCHCHANNEL;
+    }
+
+    if (!targetChannel->isOperator(getClient())) {
+        return ERR_CHANOPRIVSNEEDED;
+    }
+
+	Client *client = this->getServer().getClientByNickname(nickname);
+	if (!client) {
+    	return ERR_NOSUCHNICK;
+    }
+
+	if (targetChannel->isClientPresent(*client)) {
+        return ERR_USERONCHANNEL;
+    }
+
+    std::string inviteMessage =	":" + this->getClient().getNicknameOrUsername(true) +
+                        		" " + this->getName() +
+								" " + nickname +
+								" " + channel;
+								
+	targetChannel->sendMessageToAll(inviteMessage);
+	this->getServer().sendMessage(*client, inviteMessage);
+
+    return ERR_NONE;
 }
 
 int Command::JOIN() {
+/*   Parameters: <channel>{,<channel>} [<key>{,<key>}]	*/
     if (this->getArgs().size() < 1) {
-        throw std::runtime_error("Error: Not enough arguments");
+        return ERR_NEEDMOREPARAMS;
     }
 
     std::vector<std::string> channels = ft_split(this->getArgs()[0], ",");
@@ -170,7 +205,7 @@ int Command::JOIN() {
         }
 
         if (channelName[0] != '#') {
-            throw std::runtime_error("Error: Channel name must start with #");
+            return ERR_BADCHANMASK;
         }
 
         Channel *channel = this->getServer().getChannel(channelName);
@@ -184,28 +219,64 @@ int Command::JOIN() {
                 channel->setKey(key);
             }
         } else if (!key.empty() && key != channel->getKey()) {
-            throw std::runtime_error("Error: Wrong channel password");
+        	return ERR_BADCHANNELKEY;
         }
 
-        channel->addUser(client, channel->isOperator(client));
+        channel->addUser(client, false);
 		
-		std::string msg =	":" + this->getClient().getNicknameOrUsername(true) +
-							" " + this->getName() + 
-							" " + channelName;
+		std::string joinMessage =	":" + this->getClient().getNicknameOrUsername(true) +
+									" " + this->getName() + 
+									" " + channelName;
 								
-		channel->sendMessageToAll(msg);
+		channel->sendMessageToAll(joinMessage);
 		
 		channel->RPL_TOPIC(client);
 		channel->RPL_NAMREPLY(client);
 		channel->RPL_ENDOFNAMES(client);
-
     }
-	return (ERR_NONE);
+	
+	return ERR_NONE;
 }
 
 int Command::KICK() {
-	return(ERR_NONE);
+/*   Parameters: <channel> <user> [<comment>]	*/
+    if (this->getArgs().size() < 2) {
+        return ERR_NEEDMOREPARAMS;
+    }
 
+    std::string channel = this->getArgs()[0];
+    std::string nickname = this->getArgs()[1];
+    std::string comment = this->getTrailor();
+
+    Channel *targetChannel = this->getServer().getChannel(channel);
+    if (!targetChannel) {
+        return ERR_NOSUCHCHANNEL;
+    }
+
+    if (!targetChannel->isOperator(this->getClient())) {
+        return ERR_CHANOPRIVSNEEDED;
+    }
+	
+	Client *client = this->getServer().getClientByNickname(nickname);
+	if (!client) {
+    	return ERR_NOSUCHNICK;
+    }
+	
+    if (!targetChannel->isClientPresent(*client)) {
+        return ERR_NOTONCHANNEL;
+    }
+
+    std::string kickMessage =	":" + this->getClient().getNicknameOrUsername(true) +
+								" " + this->getName() +
+								" " + channel + 
+								" " + nickname + 
+								" :" + this->_trailor;
+								
+    targetChannel->sendMessageToAll(kickMessage);
+    
+	targetChannel->delUser(*client);
+
+    return ERR_NONE;
 }
 
 int Command::MODE() {
@@ -267,27 +338,15 @@ int	Command::PASS() {
 	return (ERR_NONE);
 }
 
-bool Command::isValidPassword() const {
-	std::string password = this->_args[0];
-	if (password.size() > 25) {
-		return (false);
-	}
-	for (size_t i = 0; i < password.size(); i++) {
-		if (!isalnum(password[i])) {
-			return (false);
-		}
-	}
-	return (true);
-}
-
 int Command::OPER() {
 	return(ERR_NONE);
 
 }
 
 int Command::PART() {
+/*   Parameters: <channel>{,<channel>}	*/
     if (this->getArgs().size() < 1) {
-        throw std::runtime_error("Error: Not enough arguments");
+        return ERR_NEEDMOREPARAMS;
     }
 
     std::vector<std::string> channels = ft_split(this->getArgs()[0], ",");    
@@ -299,26 +358,25 @@ int Command::PART() {
 		Client &client = this->getClient();
 		
 		if (!channel) {
-            throw std::runtime_error("Error: Channel does not exist");
-        } else if (!channel->isUser(client)) {
-            throw std::runtime_error("Error: User not in channel");
+        	return ERR_NOSUCHCHANNEL;
+        } else if (!channel->isClientPresent(client)) {
+        	return ERR_NOTONCHANNEL;
         }
 
 		channel->delUser(client);
 		
-		if (channel->getUsersNumber() < 1) {
+		if (channel->getCount() < 1) {
 			this->getServer().delChannel((channelName));
 		}
 		
-		std::string msg =	":" + this->getClient().getNicknameOrUsername(true) +
-					" " + this->getName() + 
-					" " + channelName;
+		std::string partMessage =	":" + this->getClient().getNicknameOrUsername(true) +
+									" " + this->getName() + 
+									" " + channelName;
 								
-		channel->sendMessageToAll(msg);
-
+		channel->sendMessageToAll(partMessage);
 	}
-	return(ERR_NONE);
-
+	
+	return ERR_NONE;
 }
 
 int Command::PONG() {
@@ -331,8 +389,39 @@ int Command::PRIVMSG() {
 }
 
 int Command::TOPIC() {
-	return(ERR_NONE);
+/*	Parameters: <channel> [<topic>]	*/
+	return ERR_NONE;
 
+}
+
+int Command::NAMES() {
+/*	Parameters: [<channel>{,<channel>}]	*/
+    if (this->getArgs().empty()) {
+        for (std::map<std::string, Channel>::const_iterator it = this->getServer().getChannels().begin();
+		 	it != this->getServer().getChannels().end(); ++it) {
+            Channel const &channel = it->second;
+
+            if (channel.isClientPresent(this->getClient())) {
+                channel.RPL_NAMREPLY(this->getClient());
+            }
+        }
+        return ERR_NONE;
+    }
+
+    for (size_t i = 0; i < this->getArgs().size(); ++i) {
+        std::string const &channelName = this->getArgs()[i];
+        Channel* channel = this->getServer().getChannel(channelName);
+
+        if (!channel) {
+            return ERR_NOSUCHCHANNEL;
+        }
+
+        if (channel->isClientPresent(this->getClient())) {
+            channel->RPL_NAMREPLY(this->getClient());
+        }
+    }
+
+    return ERR_NONE;
 }
 
 /* ************************************************************************** */
@@ -387,4 +476,17 @@ bool	Command::isValidRealName() const {
 	}
 	return (true);
 	
+}
+
+bool Command::isValidPassword() const {
+	std::string password = this->_args[0];
+	if (password.size() > 25) {
+		return (false);
+	}
+	for (size_t i = 0; i < password.size(); i++) {
+		if (!isalnum(password[i])) {
+			return (false);
+		}
+	}
+	return (true);
 }

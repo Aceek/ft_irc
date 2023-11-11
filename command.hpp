@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/09 17:15:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/11 03:05:56 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ class Command {
 		int USER();
 		int	NICK();
 		int	PASS();
+		int	NAMES();
 
 		// utilitaire
 		bool isValidNickname() const;
 		bool isNicknameOrUsernameAvailable(bool useNickname) const;
 		bool isValidRealName() const;
 		bool isValidPassword() const;
-		
-
 
 		std::string const				&getPrefix(void) const;
 		std::string const				&getName(void) const;
@@ -71,7 +70,6 @@ class Command {
 
 		typedef int (Command::*cmdFt)();
 		std::map<std::string, cmdFt>	_map;
-
 };
 
 #endif

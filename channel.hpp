@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/10 06:13:51 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 02:48:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,30 @@ class Channel {
 		Channel &operator=(Channel const &rhs);
 		~Channel(void);
 		
-		void	addUser(Client &user, bool asOperator);
-		void	delUser(Client &user);
-		bool	isUser(Client &user);
-		bool	isOperator(Client &user);
-	
-		std::string const	&getTopic(void);
-		void				setTopic(std::string const &topic);
-		std::string const	&getKey(void);
-		void				setKey(std::string const &key);
-		int					getUsersNumber(void);
-		std::string const	getUsersNick(void);
+		void	addUser(Client &client, bool asOperator);
+		void	delUser(Client &client);
 		
-		void	sendMessageToAll(const std::string &message);
-   		void	RPL_TOPIC(Client &user);
-    	void	RPL_NAMREPLY(Client &user);
-    	void	RPL_ENDOFNAMES(Client &user);
+		bool	isUser(Client &client) const;
+		bool	isOperator(Client &client) const;
+		bool	isClientPresent(Client &client) const;
+	
+		std::string const	&getTopic(void) const;
+		void				setTopic(std::string const &topic);
+		std::string const	&getKey(void) const;
+		void				setKey(std::string const &key);
+		int					getCount(void) const;
+		std::string const	getNicknames(void) const;
+		
+		void	sendMessageToAll(const std::string &message) const;
+   		void	RPL_TOPIC(Client &client) const;
+    	void	RPL_NAMREPLY(Client &client) const;
+    	void	RPL_ENDOFNAMES(Client &client) const;
 
 	private:
 		std::string			_topic;
 		std::string			_key;
-		std::set<Client *>	_membersList;
-		std::set<Client *>	_operatorsList;
-		
+		std::set<Client *>	_users;
+		std::set<Client *>	_operators;
 		Server				*_server;
 };
 

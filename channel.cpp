@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/10 06:24:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 04:29:42 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ Channel::Channel(Server *server) : _server(server) {}
 Channel::Channel(Channel const &rhs) :
 	_topic(rhs._topic),
 	_key(rhs._key),
-	_membersList(rhs._membersList),
-	_operatorsList(rhs._operatorsList),
+	_users(rhs._users),
+	_operators(rhs._operators),
 	_server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const  &rhs) {
@@ -30,8 +30,8 @@ Channel &Channel::operator=(Channel const  &rhs) {
 
 	this->_topic = rhs._topic;
 	this->_key = rhs._key;
-	this->_membersList = rhs._membersList;
-	this->_operatorsList = rhs._operatorsList;
+	this->_users = rhs._users;
+	this->_operators = rhs._operators;
 	this->_server = rhs._server;
 
     return *this;
@@ -41,37 +41,42 @@ Channel::~Channel(void) {}
 
 /* ************************************************************************** */
 
-void Channel::addUser(Client &user, bool asOperator) {
-    if (asOperator || this->_operatorsList.size() == 0) {
+void Channel::addUser(Client &client, bool asOperator) {
+    if (asOperator || !(this->_users.size() + this->_operators.size())) {
 		// add to operators list if there's no duplicate and erase it if needed in users list
-		if (this->_operatorsList.insert(&user).second) {
-			this->_membersList.erase(&user);
+		if (this->_operators.insert(&client).second) {
+			this->_users.erase(&client);
 		}
 	} else {
-		if (this->_membersList.insert(&user).second) {
-			this->_operatorsList.erase(&user);
+		if (this->_users.insert(&client).second) {
+			this->_operators.erase(&client);
 		}
 	}
 }
 
-void Channel::delUser(Client &user) {
+void Channel::delUser(Client &client) {
    // !!! what happened if there is no more operators on the channel ?
-   this->_membersList.erase(&user);
-   this->_operatorsList.erase(&user);
-}
-
-bool Channel::isUser(Client &user) {
-    return this->_membersList.find(&user) != this->_membersList.end();
-}
-
-bool Channel::isOperator(Client &user) {
-    return this->_operatorsList.find(&user) != this->_operatorsList.end();
-
+   this->_users.erase(&client);
+   this->_operators.erase(&client);
 }
 
 /* ************************************************************************** */
 
-std::string const &Channel::getTopic(void) {
+bool Channel::isUser(Client &client) const {
+    return this->_users.find(&client) != this->_users.end();
+}
+
+bool Channel::isOperator(Client &client) const {
+    return this->_operators.find(&client) != this->_operators.end();
+}
+
+bool Channel::isClientPresent(Client &client) const {
+    return isUser(client) || isOperator(client);
+}
+
+/* ************************************************************************** */
+
+std::string const &Channel::getTopic(void) const {
     return this->_topic;
 }
 
@@ -79,7 +84,7 @@ void Channel::setTopic(std::string const &topic) {
     this->_topic = topic;
 }
 
-std::string const &Channel::getKey(void) {
+std::string const &Channel::getKey(void) const {
     return this->_key;
 }
 
@@ -87,57 +92,56 @@ void Channel::setKey(std::string const &key) {
     this->_key = key;
 }
 
-int Channel::getUsersNumber(void) {
-	return this->_membersList.size() + this->_operatorsList.size();
+int Channel::getCount(void) const {
+	return this->_users.size() + this->_operators.size();
 }
 
-std::string const Channel::getUsersNick(void) {
+std::string const Channel::getNicknames(void) const {
     std::string userNicks;
 
-    for (std::set<Client *>::iterator it = this->_operatorsList.begin();
-         it != this->_operatorsList.end(); ++it) {
+    for (std::set<Client *>::iterator it = this->_operators.begin();
+         it != this->_operators.end(); ++it) {
         userNicks += "@" + (*it)->getNicknameOrUsername(true) + " ";
     }
 
-    for (std::set<Client *>::iterator it = this->_membersList.begin();
-         it != this->_membersList.end(); ++it) {
+    for (std::set<Client *>::iterator it = this->_users.begin();
+         it != this->_users.end(); ++it) {
         userNicks += (*it)->getNicknameOrUsername(true) + " ";
     }
 
     return userNicks;
 }
 
-
 /* ************************************************************************** */
 
-void Channel::sendMessageToAll(const std::string &message) {
+void Channel::sendMessageToAll(const std::string &message) const {
 	
-	for (std::set<Client *>::iterator it = this->_membersList.begin();
-		it != this->_membersList.end(); ++it) {
+	for (std::set<Client *>::iterator it = this->_users.begin();
+		it != this->_users.end(); ++it) {
 			this->_server->sendMessage(*(*it), message);
 	}
-	for (std::set<Client *>::iterator it = this->_operatorsList.begin();
-		it != this->_operatorsList.end(); ++it) {
+	for (std::set<Client *>::iterator it = this->_operators.begin();
+		it != this->_operators.end(); ++it) {
 			this->_server->sendMessage(*(*it), message);
 	}
 }
 
 //!!!real server name to add - Maybe add clean Server reply functions in server class ??
-void Channel::RPL_TOPIC(Client &user) {
+void Channel::RPL_TOPIC(Client &client) const {
     if (!this->_topic.empty()) {
-        this->_server->sendMessage(user, ":server_name " + 
-			user.getNicknameOrUsername(true) + " " + this->_topic);
+        this->_server->sendMessage(client, ":server_name " + 
+			client.getNicknameOrUsername(true) + " " + this->_topic);
     }
 }
 
-void Channel::RPL_NAMREPLY(Client &user) {
+void Channel::RPL_NAMREPLY(Client &client) const {
     std::string namReply = ":server_name "  + 
-		user.getNicknameOrUsername(true) + " = " + this->_topic + " :";
+		client.getNicknameOrUsername(true) + " = " + this->_topic + " :";
 
-   this->_server->sendMessage(user, namReply + getUsersNick());
+   this->_server->sendMessage(client, namReply + getNicknames());
 }
 
-void Channel::RPL_ENDOFNAMES(Client &user) {
-    this->_server->sendMessage(user, ":server_name " + 
-		user.getNicknameOrUsername(true) + " " + this->_topic + " :End of /NAMES list.");
+void Channel::RPL_ENDOFNAMES(Client &client) const {
+    this->_server->sendMessage(client, ":server_name " + 
+		client.getNicknameOrUsername(true) + " " + this->_topic + " :End of /NAMES list.");
 }

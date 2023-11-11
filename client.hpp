@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/12 00:18:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 00:45:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ public:
 	Client();
 	Client(int fd, const struct sockaddr_in &addr);
 	~Client();
-
-	bool operator==(Client const &rhs) const;
 
 	int							getClientFd() const;
 	const struct sockaddr_in	&getClientAddress() const;

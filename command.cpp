@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 09:40:08 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/11 09:41:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ int Command::KICK() {
 								" " + channelName + 
 								" " + nickname;
 
-	if (!this->_trailor.empty()) {
+	if (!comment.empty()) {
     	kickMessage += " :" + comment;
 	}
 								

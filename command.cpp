@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 06:24:25 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:50:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,11 @@ int Command::JOIN() {
 		if (channel->getInviteOnly() && !channel->isClientInvited(this->_client)) {
 			return ERR_INVITEONLYCHAN;
 		}
+
+		if (channel->getCount() >= channel->getUserLimit() &&
+			channel->getUserLimit() >= 0) {
+			return ERR_CHANNELISFULL;
+		}
 		
 		channel->addUser(this->_client, 
 			this->_server.isOperator(this->_client.getClientFd()));
@@ -284,6 +289,7 @@ int Command::KICK() {
     return ERR_NONE;
 }
 
+///!!!revoir parsing des modes et parametre???? : atm -> MODE +t +i -k =/= +ti -k
 int Command::MODE() {
     /* Parameters: <channel> <+/-modes> [parameters] */
     if (this->_args.size() < 2) {
@@ -339,14 +345,14 @@ int Command::MODE() {
             case 'o':
                 // Give/take operator privilege from a user
 				if ((++it != this->_args.end())) {
-					Client* client = this->_server.getClientByNickname(*it);
+					Client *client = this->_server.getClientByNickname(*it);
 					if (!client) {
 						return ERR_NOSUCHNICK;
 					}
 					if (s == '+') {
-						channel->addOperator(client);
+						channel->addUser(*client, true);
 					}  else if (s == '-') {
-						channel->removeOperator(client);
+						channel->addUser(*client, false);
 					}
 				} else {
 					return ERR_NEEDMOREPARAMS;
@@ -367,18 +373,15 @@ int Command::MODE() {
             default:
                 return ERR_UNKNOWNMODE;
 		}
-    }
-
-
-    // Broadcast the mode change to the channel
+		
     std::string modeMessage = ":" + this->_client.getNicknameOrUsername(true) +
                               " " + this->_name +
                               " " + channelName +
-                              " " + modes +
-                              " " + parameters;
+                              " " + s + c;
 
     channel->sendMessageToAll(modeMessage);
-
+    }
+	
     return ERR_NONE;
 }
 

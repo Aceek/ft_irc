@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 06:20:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:36:37 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ class Channel {
 		std::string const	getNicknames(void) const;
 		bool 				getInviteOnly(void) const;
 		void 				setInviteOnly(bool inviteOnly);
-		bool 				getTopicRestricted(void) const;
-		void 				setTopicRestricted(bool topicRestricted);
+		bool				getTopicRestricted(void) const;
+		void				setTopicRestricted(bool topicRestricted);
+		int					getUserLimit(void) const;
+		void				setUserLimit(int userLimit);
 
 
 		void	sendMessageToAll(const std::string &message) const;
@@ -62,6 +64,7 @@ class Channel {
 		std::set<Client *>	_operators;
 		bool 				_inviteOnly;
 		bool 				_topicRestricted;
+		int 				_userLimit;
 		Server				*_server;
 };
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 06:19:34 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:36:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Channel::Channel(std::string const &name, Server *server) :
 	_name(name),
 	_inviteOnly(false),
 	_topicRestricted(false),
+	_userLimit(-1),
 	_server(server) {}
 
 Channel::Channel(Channel const &rhs) :
@@ -28,6 +29,7 @@ Channel::Channel(Channel const &rhs) :
 	_operators(rhs._operators),
 	_inviteOnly(rhs._inviteOnly),
 	_topicRestricted(rhs._topicRestricted),
+	_userLimit(rhs._userLimit),
 	_server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const  &rhs) {
@@ -42,6 +44,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
 	this->_operators = rhs._operators;
 	this->_inviteOnly = rhs._inviteOnly;
 	this->_topicRestricted = rhs._topicRestricted;
+	this->_userLimit = rhs._userLimit;
 	this->_server = rhs._server;
 
     return *this;
@@ -109,6 +112,7 @@ std::string const &Channel::getKey(void) const {
     return this->_key;
 }
 
+///!!!verif sur la validite du PASSWORD ???
 void Channel::setKey(std::string const &key) {
     this->_key = key;
 }
@@ -147,6 +151,14 @@ bool Channel::getTopicRestricted(void) const {
 
 void Channel::setTopicRestricted(bool topicRestricted) {
 	this->_topicRestricted = topicRestricted;
+}
+
+int Channel::getUserLimit(void) const {
+    return this->_userLimit;
+}
+
+void Channel::setUserLimit(int userLimit) {
+	this->_userLimit = userLimit;
 }
 
 /* ************************************************************************** */

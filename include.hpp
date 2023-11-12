@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/12 03:22:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:11:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,14 @@ enum ErrorCode {
     ERR_BADCHANMASK = 476,
     ERR_BADCHANNELKEY = 475,
     ERR_NOTONCHANNEL = 442,
+	ERR_INVITEONLYCHAN = 473,
+	ERR_CHANNELISFULL = 471,
 	ERR_NOSUCHNICK = 401,
 	// ERR_NOOPERHOST = 491,
 	ERR_PASSWDMISMATCH = 464,
 	ERR_CANNOTSENDTOCHAN = 404,
 	ERR_NOTEXTTOSEND = 412,
+	ERR_UNKNOWNMODE = 500,
 };
 
 

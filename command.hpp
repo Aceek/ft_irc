@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 01:39:31 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 04:23:42 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ class Command {
 			CommandInfo(cmdFt func, std::string const &params) : 
 				func(func), 
 				params(params) {}
+			~CommandInfo() {}
+			
     	};
 
     	typedef std::map<std::string, CommandInfo> CommandMap;

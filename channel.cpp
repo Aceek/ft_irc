@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 00:40:27 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 05:59:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ Channel::Channel(void) {}
 
 Channel::Channel(std::string const &name, Server *server) : 
 	_name(name),
+	_inviteOnly(false),
 	_server(server) {}
 
 Channel::Channel(Channel const &rhs) :
@@ -24,6 +25,7 @@ Channel::Channel(Channel const &rhs) :
 	_key(rhs._key),
 	_users(rhs._users),
 	_operators(rhs._operators),
+	_inviteOnly(rhs._inviteOnly),
 	_server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const  &rhs) {
@@ -36,6 +38,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
 	this->_key = rhs._key;
 	this->_users = rhs._users;
 	this->_operators = rhs._operators;
+	this->_inviteOnly = rhs._inviteOnly;
 	this->_server = rhs._server;
 
     return *this;
@@ -56,12 +59,19 @@ void Channel::addUser(Client &client, bool asOperator) {
 			this->_operators.erase(&client);
 		}
 	}
+	this->_invitedUsers.erase(&client);
 }
 
 void Channel::delUser(Client &client) {
    // !!! what happened if there is no more operators on the channel ?
-   this->_users.erase(&client);
-   this->_operators.erase(&client);
+	this->_users.erase(&client);
+	this->_operators.erase(&client);
+	this->_invitedUsers.erase(&client);
+
+}
+
+void Channel::inviteUser(Client &client) {
+	this->_invitedUsers.insert(&client);
 }
 
 /* ************************************************************************** */
@@ -76,6 +86,10 @@ bool Channel::isOperator(Client &client) const {
 
 bool Channel::isClientPresent(Client &client) const {
     return isUser(client) || isOperator(client);
+}
+
+bool Channel::isClientInvited(Client &client) const {
+    return this->_invitedUsers.find(&client) != this->_operators.end();
 }
 
 /* ************************************************************************** */
@@ -114,6 +128,14 @@ std::string const Channel::getNicknames(void) const {
     }
 
     return userNicks;
+}
+
+bool Channel::getInviteOnly(void) const {
+	return this->_inviteOnly;
+}
+
+void Channel::setInviteOnly(bool inviteOnly) {
+	this->_inviteOnly = inviteOnly;
 }
 
 /* ************************************************************************** */

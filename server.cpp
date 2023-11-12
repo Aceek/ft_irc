@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/12 03:22:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:11:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,10 @@ std::string Server::getErrorMessage(int errorCode) {
         return "[Channel] 475: Bad channel key";
     case ERR_NOTONCHANNEL:
         return "[Channel] 442: You're not on that channel";
+    case ERR_INVITEONLYCHAN:
+        return "[Channel] 473: Cannot join channel (+i)";
+    case ERR_CHANNELISFULL:
+        return "[Channel] 471: Cannot join channel (+l)";
     case ERR_NOSUCHNICK:
         return "[User] 401: No such nick";
     case ERR_PASSWDMISMATCH:
@@ -217,7 +221,9 @@ std::string Server::getErrorMessage(int errorCode) {
         return "[Channel] 404: Cannot send to channel";
 	case ERR_NOTEXTTOSEND:
         return "[Command] 412: No text to send";
-    default:
+	case ERR_UNKNOWNMODE:
+		return "[Mode] 500: Unknown mode";
+	default:
         return "Unknown error";
     }
 }

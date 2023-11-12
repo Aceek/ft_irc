@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/12 00:28:44 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 03:22:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ enum ErrorCode {
 	ERR_NOSUCHNICK = 401,
 	// ERR_NOOPERHOST = 491,
 	ERR_PASSWDMISMATCH = 464,
+	ERR_CANNOTSENDTOCHAN = 404,
+	ERR_NOTEXTTOSEND = 412,
 };
 
 

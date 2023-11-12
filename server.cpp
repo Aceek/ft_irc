@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/12 00:36:25 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 03:22:22 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void Server::sendMessage(const Client &client, const std::string &message) const
 
 std::string Server::getErrorMessage(int errorCode) {
 	// need add system add nickname of user .. 
-    switch (errorCode) {
+	switch (errorCode) {
     case ERR_NONE:
         return "No error";
     case ERR_NONICKNAMEGIVEN:
@@ -211,10 +211,12 @@ std::string Server::getErrorMessage(int errorCode) {
         return "[Channel] 442: You're not on that channel";
     case ERR_NOSUCHNICK:
         return "[User] 401: No such nick";
-	// case ERR_NOOPERHOST:
-    //         return "[Oper] 491: No O-lines for your host";
     case ERR_PASSWDMISMATCH:
-    	  return "[Oper] 464: Password incorrect";
+        return "[Oper] 464: Password incorrect";
+    case ERR_CANNOTSENDTOCHAN:
+        return "[Channel] 404: Cannot send to channel";
+	case ERR_NOTEXTTOSEND:
+        return "[Command] 412: No text to send";
     default:
         return "Unknown error";
     }

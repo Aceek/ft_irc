@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 01:44:37 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 03:37:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void Command::initCommandsMap(void) {
     this->_commands["OPER"] = CommandInfo(&Command::OPER, "<user> <password>");
     this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
     this->_commands["PONG"] = CommandInfo(&Command::PONG, "<server>");
-    this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver> <text to be sent>");
+    this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver>{,<receiver>} <text to be sent>");
     this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
     this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
     this->_commands["HELP"] = CommandInfo(&Command::HELP, "none");
@@ -374,15 +374,14 @@ int Command::PART() {
         std::string const &channelName = channels[i];
 		
       	Channel *channel = this->_server.getChannel(channelName);
-		Client &client = this->_client;
 		
 		if (!channel) {
         	return ERR_NOSUCHCHANNEL;
-        } else if (!channel->isClientPresent(client)) {
+        } else if (!channel->isClientPresent(this->_client)) {
         	return ERR_NOTONCHANNEL;
         }
 
-		channel->delUser(client);
+		channel->delUser(this->_client);
 		
 		if (channel->getCount() < 1) {
 			this->_server.delChannel((channelName));
@@ -403,8 +402,58 @@ int Command::PONG() {
 }
 
 int Command::PRIVMSG() {
-	return(ERR_NONE);
+/*	Parameters: <receiver>{,<receiver>} <text to be sent> */
+    if ((this->_args.size() < 2 && this->_trailor.empty()) ||
+		(this->_args.size() < 1 )) {
+        return ERR_NEEDMOREPARAMS;
+    }
 
+    std::vector<std::string> receivers = ft_split(this->_args[0], ",");
+    std::string message;
+	
+	if (this->_args.size() >= 2 && !this->_args[1].empty()) {
+		message = this->_args[1];
+	}
+	if (!this->_trailor.empty()) {
+		message += " " + this->_trailor;
+	}
+	if (message.empty()) {
+		return ERR_NOTEXTTOSEND;
+	}
+
+
+	//!!! is it possible to send a message to ourselve ? if so check double output msg
+	for (std::vector<std::string>::iterator it = receivers.begin();
+		it != receivers.end(); ++it) {
+			std::string privmsgMessage = ":" + this->_client.getNicknameOrUsername(true) +
+								" " + this->_name +
+								" " + *it +
+								" :" + message;
+			
+			if ((*it)[0] == '#') {
+				Channel *channel = this->_server.getChannel(*it);
+					if (!channel) {
+						return ERR_NOSUCHCHANNEL;
+					} else if (!channel->isClientPresent(this->_client)) {
+						return ERR_CANNOTSENDTOCHAN;
+					} else {
+						channel->sendMessageToAll(privmsgMessage);
+						//!!! not sur if the message should be send back for each receiver
+						this->_server.sendMessage(this->_client, privmsgMessage);
+					}
+			} else {
+    			Client *client = this->_server.getClientByNickname(*it);
+    				if (!client) {
+        				return ERR_NOSUCHNICK;
+   					} else {
+						this->_server.sendMessage(*client, privmsgMessage);
+						//!!! not sur if the message should be send back for each receiver
+						this->_server.sendMessage(this->_client, privmsgMessage);
+					}
+			}
+		}
+		
+    return ERR_NONE;
 }
 
 int Command::TOPIC() {

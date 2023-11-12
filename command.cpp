@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 03:37:34 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 03:38:19 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,7 +420,6 @@ int Command::PRIVMSG() {
 	if (message.empty()) {
 		return ERR_NOTEXTTOSEND;
 	}
-
 
 	//!!! is it possible to send a message to ourselve ? if so check double output msg
 	for (std::vector<std::string>::iterator it = receivers.begin();

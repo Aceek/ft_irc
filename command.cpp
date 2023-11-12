@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 00:39:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 01:44:37 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 Command::Command(std::string const &line, Client &client, Server &server) : 
 	_client(client),
 	_server(server) {
-	initCmdMap();
+	initCommandsMap();
 	
 	std::istringstream	iss(line);
 	if (line[0] == ':') {
@@ -69,20 +69,21 @@ Command::~Command(void) {}
 
 /* ************************************************************************** */
 
-void Command::initCmdMap(void) {
-    _map["NICK"] = &Command::NICK;
-    _map["USER"] = &Command::USER;
-    _map["PASS"] = &Command::PASS;
-    _map["INVITE"] = &Command::INVITE;
-    _map["JOIN"] = &Command::JOIN;
-    _map["KICK"] = &Command::KICK;
-    _map["MODE"] = &Command::MODE;
-    _map["OPER"] = &Command::OPER;
-    _map["PART"] = &Command::PART;
-    _map["PONG"] = &Command::PONG;
-    _map["PRIVMSG"] = &Command::PRIVMSG;
-    _map["TOPIC"] = &Command::TOPIC;
-    _map["NAMES"] = &Command::NAMES;
+void Command::initCommandsMap(void) {
+    this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
+    this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
+    this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
+    this->_commands["INVITE"] = CommandInfo(&Command::INVITE, "<nickname> <channel>");
+    this->_commands["JOIN"] = CommandInfo(&Command::JOIN, "<channel>{,<channel>} [<key>{,<key>}]");
+    this->_commands["KICK"] = CommandInfo(&Command::KICK, "<channel> <user> [<comment>]");
+    this->_commands["MODE"] = CommandInfo(&Command::MODE, "<channel> <+/-modes> [parameters]");
+    this->_commands["OPER"] = CommandInfo(&Command::OPER, "<user> <password>");
+    this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
+    this->_commands["PONG"] = CommandInfo(&Command::PONG, "<server>");
+    this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver> <text to be sent>");
+    this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
+    this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
+    this->_commands["HELP"] = CommandInfo(&Command::HELP, "none");
 }
 
 void Command::printArgs(void) const {
@@ -101,9 +102,9 @@ void Command::printArgs(void) const {
 }
 
 int Command::exec(void) {
-    std::map<std::string, cmdFt>::iterator it = _map.find(this->_name);
-    if (it != _map.end()) {
-        return ((this->*(it->second))());
+    CommandMap::iterator it = _commands.find(this->_name);
+    if (it != _commands.end()) {
+        return ((this->*(it->second).func)());
     } else {
 		// throw std::runtime_error("Error: Unkown command");
 		std::cout << "Error unknow command" << std::endl;
@@ -470,6 +471,18 @@ int Command::NAMES() {
             channel->RPL_NAMREPLY(this->_client);
         }
     }
+
+    return ERR_NONE;
+}
+
+int Command::HELP() {
+    std::string helpMessage = "Available commands:\r\n";
+
+    for (CommandMap::const_iterator it = _commands.begin(); it != _commands.end(); ++it) {
+        helpMessage += it->first + " - Parameters: " + it->second.params + "\r\n";
+    }
+
+    this->_server.sendMessage(this->_client, helpMessage);
 
     return ERR_NONE;
 }

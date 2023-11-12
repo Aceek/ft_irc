@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 23:27:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 01:39:31 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Command {
 		Command &operator=(Command const &rhs);
 		~Command(void);
 	
-		void initCmdMap(void);
+		void initCommandsMap(void);
 	    void printArgs(void) const;
 		int exec(void);
 
@@ -41,6 +41,7 @@ class Command {
 		int	PASS();
 		int	NAMES();
 		int	QUIT();
+		int	HELP();
 
 		// utilitaire
 		bool isValidNickname() const;
@@ -65,7 +66,19 @@ class Command {
 		Server	&_server;
 
 		typedef int (Command::*cmdFt)();
-		std::map<std::string, cmdFt>	_map;
+
+		struct CommandInfo {
+        	cmdFt		func;
+        	std::string	params;
+
+			CommandInfo() {}
+			CommandInfo(cmdFt func, std::string const &params) : 
+				func(func), 
+				params(params) {}
+    	};
+
+    	typedef std::map<std::string, CommandInfo> CommandMap;
+		CommandMap	_commands;
 };
 
 #endif

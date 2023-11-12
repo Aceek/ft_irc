@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 05:57:57 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:20:38 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ class Channel {
 		std::string const	getNicknames(void) const;
 		bool 				getInviteOnly(void) const;
 		void 				setInviteOnly(bool inviteOnly);
-		
+		bool 				getTopicRestricted(void) const;
+		void 				setTopicRestricted(bool topicRestricted);
+
+
 		void	sendMessageToAll(const std::string &message) const;
    		void 	RPL_NOTOPIC(Client &client) const;
 		void	RPL_TOPIC(Client &client) const;
@@ -58,6 +61,7 @@ class Channel {
 		std::set<Client *>	_invitedUsers;
 		std::set<Client *>	_operators;
 		bool 				_inviteOnly;
+		bool 				_topicRestricted;
 		Server				*_server;
 };
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 05:59:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:19:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Channel::Channel(void) {}
 Channel::Channel(std::string const &name, Server *server) : 
 	_name(name),
 	_inviteOnly(false),
+	_topicRestricted(false),
 	_server(server) {}
 
 Channel::Channel(Channel const &rhs) :
@@ -26,6 +27,7 @@ Channel::Channel(Channel const &rhs) :
 	_users(rhs._users),
 	_operators(rhs._operators),
 	_inviteOnly(rhs._inviteOnly),
+	_topicRestricted(rhs._topicRestricted),
 	_server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const  &rhs) {
@@ -39,6 +41,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
 	this->_users = rhs._users;
 	this->_operators = rhs._operators;
 	this->_inviteOnly = rhs._inviteOnly;
+	this->_topicRestricted = rhs._topicRestricted;
 	this->_server = rhs._server;
 
     return *this;
@@ -136,6 +139,14 @@ bool Channel::getInviteOnly(void) const {
 
 void Channel::setInviteOnly(bool inviteOnly) {
 	this->_inviteOnly = inviteOnly;
+}
+
+bool Channel::getTopicRestricted(void) const {
+    return this->_topicRestricted;
+}
+
+void Channel::setTopicRestricted(bool topicRestricted) {
+	this->_topicRestricted = topicRestricted;
 }
 
 /* ************************************************************************** */

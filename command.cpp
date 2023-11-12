@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 06:12:32 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 06:24:25 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,9 +319,9 @@ int Command::MODE() {
             case 't':
                 // Set/unset restrictions on the TOPIC command for channel operators
 				if (s == '+') {
-					channel->setTopicRestricted(!channel->isTopicRestricted());
+					channel->setTopicRestricted(true);
 				} else if (s == '-') {
-					channel->setTopicRestricted(!channel->isTopicRestricted());
+					channel->setTopicRestricted(false);
 				}
                 break;
             case 'k':
@@ -567,6 +567,10 @@ int Command::TOPIC() {
     if (!channel) {
         return ERR_NOTONCHANNEL;
     }
+
+	if (channel->getTopicRestricted() && !channel->isOperator(this->_client)) {
+		return ERR_CHANOPRIVSNEEDED;
+	}
 
 	if (this->_trailor.empty()) {
 		if (channel->getTopic().empty()) {

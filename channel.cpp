@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 06:36:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 07:01:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ bool Channel::isClientPresent(Client &client) const {
 }
 
 bool Channel::isClientInvited(Client &client) const {
-    return this->_invitedUsers.find(&client) != this->_operators.end();
+    return this->_invitedUsers.find(&client) != this->_invitedUsers.end();
 }
 
 /* ************************************************************************** */

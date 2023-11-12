@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/12 06:50:30 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/12 07:27:54 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,8 @@ int Command::JOIN() {
         	return ERR_BADCHANNELKEY;
         }
 
+		///!!!logique du mdp a implementer
+
 		if (channel->getInviteOnly() && !channel->isClientInvited(this->_client)) {
 			return ERR_INVITEONLYCHAN;
 		}
@@ -303,7 +305,6 @@ int Command::MODE() {
         return ERR_NOSUCHCHANNEL;
     }
 
-    // Check if the client is an operator in the channel
     if (!channel->isOperator(this->_client)) {
         return ERR_CHANOPRIVSNEEDED;
     }
@@ -312,12 +313,15 @@ int Command::MODE() {
 		it != this->_args.end(); ++it) {
 		char s = (*it)[0];
 		char c = (*it)[1];
+					std::cout << "s:" << s << std::endl;
+					std::cout << "c:" << c << std::endl;
 
         switch (c) {
             case 'i':
 				// Set/unset the channel on invitation only
                 if (s == '+') {
 					channel->setInviteOnly(true);
+					std::cout << "coucou" << std::endl;
 				} else if (s == '-') {
 					channel->setInviteOnly(false);
 				}
@@ -360,14 +364,14 @@ int Command::MODE() {
                 break;
             case 'l':
                 // Set/unset the limit of users for the channel
-                if ((++it != this->_args.end())) {
-					if (s == '+') {
+                if (s == '+') {
+					if (++it != this->_args.end()) {
 						 channel->setUserLimit(atoi((*it).c_str()));
-					}  else if (s == '-') {
-						channel->setUserLimit(-1);
+					}  else {
+						return ERR_NEEDMOREPARAMS;
 					}
-				} else {
-					return ERR_NEEDMOREPARAMS;
+				} else if (s == '-') {
+					channel->setUserLimit(-1);
 				}
                 break;
             default:
@@ -568,6 +572,10 @@ int Command::TOPIC() {
     Channel *channel = this->_server.getChannel(channelName);
 
     if (!channel) {
+        return ERR_NOSUCHCHANNEL;
+    }
+
+    if (!channel->isClientPresent(this->_client)) {
         return ERR_NOTONCHANNEL;
     }
 
@@ -582,10 +590,6 @@ int Command::TOPIC() {
 			channel->RPL_TOPIC(this->_client);
 		}
 	} else {
-		if (!channel->isOperator(this->_client)) {
-			return ERR_CHANOPRIVSNEEDED;
-		}
-		
         std::string newTopic = this->_trailor;
         channel->setTopic(newTopic);
 

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 09:39:37 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:17:33 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	Server::routine() {
 						this->_clientsToRemove.push_back(it->fd);
 					}
 				}
+			} 
+			if (it->revents & POLLOUT) {
+				verifyMessageSend(it->fd);
 			}
 		}
 		removeClients();
@@ -76,7 +79,7 @@ void	Server::routine() {
 void	Server::addClientsToPoll() {
 	for (std::vector<int>::iterator it = this->_clientsToAdd.begin(); 
 									it != this->_clientsToAdd.end(); it++) {
-		addToPoll(*it, POLLIN);
+		addToPoll(*it, POLLIN | POLLOUT);
 	}
 	this->_clientsToAdd.clear();
 }
@@ -169,19 +172,19 @@ bool	Server::processCommand(const int &clientFd) {
 			//test print args
 			command.printArgs();
 			if ((errorCode = command.exec())) {
-				sendMessage(client, getErrorMessage(errorCode));
+				setMessageQueue(clientFd, getErrorMessage(errorCode));
 			}
 		} catch(const std::exception& e) {
-			sendMessage(client, getErrorMessage(ERR_PASSNEEDED));
+			setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
 		}
 		client.clearCommand();
 	}
 	return (true);
 }
 
-void Server::sendMessage(const Client &client, const std::string &message) const {
+void Server::sendMessage(const int clientFd, const std::string &message) const {
 	std::string newMessage = message + "\n";
-	int bytesSent = send(client.getClientFd(), newMessage.c_str(), newMessage.size(), 0);
+	int bytesSent = send(clientFd, newMessage.c_str(), newMessage.size(), 0);
 
 	if (bytesSent == -1) {
 		// gestion erreur a faire !
@@ -189,3 +192,18 @@ void Server::sendMessage(const Client &client, const std::string &message) const
 	}
 }
 
+// ------------------------------------
+
+void Server::setMessageQueue(const int clientfd, const std::string &message) {
+	this->_messageQueue[clientfd].push_back(message);
+}
+
+void Server::verifyMessageSend(const int clientFd) {
+	
+	std::deque<std::string>& messages = this->_messageQueue[clientFd];
+	for (std::deque<std::string>::iterator msgIt = messages.begin();
+	msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
+		sendMessage(clientFd, *msgIt);
+	}
+	messages.clear();
+}

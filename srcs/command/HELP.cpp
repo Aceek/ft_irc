@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HELP.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:46:40 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:06:54 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 11:12:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int Command::HELP() {
         helpMessage += it->first + " - Parameters: " + it->second.params + "\r\n";
     }
 
-    this->_server.sendMessage(this->_client, helpMessage);
+    this->_server.setMessageQueue(this->_client.getClientFd(), helpMessage);
 
     return ERR_NONE;
 }

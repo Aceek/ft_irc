@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OPER.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:34 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:08:49 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 11:11:55 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int Command::OPER() {
 
 	this->_server.grantOperatorStatus(client->getClientFd());
 
-    this->_server.sendMessage(*client, "You are now an operator");
+    this->_server.setMessageQueue(client->getClientFd(), "You are now an operator");
 
     return ERR_NONE;
 }

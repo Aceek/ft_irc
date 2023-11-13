@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 11:17:33 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:42:22 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ void	Server::addToPoll(int fd, short events) {
 	this->_fds.push_back(tmpFd);
 }
 
+void	Server::routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt) {
+		if (pollfdIt->fd == this->_serverFd) {
+			acceptClient();
+		} else {
+			if (!processCommand(pollfdIt->fd)) {
+				this->_clientsToRemove.push_back(pollfdIt->fd);
+			}
+		}
+
+}
+
 void	Server::routine() {
 	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
@@ -55,16 +66,12 @@ void	Server::routine() {
 			break;
 		}
 		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
-			if (it->revents & POLLIN) {
-				if (it->fd == this->_serverFd) {
-					acceptClient();
-				} else {
-					if (!processCommand(it->fd)) {
-						this->_clientsToRemove.push_back(it->fd);
-					}
-				}
-			} 
-			if (it->revents & POLLOUT) {
+			if (it->revents & (POLLERR | POLLHUP | POLLNVAL)) {
+				this->_clientsToRemove.push_back(it->fd);
+				continue ;
+			} if (it->revents & POLLIN) {
+				routinePOLLIN(it);
+			} if (it->revents & POLLOUT) {
 				verifyMessageSend(it->fd);
 			}
 		}
@@ -75,27 +82,19 @@ void	Server::routine() {
 	std::cout << "Closing Server ..." << std::endl;
 }
 
-
 void	Server::addClientsToPoll() {
 	for (std::vector<int>::iterator it = this->_clientsToAdd.begin(); 
 									it != this->_clientsToAdd.end(); it++) {
-		addToPoll(*it, POLLIN | POLLOUT);
+		addToPoll(*it, POLLIN | POLLOUT | POLLERR | POLLHUP | POLLNVAL);
 	}
 	this->_clientsToAdd.clear();
 }
 
 void	Server::removeClients() {
-	// std::vector<int>::iterator it = this->_clientsToRemove.begin();
-	// for (it; it != this->_clientsToRemove.end(); it++)
-	// {
-	// 	removeClient(*it);
-	// }
-	
 	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
 		removeClient(this->_clientsToRemove[i]);
 	}
 	this->_clientsToRemove.clear();
-	
 }
 
 void Server::removeClient(const int clientFd) {

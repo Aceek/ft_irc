@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 11:00:51 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:36:25 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ class Server {
 		int		acceptClient();
 		void	setMessageQueue(const int clientfd, const std::string &message);
 		void	verifyMessageSend(const int clientfd);
+		void	routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+
 		void	sendMessage(const int clientFd,
 				const std::string &message) const;
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 06:18:09 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:44:26 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ const std::map<const int, Client> &Server::getClients() const {
 	return (this->_clients);
 }
 
-Channel	*Server::getChannel(std::string const &channelName) {
-	std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
-		
-	if (it->first == channelName) {
-		return &it->second;
-	}
-	
-	return NULL;
+Channel *Server::getChannel(std::string const &channelName) {
+    std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
+
+    if (it != this->_channels.end() && it->first == channelName) {
+        return &it->second;
+    }
+
+    return NULL;
 }
 
 const ChannelMap &Server::getChannels() {

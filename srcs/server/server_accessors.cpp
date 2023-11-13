@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:49:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 06:18:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ std::string Server::getErrorMessage(int errorCode) {
         return "[Nick] 436: Nickname collision KILL";
     case ERR_NEEDMOREPARAMS:
         return "[Command] 461: Not enough parameters";
+    case ERR_UNKNOWNCOMMAND:
+        return "[Command] 421: Unknown command";
     case ERR_REALNAME:
         return "[RealName] 1: Real Name bad format (max 25 char) + alphanumeric characters only";
     case ERR_PASSFORMAT:

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 04:53:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 06:19:56 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ bool	Server::processCommand(const int &clientFd) {
 	if (client.verifyCommand()) {
 		try {
 			Command command(client.getClientCommand(), client, *this);
+			//test print args
 			command.printArgs();
 			if ((errorCode = command.exec())) {
 				sendMessage(client, getErrorMessage(errorCode));

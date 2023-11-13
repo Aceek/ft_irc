@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:24:55 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 06:21:13 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,22 @@ Command::~Command(void) {}
 /* ************************************************************************** */
 
 void Command::initCommandsMap(void) {
-    this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
-    this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
-    this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
+    this->_commands["HELP"] = CommandInfo(&Command::HELP, "none");
     this->_commands["INVITE"] = CommandInfo(&Command::INVITE, "<nickname> <channel>");
     this->_commands["JOIN"] = CommandInfo(&Command::JOIN, "<channel>{,<channel>} [<key>{,<key>}]");
     this->_commands["KICK"] = CommandInfo(&Command::KICK, "<channel> <user> [<comment>]");
     this->_commands["MODE"] = CommandInfo(&Command::MODE, "<channel> <+/-modes> [parameters]");
+    this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
+    this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
     this->_commands["OPER"] = CommandInfo(&Command::OPER, "<user> <password>");
     this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
-    this->_commands["PONG"] = CommandInfo(&Command::PONG, "<server>");
+    this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
     this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver>{,<receiver>} <text to be sent>");
+    this->_commands["PONG"] = CommandInfo(&Command::PONG, "<server>");
     this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
-    this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
-    this->_commands["HELP"] = CommandInfo(&Command::HELP, "none");
+    this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
 }
+
 
 void Command::printArgs(void) const {
     std::cout << "Prefix: " << this->_prefix << std::endl;
@@ -106,9 +107,7 @@ int Command::exec(void) {
     if (it != _commands.end()) {
         return ((this->*(it->second).func)());
     } else {
-		// throw std::runtime_error("Error: Unkown command");
-		std::cout << "Error unknow command" << std::endl;
-		return (-1);
+		return (ERR_UNKNOWNCOMMAND);
 	}
-	return (0);
+	return (ERR_NONE);
 }

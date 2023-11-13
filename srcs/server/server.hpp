@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 09:20:05 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 23:25:12 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@ class Server {
 		bool	processCommand(const int &clientFd);
 		void	removeClient(const int clientFd);
 		void	removeClients();
+		void	addClientsToPoll();
 		int		acceptClient();
-		void	sendMessage(const Client &client,
+		void	verifyMessageSend(const int clientfd);
+		void	routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+
+		void	sendMessage(const int clientFd,
 				const std::string &message) const;
 
 		/*server_accessors*/
@@ -47,6 +51,8 @@ class Server {
 		Channel				*getChannel(std::string const &channelName);
 		const ChannelMap	&getChannels();
 		void				setClientToRemove(const int clientFd);
+		void				setMessageQueue(const int clientfd,
+							const std::string &message);
 
 		/*server_operator*/
 		void	grantOperatorStatus(int clientFd);
@@ -61,15 +67,18 @@ class Server {
 		/*server_utlis*/
 		
 	private:
-		int 							_port;
-		std::string						_password;
-		int								_serverFd;
-		struct sockaddr_in				_serverAdress;
-		std::vector<struct pollfd>		_fds; // Stockez les FD et les evenements associés
-		std::map<const int, Client> 	_clients;
-		std::vector<int>				_clientsToRemove;
-		std::set<int> 					_operatorClients;
-		std::map<std::string, Channel>	_channels;
+		int 									_port;
+		std::string								_password;
+		int										_serverFd;
+		struct sockaddr_in						_serverAdress;
+		std::vector<struct pollfd>				_fds; // Stockez les FD et les evenements associés
+		std::map<const int, Client> 			_clients;
+		std::vector<int>						_clientsToRemove;
+		std::vector<int>						_clientsToAdd;
+		std::set<int> 							_operatorClients;
+		std::map<std::string, Channel>			_channels;
+		std::map<int, std::deque<std::string> >	_messageQueue;
+
 		
 };
 

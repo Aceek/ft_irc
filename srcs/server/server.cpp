@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 08:34:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 12:18:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,45 +47,56 @@ void	Server::addToPoll(int fd, short events) {
 	this->_fds.push_back(tmpFd);
 }
 
+void	Server::routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt) {
+		if (pollfdIt->fd == this->_serverFd) {
+			acceptClient();
+		} else {
+			if (!processCommand(pollfdIt->fd)) {
+				this->_clientsToRemove.push_back(pollfdIt->fd);
+			}
+		}
+
+}
+
 void	Server::routine() {
 	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
-
 		if (ready == -1) {
 			break;
 		}
-		for (unsigned int i = 0; i < this->_fds.size(); i++) {
-			if (_fds[i].revents & POLLIN) {
-				if (_fds[i].fd == this->_serverFd) {
-					acceptClient();
-				} else {
-					if (!processCommand(_fds[i].fd)) {
-						this->_clientsToRemove.push_back(_fds[i].fd);
-					}
-				}
+		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
+			if (it->revents & (POLLERR | POLLHUP | POLLNVAL)) {
+				this->_clientsToRemove.push_back(it->fd);
+				continue ;
+			} if (it->revents & POLLIN) {
+				routinePOLLIN(it);
+			} if (it->revents & POLLOUT) {
+				verifyMessageSend(it->fd);
 			}
 		}
 		removeClients();
+		addClientsToPoll();
 	}
 	close(this->_serverFd);
 	std::cout << "Closing Server ..." << std::endl;
 }
 
+void	Server::addClientsToPoll() {
+	for (std::vector<int>::iterator it = this->_clientsToAdd.begin(); 
+									it != this->_clientsToAdd.end(); it++) {
+		addToPoll(*it, POLLIN | POLLOUT | POLLERR | POLLHUP | POLLNVAL);
+	}
+	this->_clientsToAdd.clear();
+}
+
 void	Server::removeClients() {
-	// std::vector<int>::iterator it = this->_clientsToRemove.begin();
-	// for (it; it != this->_clientsToRemove.end(); it++)
-	// {
-	// 	removeClient(*it);
-	// }
-	
 	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
 		removeClient(this->_clientsToRemove[i]);
 	}
 	this->_clientsToRemove.clear();
-	
 }
 
-void Server::removeClient(const int clientFd) { // TOUJOURS UTILISER REMOVECLIENTS
+void Server::removeClient(const int clientFd) {
 	
 
 	// Suppression client dans pollfd 
@@ -106,7 +117,7 @@ void Server::removeClient(const int clientFd) { // TOUJOURS UTILISER REMOVECLIEN
 	}
 
 	if (close (clientFd) == -1) {
-		std::cerr << "Error closing fdclient" << std::endl;
+		perror("Error closing client socket");
 	}
 
 	// ajouter gestion message de retrait server A FAIRE ?
@@ -118,6 +129,7 @@ int	Server::acceptClient() {
 	socklen_t			clientAdressSize = sizeof(clientAdress);
 	
 	int clientFd = accept(this->_serverFd, (struct sockaddr *)&clientAdress, &clientAdressSize);
+
 	
 	if (clientFd == -1) {
 		std::cout << "Erreur acceptation du client" << std::endl; // A FAIRE gestion erreur correct
@@ -127,7 +139,7 @@ int	Server::acceptClient() {
 	this->_clients[clientFd] = newClient;
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
-	addToPoll(clientFd, POLLIN);
+	this->_clientsToAdd.push_back(clientFd);
 	std::cout << "new client on server" << std::endl;
 	
 	return (clientFd);
@@ -158,19 +170,19 @@ bool	Server::processCommand(const int &clientFd) {
 			//test print args
 			command.printArgs();
 			if ((errorCode = command.exec())) {
-				sendMessage(client, getErrorMessage(errorCode));
+				setMessageQueue(clientFd, getErrorMessage(errorCode));
 			}
 		} catch(const std::exception& e) {
-			sendMessage(client, getErrorMessage(ERR_PASSNEEDED));
+			setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
 		}
 		client.clearCommand();
 	}
 	return (true);
 }
 
-void Server::sendMessage(const Client &client, const std::string &message) const {
+void Server::sendMessage(const int clientFd, const std::string &message) const {
 	std::string newMessage = message + "\n";
-	int bytesSent = send(client.getClientFd(), newMessage.c_str(), newMessage.size(), 0);
+	int bytesSent = send(clientFd, newMessage.c_str(), newMessage.size(), 0);
 
 	if (bytesSent == -1) {
 		// gestion erreur a faire !
@@ -178,3 +190,12 @@ void Server::sendMessage(const Client &client, const std::string &message) const
 	}
 }
 
+void Server::verifyMessageSend(const int clientFd) {
+	
+	std::deque<std::string>& messages = this->_messageQueue[clientFd];
+	for (std::deque<std::string>::iterator msgIt = messages.begin();
+	msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
+		sendMessage(clientFd, *msgIt);
+	}
+	messages.clear();
+}

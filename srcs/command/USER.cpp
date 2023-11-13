@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   USER.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:49:03 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:09:20 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 11:11:31 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int Command::USER() {
 	this->_client.setRealName(this->_trailor);
 	this->_client.setUsername(this->_args[0]);
 	this->_client.setRegister();
-	this->_server.sendMessage(this->_client,
+	this->_server.setMessageQueue(this->_client.getClientFd(),
 	"User successfully register: " + this->_args[0]);
 	
 	return(ERR_NONE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   INVITE.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 08:41:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 11:12:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void sendInviteMessage(Command const &cmd, Channel const *channel,
 
     channel->sendMessageToAll(inviteMessage);
 	
-	cmd.getServer().sendMessage(client, inviteMessage);
+	cmd.getServer().setMessageQueue(client.getClientFd(), inviteMessage);
 }
 
 int Command::INVITE() {

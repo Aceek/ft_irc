@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:27:09 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 11:12:18 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ void Channel::sendMessageToAll(const std::string &message) const {
 	
 	for (std::set<Client *>::iterator it = this->_users.begin();
 		it != this->_users.end(); ++it) {
-			this->_server->sendMessage(*(*it), message);
+			this->_server->setMessageQueue((*it)->getClientFd(), message);
 	}
 	for (std::set<Client *>::iterator it = this->_operators.begin();
 		it != this->_operators.end(); ++it) {
-			this->_server->sendMessage(*(*it), message);
+			this->_server->setMessageQueue((*it)->getClientFd(), message);
 	}
 }
 
@@ -100,7 +100,7 @@ void 	Channel::RPL_NOTOPIC(Client &client) const {
 								this->_name +
 							 	" :No topic is set";
 							
-	this->_server->sendMessage(client, RPL_NOTOPIC);	
+	this->_server->setMessageQueue(client.getClientFd(), RPL_NOTOPIC);	
 }
 
 void Channel::RPL_TOPIC(Client &client) const {
@@ -109,7 +109,7 @@ void Channel::RPL_TOPIC(Client &client) const {
 								this->_name +
 								" :" + this->_topic;
 								
-		this->_server->sendMessage(client, RPL_TOPIC);
+		this->_server->setMessageQueue(client.getClientFd(), RPL_TOPIC);
 	}
 }
 
@@ -119,7 +119,7 @@ void Channel::RPL_NAMREPLY(Client &client) const {
 								" = " + this->_name +
 								" :" + getNicknames();
 
-   this->_server->sendMessage(client, RPL_NAMREPLY);
+   this->_server->setMessageQueue(client.getClientFd(), RPL_NAMREPLY);
 }
 
 void Channel::RPL_ENDOFNAMES(Client &client) const {
@@ -128,5 +128,5 @@ void Channel::RPL_ENDOFNAMES(Client &client) const {
 								" " + this->_name +
 								" :End of /NAMES list.";
 								
-	this->_server->sendMessage(client, RPL_ENDOFNAMES);
+	this->_server->setMessageQueue(client.getClientFd(), RPL_ENDOFNAMES);
 }

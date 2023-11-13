@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NICK.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:27 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:09:33 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 11:11:57 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	Command::NICK() {
 		return (ERR_NICKNAMEINUSE);
 	}
 	this->_client.setNickname(this->_args[0]);
-	this->_server.sendMessage(this->_client,
+	this->_server.setMessageQueue(this->_client.getClientFd(),
 	"NICK updated successfully: " + this->_args[0]);
 	return(ERR_NONE);
 }

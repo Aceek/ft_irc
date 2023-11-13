@@ -50,16 +50,16 @@ int Command::PRIVMSG() {
 					} else {
 						channel->sendMessageToAll(privmsgMessage);
 						//!!! not sur if the message should be send back for each receiver
-						this->_server.sendMessage(this->_client, privmsgMessage);
+						this->_server.setMessageQueue(this->_client.getClientFd(), privmsgMessage);
 					}
 			} else {
     			Client *client = this->_server.getClientByNickname(*it);
     				if (!client) {
         				return ERR_NOSUCHNICK;
    					} else {
-						this->_server.sendMessage(*client, privmsgMessage);
+						this->_server.setMessageQueue(client->getClientFd(), privmsgMessage);
 						//!!! not sur if the message should be send back for each receiver
-						this->_server.sendMessage(this->_client, privmsgMessage);
+						this->_server.setMessageQueue(this->_client.getClientFd(), privmsgMessage);
 					}
 			}
 		}

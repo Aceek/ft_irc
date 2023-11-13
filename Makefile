@@ -1,23 +1,36 @@
-CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98 -g
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/13 04:05:12 by pbeheyt           #+#    #+#              #
+#    Updated: 2023/11/13 04:05:16 by pbeheyt          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-SRCS = main.cpp server.cpp client.cpp channel.cpp command.cpp utils.cpp
-OBJS = $(SRCS:.cpp=.o)
-NAME = ft_irc
+CC      := c++
+FLAGS   := -Wall -Wextra -Werror -std=c++98 -g
 
-HEADER = server.hpp client.hpp
-INCLUDES = -I.
+SRCS    := $(wildcard srcs/*.cpp) $(wildcard srcs/*/*.cpp)
+OBJS    := $(patsubst srcs/%.cpp,obj/%.o,$(SRCS))
+NAME    := ft_irc
+
+HEADER  := $(wildcard srcs/*.hpp) $(wildcard srcs/*/*.hpp)
+INCLUDES := -I.
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(FLAGS) $^ -o $@
 
-%.o: %.cpp $(HEADER)
+obj/%.o: srcs/%.cpp $(HEADER)
+	@mkdir -p $(dir $@)
 	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf obj
 
 fclean: clean
 	rm -f $(NAME)

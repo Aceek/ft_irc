@@ -6,14 +6,14 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 04:45:55 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 05:18:53 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "../include.hpp"
+#include "../../include.hpp"
 
 class Server;
 

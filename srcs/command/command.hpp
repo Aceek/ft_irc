@@ -6,14 +6,14 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:47:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 05:18:59 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include "../include.hpp"
+#include "../../include.hpp"
 
 class Command {
 	public:

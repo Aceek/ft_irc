@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/12 06:11:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 05:17:44 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,14 @@
 #include <set>
 #include <sstream>
 #include <string>
-#include <channel.hpp>
-#include <client.hpp>
-#include <command.hpp>
-#include <server.hpp>
 #include <csignal>
 #include <cstdlib>
 
+#include "srcs/channel/channel.hpp"
+#include "srcs/client/client.hpp"
+#include "srcs/command/command.hpp"
+#include "srcs/server/server.hpp"
+#include "srcs/utils/utils.hpp"
 
 enum ErrorCode {
     ERR_NONE = 0,
@@ -63,6 +64,5 @@ enum ErrorCode {
 	ERR_NOTEXTTOSEND = 412,
 	ERR_UNKNOWNMODE = 500,
 };
-
 
 #endif // INCLUDE_HPP

@@ -6,14 +6,14 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 04:54:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 05:19:06 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include "../include.hpp"
+#include "../../include.hpp"
 
 class Client;
 class Channel;

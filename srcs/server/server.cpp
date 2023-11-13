@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 11:42:22 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 12:18:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	Server::routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt) {
 void	Server::routine() {
 	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
-
 		if (ready == -1) {
 			break;
 		}
@@ -189,12 +188,6 @@ void Server::sendMessage(const int clientFd, const std::string &message) const {
 		// gestion erreur a faire !
 		std::cerr << "Error sending message to client" << std::endl;
 	}
-}
-
-// ------------------------------------
-
-void Server::setMessageQueue(const int clientfd, const std::string &message) {
-	this->_messageQueue[clientfd].push_back(message);
 }
 
 void Server::verifyMessageSend(const int clientFd) {

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 11:36:25 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:48:17 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ class Server {
 		void	removeClients();
 		void	addClientsToPoll();
 		int		acceptClient();
-		void	setMessageQueue(const int clientfd, const std::string &message);
 		void	verifyMessageSend(const int clientfd);
 		void	routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
 
@@ -52,6 +51,8 @@ class Server {
 		Channel				*getChannel(std::string const &channelName);
 		const ChannelMap	&getChannels();
 		void				setClientToRemove(const int clientFd);
+		void				setMessageQueue(const int clientfd,
+							const std::string &message);
 
 		/*server_operator*/
 		void	grantOperatorStatus(int clientFd);

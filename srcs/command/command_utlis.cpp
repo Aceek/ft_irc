@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utlis.cpp                                          :+:      :+:    :+:   */
+/*   command_utlis.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:14:14 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:36:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,23 @@ bool Command::isValidPassword() const {
 		}
 	}
 	return (true);
+}
+
+bool Command::isValidChannelName(std::string const &channelName) const {
+    return !channelName.empty() && channelName[0] == '#';
+}
+bool Command::isValidChannelKey(Channel const *channel, std::string const &key) const {
+    return key.empty() || key == channel->getKey();
+}
+
+bool Command::checkInviteOnlyAndNotInvited(Channel const *channel) const {
+    return channel->getInviteOnly() && !channel->isClientInvited(this->_client);
+}
+
+bool Command::checkChannelFull(Channel const *channel) const {
+    return channel->getCount() >= channel->getUserLimit() && channel->getUserLimit() >= 0;
+}
+
+void Command::addUserToChannel(Channel *const channel) const {
+    channel->addUser(this->_client, this->_server.isOperator(this->_client.getClientFd()));
 }

@@ -6,74 +6,78 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:10:32 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:40:31 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
+static bool isValidParams(Command const &cmd) {
+    return cmd.getArgs().size() > 0;
+}
+
+static Channel* getOrCreateChannel(Command const &cmd, 
+	std::string const &channelName, std::string const &key) {
+    Channel *channel = cmd.getServer().getChannel(channelName);
+    if (!channel) {
+        cmd.getServer().addChannel(channelName);
+        channel = cmd.getServer().getChannel(channelName);
+        if (!key.empty()) {
+            channel->setKey(key);
+        }
+    }
+    return channel;
+}
+
+static void sendJoinMessage(Command const &cmd,
+	Channel const *channel, const std::string &channelName) {
+    std::string joinMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
+                              " " + cmd.getName() +
+                              " " + channelName;
+
+    channel->sendMessageToAll(joinMessage);
+
+	channel->RPL_TOPIC(cmd.getClient());
+    channel->RPL_NAMREPLY(cmd.getClient());
+    channel->RPL_ENDOFNAMES(cmd.getClient());
+}
+
 int Command::JOIN() {
 /*   Parameters: <channel>{,<channel>} [<key>{,<key>}]	*/
-    if (this->_args.size() < 1) {
+  if (!isValidParams(*this)) {
         return ERR_NEEDMOREPARAMS;
     }
 
     std::vector<std::string> channels = ft_split(this->_args[0], ",");
-    std::vector<std::string> keys;
-
-    if (this->_args.size() > 1) {
-        keys = ft_split(this->_args[1], ",");
-    }
+    std::vector<std::string> keys = (this->_args.size() > 1) ?
+		ft_split(this->_args[1], ",") : std::vector<std::string>();
 
     for (size_t i = 0; i < channels.size(); ++i) {
         std::string const &channelName = channels[i];
-        std::string key;
+        std::string key = (i < keys.size()) ? keys[i] : "";
 
-        if (i < keys.size()) {
-            key = keys[i];
-        }
-
-        if (channelName[0] != '#') {
+        if (!isValidChannelName(channelName)) {
             return ERR_BADCHANMASK;
         }
 
-        Channel *channel = this->_server.getChannel(channelName);
-        if (!channel) {
-            this->_server.addChannel(channelName);
-            channel = this->_server.getChannel(channelName);
-
-            if (!key.empty()) {
-                channel->setKey(key);
-            }
-        } else if (!key.empty() && key != channel->getKey()) {
-        	return ERR_BADCHANNELKEY;
+        Channel *channel = getOrCreateChannel(*this, channelName, key);
+        if (!isValidChannelKey(channel, key)) {
+            return ERR_BADCHANNELKEY;
         }
 
-		///!!!logique du mdp a implementer
+        if (checkInviteOnlyAndNotInvited(channel)) {
+            return ERR_INVITEONLYCHAN;
+        }
 
-		if (channel->getInviteOnly() && !channel->isClientInvited(this->_client)) {
-			return ERR_INVITEONLYCHAN;
-		}
+        if (checkChannelFull(channel)) {
+            return ERR_CHANNELISFULL;
+        }
 
-		if (channel->getCount() >= channel->getUserLimit() &&
-			channel->getUserLimit() >= 0) {
-			return ERR_CHANNELISFULL;
-		}
-		
-		channel->addUser(this->_client, 
-			this->_server.isOperator(this->_client.getClientFd()));
-		
-		
-		std::string joinMessage =	":" + this->_client.getNicknameOrUsername(true) +
-									" " + this->_name + 
-									" " + channelName;
-								
-		channel->sendMessageToAll(joinMessage);
-		
-		channel->RPL_TOPIC(this->_client);
-		channel->RPL_NAMREPLY(this->_client);
-		channel->RPL_ENDOFNAMES(this->_client);
+        addUserToChannel(channel);
+        
+		//to be rework with formated server response
+		sendJoinMessage(*this, channel, channelName);
     }
-	
-	return ERR_NONE;
+
+    return ERR_NONE;
 }

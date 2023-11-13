@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:08:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:49:24 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ int Command::PART() {
 		
 		if (channel->getCount() < 1) {
 			this->_server.delChannel((channelName));
+		} else {
+			std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
+										" " + this->_name + 
+										" " + channelName;
+									
+			channel->sendMessageToAll(partMessage);
 		}
-		
-		std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
-									" " + this->_name + 
-									" " + channelName;
-								
-		channel->sendMessageToAll(partMessage);
 	}
 	
 	return ERR_NONE;

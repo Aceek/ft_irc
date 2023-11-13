@@ -6,20 +6,36 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:10:50 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:41:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
+static bool isValidParams(Command const &cmd) {
+    return cmd.getArgs().size() > 1;
+}
+
+static void sendInviteMessage(Command const &cmd, Channel const *channel, 
+	std::string const &channelName, std::string const&nickname, Client const &client) {
+    std::string inviteMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
+                              	" " + cmd.getName() +
+								" " + nickname +
+                              	" " + channelName;
+
+    channel->sendMessageToAll(inviteMessage);
+	
+	cmd.getServer().sendMessage(client, inviteMessage);
+}
+
 int Command::INVITE() {
 /*   Parameters: <nickname> <channel>	*/
-    if (this->_args.size() < 2) {
+    if (!isValidParams(*this)) {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string nickname = getArgs()[0];
-    std::string channelName = getArgs()[1];
+    std::string nickname = this->_args[0];
+    std::string channelName = this->_args[1];
 
     Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
@@ -41,13 +57,8 @@ int Command::INVITE() {
 
 	channel->inviteUser(*client);
 	
-    std::string inviteMessage =	":" + this->_client.getNicknameOrUsername(true) +
-                        		" " + this->_name +
-								" " + nickname +
-								" " + channelName;
-								
-	channel->sendMessageToAll(inviteMessage);
-	this->_server.sendMessage(*client, inviteMessage);
+	//to be rework with formated server response
+	sendInviteMessage(*this, channel, channelName, nickname, *client);
 
     return ERR_NONE;
 }

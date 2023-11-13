@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 05:19:06 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 09:11:15 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class Server {
 		bool	processCommand(const int &clientFd);
 		void	removeClient(const int clientFd);
 		void	removeClients();
+		void	addClientsToPoll();
 		int		acceptClient();
 		void	sendMessage(const Client &client,
 				const std::string &message) const;
@@ -68,6 +69,7 @@ class Server {
 		std::vector<struct pollfd>		_fds; // Stockez les FD et les evenements associés
 		std::map<const int, Client> 	_clients;
 		std::vector<int>				_clientsToRemove;
+		std::vector<int>				_clientsToAdd;
 		std::set<int> 					_operatorClients;
 		std::map<std::string, Channel>	_channels;
 		

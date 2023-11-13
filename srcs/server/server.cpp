@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 08:34:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 09:14:25 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,31 @@ void	Server::routine() {
 		if (ready == -1) {
 			break;
 		}
-		for (unsigned int i = 0; i < this->_fds.size(); i++) {
-			if (_fds[i].revents & POLLIN) {
-				if (_fds[i].fd == this->_serverFd) {
+		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
+			if (it->revents & POLLIN) {
+				if (it->fd == this->_serverFd) {
 					acceptClient();
 				} else {
-					if (!processCommand(_fds[i].fd)) {
-						this->_clientsToRemove.push_back(_fds[i].fd);
+					if (!processCommand(it->fd)) {
+						this->_clientsToRemove.push_back(it->fd);
 					}
 				}
 			}
 		}
 		removeClients();
+		addClientsToPoll();
 	}
 	close(this->_serverFd);
 	std::cout << "Closing Server ..." << std::endl;
+}
+
+
+void	Server::addClientsToPoll() {
+	for (std::vector<int>::iterator it = this->_clientsToAdd.begin(); 
+									it != this->_clientsToAdd.end(); it++) {
+		addToPoll(*it, POLLIN);
+	}
+	this->_clientsToAdd.clear();
 }
 
 void	Server::removeClients() {
@@ -81,11 +91,11 @@ void	Server::removeClients() {
 	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
 		removeClient(this->_clientsToRemove[i]);
 	}
-	this->_clientsToRemove.clear();
+	// this->_clientsToRemove.clear();
 	
 }
 
-void Server::removeClient(const int clientFd) { // TOUJOURS UTILISER REMOVECLIENTS
+void Server::removeClient(const int clientFd) {
 	
 
 	// Suppression client dans pollfd 
@@ -118,6 +128,7 @@ int	Server::acceptClient() {
 	socklen_t			clientAdressSize = sizeof(clientAdress);
 	
 	int clientFd = accept(this->_serverFd, (struct sockaddr *)&clientAdress, &clientAdressSize);
+
 	
 	if (clientFd == -1) {
 		std::cout << "Erreur acceptation du client" << std::endl; // A FAIRE gestion erreur correct
@@ -127,7 +138,7 @@ int	Server::acceptClient() {
 	this->_clients[clientFd] = newClient;
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
-	addToPoll(clientFd, POLLIN);
+	this->_clientsToAdd.push_back(clientFd);
 	std::cout << "new client on server" << std::endl;
 	
 	return (clientFd);

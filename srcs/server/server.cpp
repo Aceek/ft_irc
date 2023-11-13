@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 09:14:25 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 09:39:37 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	Server::removeClients() {
 	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
 		removeClient(this->_clientsToRemove[i]);
 	}
-	// this->_clientsToRemove.clear();
+	this->_clientsToRemove.clear();
 	
 }
 
@@ -116,7 +116,7 @@ void Server::removeClient(const int clientFd) {
 	}
 
 	if (close (clientFd) == -1) {
-		std::cerr << "Error closing fdclient" << std::endl;
+		perror("Error closing client socket");
 	}
 
 	// ajouter gestion message de retrait server A FAIRE ?

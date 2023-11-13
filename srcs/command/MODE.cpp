@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:09:58 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 23:54:52 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int Command::MODE() {
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
-
     if (!channel->isOperator(this->_client)) {
         return ERR_CHANOPRIVSNEEDED;
     }
@@ -98,7 +97,8 @@ int Command::MODE() {
                 return ERR_UNKNOWNMODE;
 		}
 		
-    std::string modeMessage = ":" + this->_client.getNicknameOrUsername(true) +
+	//to be rework with formated server response
+	std::string modeMessage = ":" + this->_client.getNicknameOrUsername(true) +
                               " " + this->_name +
                               " " + channelName +
                               " " + s + c;

@@ -6,15 +6,11 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 08:40:31 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 23:58:55 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
-
-static bool isValidParams(Command const &cmd) {
-    return cmd.getArgs().size() > 0;
-}
 
 static Channel* getOrCreateChannel(Command const &cmd, 
 	std::string const &channelName, std::string const &key) {
@@ -29,22 +25,9 @@ static Channel* getOrCreateChannel(Command const &cmd,
     return channel;
 }
 
-static void sendJoinMessage(Command const &cmd,
-	Channel const *channel, const std::string &channelName) {
-    std::string joinMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
-                              " " + cmd.getName() +
-                              " " + channelName;
-
-    channel->sendMessageToAll(joinMessage);
-
-	channel->RPL_TOPIC(cmd.getClient());
-    channel->RPL_NAMREPLY(cmd.getClient());
-    channel->RPL_ENDOFNAMES(cmd.getClient());
-}
-
 int Command::JOIN() {
 /*   Parameters: <channel>{,<channel>} [<key>{,<key>}]	*/
-  if (!isValidParams(*this)) {
+  if (this->_args.size() < 1) {
         return ERR_NEEDMOREPARAMS;
     }
 
@@ -59,16 +42,13 @@ int Command::JOIN() {
         if (!isValidChannelName(channelName)) {
             return ERR_BADCHANMASK;
         }
-
         Channel *channel = getOrCreateChannel(*this, channelName, key);
         if (!isValidChannelKey(channel, key)) {
             return ERR_BADCHANNELKEY;
         }
-
         if (checkInviteOnlyAndNotInvited(channel)) {
             return ERR_INVITEONLYCHAN;
         }
-
         if (checkChannelFull(channel)) {
             return ERR_CHANNELISFULL;
         }
@@ -76,7 +56,15 @@ int Command::JOIN() {
         addUserToChannel(channel);
         
 		//to be rework with formated server response
-		sendJoinMessage(*this, channel, channelName);
+		std::string joinMessage = 	":" + this->_client.getNicknameOrUsername(true) +
+									" " + this->_name +
+									" " + channelName;
+
+		channel->sendMessageToAll(joinMessage);
+
+		channel->RPL_TOPIC(this->_client);
+		channel->RPL_NAMREPLY(this->_client);
+		channel->RPL_ENDOFNAMES(this->_client);
     }
 
     return ERR_NONE;

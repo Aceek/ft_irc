@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:07:30 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 23:55:52 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@ int Command::TOPIC() {
     }
 
     std::string channelName = this->_args[0];
-    Channel *channel = this->_server.getChannel(channelName);
 
+    Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
-
     if (!channel->isClientPresent(this->_client)) {
         return ERR_NOTONCHANNEL;
     }
-
 	if (channel->getTopicRestricted() && !channel->isOperator(this->_client)) {
 		return ERR_CHANOPRIVSNEEDED;
 	}
@@ -43,7 +41,8 @@ int Command::TOPIC() {
         std::string newTopic = this->_trailor;
         channel->setTopic(newTopic);
 
-        std::string topicMessage = ":" + this->_client.getNicknameOrUsername(true) +
+		//to be rework with formated server response
+		std::string topicMessage = ":" + this->_client.getNicknameOrUsername(true) +
                                    " " + this->_name +
 								   " " + channelName + 
 								   " :" + newTopic;

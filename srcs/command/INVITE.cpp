@@ -3,34 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   INVITE.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 11:12:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 23:58:23 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
-static bool isValidParams(Command const &cmd) {
-    return cmd.getArgs().size() > 1;
-}
+// static void sendInviteMessage(Command const &cmd, Channel const *channel, 
+// 	std::string const &channelName, std::string const&nickname, Client const &client) {
+//     std::string inviteMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
+//                               	" " + cmd.getName() +
+// 								" " + nickname +
+//                               	" " + channelName;
 
-static void sendInviteMessage(Command const &cmd, Channel const *channel, 
-	std::string const &channelName, std::string const&nickname, Client const &client) {
-    std::string inviteMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
-                              	" " + cmd.getName() +
-								" " + nickname +
-                              	" " + channelName;
-
-    channel->sendMessageToAll(inviteMessage);
+//     channel->sendMessageToAll(inviteMessage);
 	
-	cmd.getServer().setMessageQueue(client.getClientFd(), inviteMessage);
-}
+// 	cmd.getServer().setMessageQueue(client.getClientFd(), inviteMessage);
+// }
 
 int Command::INVITE() {
 /*   Parameters: <nickname> <channel>	*/
-    if (!isValidParams(*this)) {
+    if (this->getArgs().size() < 2) {
         return ERR_NEEDMOREPARAMS;
     }
 
@@ -41,16 +37,13 @@ int Command::INVITE() {
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
-
     if (!channel->isOperator(getClient())) {
         return ERR_CHANOPRIVSNEEDED;
     }
-
 	Client *client = this->_server.getClientByNickname(nickname);
 	if (!client) {
     	return ERR_NOSUCHNICK;
     }
-
 	if (channel->isClientPresent(*client)) {
         return ERR_USERONCHANNEL;
     }
@@ -58,7 +51,14 @@ int Command::INVITE() {
 	channel->inviteUser(*client);
 	
 	//to be rework with formated server response
-	sendInviteMessage(*this, channel, channelName, nickname, *client);
+    std::string inviteMessage = ":" + this->_client.getNicknameOrUsername(true) +
+                              	" " + this->_name +
+								" " + nickname +
+                              	" " + channelName;
+
+    channel->sendMessageToAll(inviteMessage);
+	
+	this->_server.setMessageQueue(client->getClientFd(), inviteMessage);
 
     return ERR_NONE;
 }

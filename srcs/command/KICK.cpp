@@ -6,33 +6,15 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 09:28:20 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 23:59:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
-static bool isValidParams(Command const &cmd) {
-    return cmd.getArgs().size() > 1;
-}
-
-static void sendKickMessage(Command const &cmd, Channel const *channel, 
-	std::string const &channelName, std::string const&nickname) {
-    std::string kickMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
-                              	" " + cmd.getName() +
-                              	" " + channelName;
-								" " + nickname;
-								
-	if (!cmd.getTrailor().empty()) {
-    	kickMessage += " :" + cmd.getTrailor();
-	}
-
-    channel->sendMessageToAll(kickMessage);
-}
-
 int Command::KICK() {
 /*   Parameters: <channel> <user> [<comment>]	*/
-    if (!isValidParams(*this)) {
+    if (this->_args.size() < 2) {
         return ERR_NEEDMOREPARAMS;
     }
 
@@ -43,23 +25,30 @@ int Command::KICK() {
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
-
     if (!channel->isOperator(this->_client)) {
         return ERR_CHANOPRIVSNEEDED;
     }
-	
 	Client *client = this->_server.getClientByNickname(nickname);
 	if (!client) {
     	return ERR_NOSUCHNICK;
     }
-	
     if (!channel->isClientPresent(*client)) {
         return ERR_NOTONCHANNEL;
     }
 
 	channel->delUser(*client);
     
-	sendKickMessage(*this, channel, channelName, nickname);
+	//to be rework with formated server response
+	std::string kickMessage = 	":" + this->_client.getNicknameOrUsername(true) +
+                              	" " + this->_name +
+                              	" " + channelName;
+								" " + nickname;
+								
+	if (!this->_trailor.empty()) {
+    	kickMessage += " :" + this->_trailor;
+	}
+
+    channel->sendMessageToAll(kickMessage);
 
     return ERR_NONE;
 }

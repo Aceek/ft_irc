@@ -36,6 +36,7 @@ int Command::PRIVMSG() {
 	//!!! is it possible to send a message to ourselve ? if so check double output msg
 	for (std::vector<std::string>::iterator it = receivers.begin();
 		it != receivers.end(); ++it) {
+			//to be rework with formated server response
 			std::string privmsgMessage = ":" + this->_client.getNicknameOrUsername(true) +
 								" " + this->_name +
 								" " + *it +

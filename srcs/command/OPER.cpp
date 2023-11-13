@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OPER.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:34 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 11:11:55 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/13 23:55:24 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int Command::OPER() {
     if (!client) {
         return ERR_NOSUCHNICK;
     }
-
     if (password != this->_server.getPassword()) {
         return ERR_PASSWDMISMATCH;
 	}
 
 	this->_server.grantOperatorStatus(client->getClientFd());
 
-    this->_server.setMessageQueue(client->getClientFd(), "You are now an operator");
+	//to be rework with formated server response
+	this->_server.setMessageQueue(client->getClientFd(), "You are now an operator");
 
     return ERR_NONE;
 }

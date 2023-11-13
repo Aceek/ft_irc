@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 08:49:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 23:55:41 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int Command::PART() {
         std::string const &channelName = channels[i];
 		
       	Channel *channel = this->_server.getChannel(channelName);
-		
 		if (!channel) {
         	return ERR_NOSUCHCHANNEL;
         } else if (!channel->isClientPresent(this->_client)) {
@@ -36,6 +35,8 @@ int Command::PART() {
 		if (channel->getCount() < 1) {
 			this->_server.delChannel((channelName));
 		} else {
+    
+			//to be rework with formated server response
 			std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
 										" " + this->_name + 
 										" " + channelName;

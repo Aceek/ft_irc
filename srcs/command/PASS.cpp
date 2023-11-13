@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   PASS.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:09:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 07:26:15 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
 int	Command::PASS() {
+
+	if (this->_client.isPasswordSetUp()) {
+		return (ERR_ALREADYREGISTRED);
+	}
 	if (this->_args.empty() || this->_args[0].empty()) {
 		return (ERR_NEEDMOREPARAMS);
 	}

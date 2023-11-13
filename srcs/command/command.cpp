@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 06:25:43 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 07:25:40 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void Command::initCommandsMap(void) {
     this->_commands["PONG"] = CommandInfo(&Command::PONG, "<server>");
     this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
     this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
+    this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");
 }
 
 

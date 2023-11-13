@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 06:19:56 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 08:34:13 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,20 @@ void	Server::routine() {
 }
 
 void	Server::removeClients() {
+	// std::vector<int>::iterator it = this->_clientsToRemove.begin();
+	// for (it; it != this->_clientsToRemove.end(); it++)
+	// {
+	// 	removeClient(*it);
+	// }
+	
 	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
 		removeClient(this->_clientsToRemove[i]);
 	}
+	this->_clientsToRemove.clear();
 	
 }
 
-void Server::removeClient(const int clientFd) {
+void Server::removeClient(const int clientFd) { // TOUJOURS UTILISER REMOVECLIENTS
 	
 
 	// Suppression client dans pollfd 

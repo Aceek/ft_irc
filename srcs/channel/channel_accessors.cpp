@@ -1,16 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   accesssors.cpp                                     :+:      :+:    :+:   */
+/*   channel_accessors.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:27:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:49:46 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
+
+std::string const &Channel::getName(void) const {
+    return this->_name;
+}
 
 std::string const &Channel::getTopic(void) const {
     return this->_topic;
@@ -22,6 +26,14 @@ void Channel::setTopic(std::string const &topic) {
 
 std::string const &Channel::getKey(void) const {
     return this->_key;
+}
+
+std::set<Client *> const &Channel::getUsers(void) const {
+    return this->_users;
+}
+
+std::set<Client *> const &Channel::getOperators(void) const {
+    return this->_operators;
 }
 
 ///!!!verif sur la validite du PASSWORD ???

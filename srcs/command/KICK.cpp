@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:59:34 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:45:46 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int Command::KICK() {
     	kickMessage += " :" + this->_trailor;
 	}
 
-    channel->sendMessageToAll(kickMessage);
+	this->_server.sendMessageToChannel(*channel, kickMessage);
 
     return ERR_NONE;
 }

@@ -49,7 +49,7 @@ int Command::PRIVMSG() {
 					} else if (!channel->isClientPresent(this->_client)) {
 						return ERR_CANNOTSENDTOCHAN;
 					} else {
-						channel->sendMessageToAll(privmsgMessage);
+						this->_server.sendMessageToChannel(*channel, privmsgMessage);
 						//!!! not sur if the message should be send back for each receiver
 						this->_server.setMessageQueue(this->_client.getClientFd(), privmsgMessage);
 					}

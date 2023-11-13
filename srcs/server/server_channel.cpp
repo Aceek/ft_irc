@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:51:53 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:52:56 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:50:27 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,26 @@ void	Server::addChannel(std::string const &channelName) {
 }
 
 void	Server::delChannel(std::string const &channelName) {
-	std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
+	ChannelMap::iterator it = this->_channels.find(channelName);
 	
 	if (it != this->_channels.end()) {
 			this->_channels.erase(it);	
+	}
+}
+
+void Server::sendMessageToChannel(Channel const &channel, std::string const &message) {
+	
+	if (!isChannelPresent(channel.getName()) || message.empty()) {
+		return;
+	}
+	
+	for (std::set<Client *>::iterator it = channel.getUsers().begin();
+		it != channel.getUsers().end(); ++it) {
+			setMessageQueue((*it)->getClientFd(), message);
+	}
+	for (std::set<Client *>::iterator it = channel.getOperators().begin();
+		it != channel.getOperators().end(); ++it) {
+			setMessageQueue((*it)->getClientFd(), message);
 	}
 }
 

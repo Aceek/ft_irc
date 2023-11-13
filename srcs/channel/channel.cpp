@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 11:12:18 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/14 00:44:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,6 @@ void Channel::inviteUser(Client &client) {
 }
 
 /* ************************************************************************** */
-
-void Channel::sendMessageToAll(const std::string &message) const {
-	
-	for (std::set<Client *>::iterator it = this->_users.begin();
-		it != this->_users.end(); ++it) {
-			this->_server->setMessageQueue((*it)->getClientFd(), message);
-	}
-	for (std::set<Client *>::iterator it = this->_operators.begin();
-		it != this->_operators.end(); ++it) {
-			this->_server->setMessageQueue((*it)->getClientFd(), message);
-	}
-}
 
 //!!!real server name to add - Maybe add clean Server reply functions in server class ??
 void 	Channel::RPL_NOTOPIC(Client &client) const {

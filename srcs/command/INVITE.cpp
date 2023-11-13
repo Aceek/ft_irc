@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:58:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:45:21 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int Command::INVITE() {
 								" " + nickname +
                               	" " + channelName;
 
-    channel->sendMessageToAll(inviteMessage);
-	
+	this->_server.sendMessageToChannel(*channel, inviteMessage);
 	this->_server.setMessageQueue(client->getClientFd(), inviteMessage);
 
     return ERR_NONE;

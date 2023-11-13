@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:54:52 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:45:49 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int Command::MODE() {
                               " " + channelName +
                               " " + s + c;
 
-    channel->sendMessageToAll(modeMessage);
+	this->_server.sendMessageToChannel(*channel, modeMessage);
     }
 	
     return ERR_NONE;

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:58:55 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:45:42 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int Command::JOIN() {
 									" " + this->_name +
 									" " + channelName;
 
-		channel->sendMessageToAll(joinMessage);
+		this->_server.sendMessageToChannel(*channel, joinMessage);
 
 		channel->RPL_TOPIC(this->_client);
 		channel->RPL_NAMREPLY(this->_client);

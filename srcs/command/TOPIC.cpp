@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:55:52 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:46:13 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int Command::TOPIC() {
 								   " " + channelName + 
 								   " :" + newTopic;
        
-	    channel->sendMessageToAll(topicMessage);
+		this->_server.sendMessageToChannel(*channel, topicMessage);
     }
 
     return ERR_NONE;

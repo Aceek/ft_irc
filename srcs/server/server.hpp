@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 23:25:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 00:31:52 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,11 @@ class Server {
 		/*server_channel*/
 		void	addChannel(std::string const &channelName);
 		void	delChannel(std::string const &channelName);
+		void 	sendMessageToChannel(Channel const &channel, std::string const &message);
 		void 	printAllChannels(void);
 		
 		/*server_utlis*/
+		bool isChannelPresent(std::string const &channelName);
 		
 	private:
 		int 									_port;

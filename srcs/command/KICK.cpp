@@ -6,21 +6,38 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:10:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 09:28:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
+static bool isValidParams(Command const &cmd) {
+    return cmd.getArgs().size() > 1;
+}
+
+static void sendKickMessage(Command const &cmd, Channel const *channel, 
+	std::string const &channelName, std::string const&nickname) {
+    std::string kickMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
+                              	" " + cmd.getName() +
+                              	" " + channelName;
+								" " + nickname;
+								
+	if (!cmd.getTrailor().empty()) {
+    	kickMessage += " :" + cmd.getTrailor();
+	}
+
+    channel->sendMessageToAll(kickMessage);
+}
+
 int Command::KICK() {
 /*   Parameters: <channel> <user> [<comment>]	*/
-    if (this->_args.size() < 2) {
+    if (!isValidParams(*this)) {
         return ERR_NEEDMOREPARAMS;
     }
 
     std::string channelName = this->_args[0];
     std::string nickname = this->_args[1];
-    std::string comment = this->_trailor;
 
     Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
@@ -40,18 +57,9 @@ int Command::KICK() {
         return ERR_NOTONCHANNEL;
     }
 
-    std::string kickMessage =	":" + this->_client.getNicknameOrUsername(true) +
-								" " + this->_name +
-								" " + channelName + 
-								" " + nickname;
-
-	if (!comment.empty()) {
-    	kickMessage += " :" + comment;
-	}
-								
-    channel->sendMessageToAll(kickMessage);
-    
 	channel->delUser(*client);
+    
+	sendKickMessage(*this, channel, channelName, nickname);
 
     return ERR_NONE;
 }

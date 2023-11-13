@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 06:21:13 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/13 06:25:43 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ void Command::printArgs(void) const {
 }
 
 int Command::exec(void) {
-    CommandMap::iterator it = _commands.find(this->_name);
-    if (it != _commands.end()) {
+    CommandMap::iterator it = this->_commands.find(this->_name);
+    if (it != this->_commands.end()) {
         return ((this->*(it->second).func)());
     } else {
 		return (ERR_UNKNOWNCOMMAND);

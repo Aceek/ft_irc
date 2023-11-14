@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 00:45:42 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 01:08:32 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ int Command::JOIN() {
 
     for (size_t i = 0; i < channels.size(); ++i) {
         std::string const &channelName = channels[i];
-        std::string key = (i < keys.size()) ? keys[i] : "";
-
         if (!isValidChannelName(channelName)) {
             return ERR_BADCHANMASK;
         }
+		
+        std::string key = (i < keys.size()) ? keys[i] : "";
         Channel *channel = getOrCreateChannel(*this, channelName, key);
         if (!isValidChannelKey(channel, key)) {
             return ERR_BADCHANNELKEY;

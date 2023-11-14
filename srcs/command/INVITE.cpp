@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 00:45:21 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 01:09:23 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int Command::INVITE() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string nickname = this->_args[0];
     std::string channelName = this->_args[1];
-
     Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
@@ -40,6 +38,8 @@ int Command::INVITE() {
     if (!channel->isOperator(getClient())) {
         return ERR_CHANOPRIVSNEEDED;
     }
+	
+    std::string nickname = this->_args[0];
 	Client *client = this->_server.getClientByNickname(nickname);
 	if (!client) {
     	return ERR_NOSUCHNICK;

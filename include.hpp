@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 10:12:14 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/14 03:25:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,18 @@ enum ErrorCode {
     ERR_BADCHANNELKEY = 475,
     ERR_BADCHANMASK = 476,
     ERR_CHANOPRIVSNEEDED = 482,
+};
+
+enum messageServer {
+	ERR_SERVER_SENDING = 500,
+	ERR_SERVER_RECV = 501,
+	SERVER_CLOSING = 502,
+	SERVER_DELCLIENT = 503,
+	ERR_SERVER_ACCEPTCLIENT = 504,
+	SERVER_NEWCLIENT = 505,
+	
+	
+
 };
 
 #endif // INCLUDE_HPP

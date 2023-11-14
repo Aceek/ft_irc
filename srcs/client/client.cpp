@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 04:29:28 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 03:27:05 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ const struct sockaddr_in& Client::getClientAddress() const {
 
 void	Client::addToCommand(const char *buffer) {
 	this->_command += buffer;
-}
-
-void	Client::printCommand() {
-	std::cout << this->_command << std::endl;
 }
 
 void	Client::clearCommand() {

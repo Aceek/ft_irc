@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 01:09:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 01:14:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ int Command::INVITE() {
     Channel *channel = this->_server.getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
+    }
+	if (!channel->isClientPresent(this->_client)) {
+        return ERR_NOTONCHANNEL;
     }
     if (!channel->isOperator(getClient())) {
         return ERR_CHANOPRIVSNEEDED;

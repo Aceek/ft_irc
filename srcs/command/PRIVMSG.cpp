@@ -22,7 +22,6 @@ int Command::PRIVMSG() {
 
     std::vector<std::string> receivers = ft_split(this->_args[0], ",");
     std::string message;
-	
 	if (this->_args.size() >= 2 && !this->_args[1].empty()) {
 		message = this->_args[1];
 	}
@@ -41,9 +40,8 @@ int Command::PRIVMSG() {
 								" " + this->_name +
 								" " + *it +
 								" :" + message;
-			
 			if ((*it)[0] == '#') {
-				Channel *channel = this->_server.getChannel(*it);
+				Channel	*channel = this->_server.getChannel(*it);
 					if (!channel) {
 						return ERR_NOSUCHCHANNEL;
 					} else if (!channel->isClientPresent(this->_client)) {

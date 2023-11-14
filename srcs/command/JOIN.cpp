@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 03:43:20 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 04:48:24 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static Channel* getOrCreateChannel(Command const &cmd, 
 	std::string const &channelName, std::string const &key) {
-    Channel *channel = cmd.getServer().getChannel(channelName);
+    Channel				*channel = cmd.getServer().getChannel(channelName);
     if (!channel) {
         cmd.getServer().addChannel(channelName);
         channel = cmd.getServer().getChannel(channelName);
@@ -31,8 +31,8 @@ int Command::JOIN() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::vector<std::string> channels = ft_split(this->_args[0], ",");
-    std::vector<std::string> keys = (this->_args.size() > 1) ?
+    std::vector<std::string>	channels = ft_split(this->_args[0], ",");
+    std::vector<std::string>	keys = (this->_args.size() > 1) ?
 		ft_split(this->_args[1], ",") : std::vector<std::string>();
 
     for (size_t i = 0; i < channels.size(); ++i) {
@@ -41,8 +41,8 @@ int Command::JOIN() {
             return ERR_BADCHANMASK;
         }
 		
-        std::string key = (i < keys.size()) ? keys[i] : "";
-        Channel *channel = getOrCreateChannel(*this, channelName, key);
+        std::string	key = (i < keys.size()) ? keys[i] : "";
+        Channel	*channel = getOrCreateChannel(*this, channelName, key);
         if (channel->isClientPresent(this->_client)) {
 			return ERR_USERONCHANNEL;
 		}

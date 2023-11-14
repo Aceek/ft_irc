@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:24 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:44:19 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 04:46:32 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int Command::NAMES() {
         for (ChannelMap::const_iterator it = this->_server.getChannels().begin();
 		 	it != this->_server.getChannels().end(); ++it) {
             Channel const &channel = it->second;
-
             if (channel.isClientPresent(this->_client)) {
                 channel.RPL_NAMREPLY(this->_client);
             }
@@ -27,9 +26,8 @@ int Command::NAMES() {
     }
 
     for (size_t i = 0; i < this->_args.size(); ++i) {
-        std::string const &channelName = this->_args[i];
-
-        Channel* channel = this->_server.getChannel(channelName);
+        std::string const	&channelName = this->_args[i];
+        Channel				*channel = this->_server.getChannel(channelName);
         if (!channel) {
             return ERR_NOSUCHCHANNEL;
         }

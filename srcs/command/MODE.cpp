@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:21:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 04:47:16 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int Command::MODE() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string channelName = this->_args[0];
-    Channel* channel = this->_server.getChannel(channelName);
+    std::string	const	&channelName = this->_args[0];
+    Channel 			*channel = this->_server.getChannel(channelName);
     if (!channel) {
         return ERR_NOSUCHCHANNEL;
     }
@@ -63,7 +63,7 @@ int Command::MODE() {
 				if (++it == this->_args.end()) {
 					return ERR_NEEDMOREPARAMS;
 				}
-				Client* client = this->_server.getClientByNickname(*it);
+				Client *client = this->_server.getClientByNickname(*it);
 				if (!client) {
 					return ERR_NOSUCHNICK;
 				}

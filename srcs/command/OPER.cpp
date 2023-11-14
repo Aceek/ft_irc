@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:34 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 23:55:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 04:49:31 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int Command::OPER() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string nickname = this->_args[0];
-    std::string password = this->_args[1];
+    std::string const	&nickname = this->_args[0];
+    std::string const	&password = this->_args[1];
 
     ///!!! should we use nickname or username ???
 	Client *client = this->_server.getClientByNickname(nickname);

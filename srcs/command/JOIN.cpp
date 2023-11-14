@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 01:08:32 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 03:43:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int Command::JOIN() {
 		
         std::string key = (i < keys.size()) ? keys[i] : "";
         Channel *channel = getOrCreateChannel(*this, channelName, key);
-        if (!isValidChannelKey(channel, key)) {
+        if (channel->isClientPresent(this->_client)) {
+			return ERR_USERONCHANNEL;
+		}
+		if (!isValidChannelKey(channel, key)) {
             return ERR_BADCHANNELKEY;
         }
         if (checkInviteOnlyAndNotInvited(channel)) {
@@ -62,6 +65,7 @@ int Command::JOIN() {
 
 		this->_server.sendMessageToChannel(*channel, joinMessage);
 
+		//to be rework with formated server response
 		channel->RPL_TOPIC(this->_client);
 		channel->RPL_NAMREPLY(this->_client);
 		channel->RPL_ENDOFNAMES(this->_client);

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 01:10:14 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 04:18:16 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int Command::KICK() {
         return ERR_NOTONCHANNEL;
     }
 
-	channel->delUser(*client);
-    
 	//to be rework with formated server response
 	std::string kickMessage = 	":" + this->_client.getNicknameOrUsername(true) +
                               	" " + this->_name +
@@ -48,6 +46,8 @@ int Command::KICK() {
 	}
 
 	this->_server.sendMessageToChannel(*channel, kickMessage);
+	
+	channel->delUser(*client);
 
     return ERR_NONE;
 }

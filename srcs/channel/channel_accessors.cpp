@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 00:49:46 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 02:50:02 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ std::set<Client *> const &Channel::getOperators(void) const {
     return this->_operators;
 }
 
-///!!!verif sur la validite du PASSWORD ???
 void Channel::setKey(std::string const &key) {
-    this->_key = key;
+	this->_key = key;
 }
 
 int Channel::getCount(void) const {

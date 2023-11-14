@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 12:21:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/14 02:43:58 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ void Command::printArgs(void) const {
         std::cout << "Trailing: " << this->_trailor << std::endl;
     }
 	std::cout << "Nb client : " << this->_server.getClients().size() << std::endl;
+
+	std::cout << "NB message en attentee : "
+		<< this->_server.getWaitingMessage(this->_client.getClientFd()) << std::endl;
 }
 
 int Command::exec(void) {

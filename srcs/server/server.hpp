@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/14 00:31:52 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 02:42:31 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ class Server {
 		void				setClientToRemove(const int clientFd);
 		void				setMessageQueue(const int clientfd,
 							const std::string &message);
+	
+		// test function to remove !!
+		int					getWaitingMessage(int clientFd);
 
 		/*server_operator*/
 		void	grantOperatorStatus(int clientFd);

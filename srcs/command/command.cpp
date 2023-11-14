@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 12:21:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/14 06:27:52 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,6 @@ void Command::initCommandsMap(void) {
     this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
     this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
     this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");
-}
-
-
-void Command::printArgs(void) const {
-    std::cout << "Prefix: " << this->_prefix << std::endl;
-    std::cout << "Name: " << this->_name << std::endl;
-
-    std::cout << "Arguments:";
-    for (size_t i = 0; i < this->_args.size(); ++i) {
-        std::cout << " " << this->_args[i];
-    }
-    std::cout << std::endl;
-
-    if (!this->_trailor.empty()) {
-        std::cout << "Trailing: " << this->_trailor << std::endl;
-    }
-	std::cout << "Nb client : " << this->_server.getClients().size() << std::endl;
 }
 
 int Command::exec(void) {

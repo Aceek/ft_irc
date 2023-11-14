@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 05:18:53 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 03:27:08 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ class Client {
 
 		void	clearCommand();
 		void	addToCommand(const char *buffer);
-		void	printCommand(); // test function
 		bool	verifyCommand();
 
 		/*client_accessors*/

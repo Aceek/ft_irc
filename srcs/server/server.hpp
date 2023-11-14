@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/14 00:31:52 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/14 04:28:12 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,24 @@ class Server {
 		Server(/* args */);
 		~Server();
 			
-		void	addToPoll(int fd, short events);
-		void	routine();
-		bool	processCommand(const int &clientFd);
-		void	removeClient(const int clientFd);
-		void	removeClients();
-		void	addClientsToPoll();
-		int		acceptClient();
-		void	verifyMessageSend(const int clientfd);
-		void	routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+		void		addToPoll(int fd, short events);
+		void		routine();
+		bool		processCommand(const int &clientFd);
+		void		removeClient(const int clientFd);
+		void		removeClients();
+		void		addClientsToPoll();
+		int			acceptClient();
+		void		verifyMessageSend(const int clientfd);
+		void		routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+		void		printClientInput(const std::string &message, const Client &client) const;
+		void		printServerInput(const std::string &message) const;
+
 
 		void	sendMessage(const int clientFd,
 				const std::string &message) const;
 
 		/*server_accessors*/
+		std::string			getServerMessage(int messageServer) const;
 		std::string			getErrorMessage(int errorCode);
 		const std::string	&getPassword() const;
 		Client 				*getClientByNickname(std::string const &nickname);
@@ -53,6 +57,9 @@ class Server {
 		void				setClientToRemove(const int clientFd);
 		void				setMessageQueue(const int clientfd,
 							const std::string &message);
+	
+		// test function to remove !!
+		int					getWaitingMessage(int clientFd);
 
 		/*server_operator*/
 		void	grantOperatorStatus(int clientFd);

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/13 12:18:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/14 06:28:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	Server::routine() {
 		addClientsToPoll();
 	}
 	close(this->_serverFd);
-	std::cout << "Closing Server ..." << std::endl;
+	printServerInput(getServerMessage(SERVER_CLOSING));
 }
 
 void	Server::addClientsToPoll() {
@@ -121,7 +121,7 @@ void Server::removeClient(const int clientFd) {
 	}
 
 	// ajouter gestion message de retrait server A FAIRE ?
-	std::cout << "Client supprimé du server" << std::endl;
+	printServerInput(getServerMessage(SERVER_DELCLIENT));
 }	
 
 int	Server::acceptClient() {
@@ -132,7 +132,7 @@ int	Server::acceptClient() {
 
 	
 	if (clientFd == -1) {
-		std::cout << "Erreur acceptation du client" << std::endl; // A FAIRE gestion erreur correct
+		printServerInput(getServerMessage(ERR_SERVER_ACCEPTCLIENT));
 	}
 	
 	Client newClient(clientFd, clientAdress);
@@ -140,7 +140,7 @@ int	Server::acceptClient() {
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
 	this->_clientsToAdd.push_back(clientFd);
-	std::cout << "new client on server" << std::endl;
+	printServerInput(getServerMessage(SERVER_NEWCLIENT));
 	
 	return (clientFd);
 }
@@ -160,7 +160,7 @@ bool	Server::processCommand(const int &clientFd) {
 
 	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
 	if (bytesReceived == -1 || bytesReceived == 0) { // a faire
-		std::cerr << "Error: receving message from client. Deconection" << std::endl;
+		printServerInput(getServerMessage(ERR_SERVER_RECV));
 		return (false);
 	}
 	client.addToCommand(buffer);
@@ -168,9 +168,9 @@ bool	Server::processCommand(const int &clientFd) {
 		try {
 			Command command(client.getClientCommand(), client, *this);
 			//test print args
-			command.printArgs();
 			if ((errorCode = command.exec())) {
 				setMessageQueue(clientFd, getErrorMessage(errorCode));
+			printClientInput(client.getClientCommand(), client);
 			}
 		} catch(const std::exception& e) {
 			setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
@@ -186,7 +186,7 @@ void Server::sendMessage(const int clientFd, const std::string &message) const {
 
 	if (bytesSent == -1) {
 		// gestion erreur a faire !
-		std::cerr << "Error sending message to client" << std::endl;
+		printServerInput(getServerMessage(ERR_SERVER_SENDING));
 	}
 }
 

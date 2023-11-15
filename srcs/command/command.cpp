@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 06:27:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/15 04:28:58 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void Command::initCommandsMap(void) {
     this->_commands["INVITE"] = CommandInfo(&Command::INVITE, "<nickname> <channel>");
     this->_commands["JOIN"] = CommandInfo(&Command::JOIN, "<channel>{,<channel>} [<key>{,<key>}]");
     this->_commands["KICK"] = CommandInfo(&Command::KICK, "<channel> <user> [<comment>]");
+    this->_commands["LIST"] = CommandInfo(&Command::LIST, "none");
     this->_commands["MODE"] = CommandInfo(&Command::MODE, "<channel> <+/-modes> [parameters]");
     this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
     this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
-    this->_commands["OPER"] = CommandInfo(&Command::OPER, "<user> <password>");
     this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
     this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
     this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver>{,<receiver>} <text to be sent>");

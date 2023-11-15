@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 02:50:02 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 05:33:42 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ std::string const Channel::getNicknames(void) const {
          it != this->_operators.end(); ++it) {
         userNicks += "@" + (*it)->getNicknameOrUsername(true) + " ";
     }
-
     for (std::set<Client *>::iterator it = this->_users.begin();
          it != this->_users.end(); ++it) {
         userNicks += (*it)->getNicknameOrUsername(true) + " ";
+    }
+    if (!userNicks.empty()) {
+        userNicks.erase(userNicks.size() - 1);
     }
 
     return userNicks;

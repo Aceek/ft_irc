@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 02:40:57 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 05:56:14 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,43 +78,4 @@ void Channel::delUser(Client &client) {
 
 void Channel::inviteUser(Client &client) {
 	this->_invitedUsers.insert(&client);
-}
-
-/* ************************************************************************** */
-
-//!!!real server name to add - Maybe add clean Server reply functions in server class ??
-void 	Channel::RPL_NOTOPIC(Client &client) const {
-	std::string RPL_NOTOPIC =	":server " +
-								this->_name +
-							 	" :No topic is set";
-							
-	this->_server->setMessageQueue(client.getClientFd(), RPL_NOTOPIC);	
-}
-
-void Channel::RPL_TOPIC(Client &client) const {
-    if (!this->_topic.empty()) { 
-		std::string RPL_TOPIC =	":server " +
-								this->_name +
-								" :" + this->_topic;
-								
-		this->_server->setMessageQueue(client.getClientFd(), RPL_TOPIC);
-	}
-}
-
-void Channel::RPL_NAMREPLY(Client &client) const {
-    std::string RPL_NAMREPLY =	":server " + 
-								client.getNicknameOrUsername(true) + 
-								" = " + this->_name +
-								" :" + getNicknames();
-
-   this->_server->setMessageQueue(client.getClientFd(), RPL_NAMREPLY);
-}
-
-void Channel::RPL_ENDOFNAMES(Client &client) const {
-    std::string RPL_ENDOFNAMES =	":server " +
-								client.getNicknameOrUsername(true) +
-								" " + this->_name +
-								" :End of /NAMES list.";
-								
-	this->_server->setMessageQueue(client.getClientFd(), RPL_ENDOFNAMES);
 }

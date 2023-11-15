@@ -6,24 +6,11 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 04:57:32 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 07:20:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
-
-static Channel* getOrCreateChannel(Command const &cmd, 
-	std::string const &channelName, std::string const &key) {
-    Channel				*channel = cmd.getServer().getChannel(channelName);
-    if (!channel) {
-        cmd.getServer().addChannel(channelName);
-        channel = cmd.getServer().getChannel(channelName);
-        if (!key.empty()) {
-            channel->setKey(key);
-        }
-    }
-    return channel;
-}
 
 int Command::JOIN() {
 /*   Parameters: <channel>{,<channel>} [<key>{,<key>}]	*/
@@ -42,7 +29,7 @@ int Command::JOIN() {
         }
 		
         std::string	key = (i < keys.size()) ? keys[i] : "";
-        Channel	*channel = getOrCreateChannel(*this, channelName, key);
+        Channel	*channel = getOrCreateChannel(channelName, key);
         if (channel->isClientPresent(this->_client)) {
 			return ERR_USERONCHANNEL;
 		}

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 04:17:19 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 07:19:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ class Command {
     	Server							&getServer(void) const;
 		
 		/*command_utlis*/
-		bool isValidNickname() const;
-		bool isNicknameOrUsernameAvailable(bool useNickname) const;
-		bool isValidRealName() const;
-		bool isValidPassword() const;
-		bool isValidPassword(std::string const &key) const;
-		bool isValidChannelName(std::string const &channelName) const;
-    	bool isValidChannelKey(Channel const *channel, std::string const &key) const;
-    	bool checkInviteOnlyAndNotInvited(Channel const *channel) const;
-    	bool checkChannelFull(Channel const *channel) const;
-    	bool checkTopicRestriction(Channel const *channel) const;
-		void addUserToChannel(Channel *channel) const;
-
+		bool	isValidNickname() const;
+		bool	isNicknameOrUsernameAvailable(bool useNickname) const;
+		bool	isValidRealName() const;
+		bool	isValidPassword() const;
+		bool	isValidPassword(std::string const &key) const;
+		bool	isValidChannelName(std::string const &channelName) const;
+    	bool	isValidChannelKey(Channel const *channel, std::string const &key) const;
+    	bool	checkInviteOnlyAndNotInvited(Channel const *channel) const;
+    	bool	checkChannelFull(Channel const *channel) const;
+    	bool	checkTopicRestriction(Channel const *channel) const;
+		void	addUserToChannel(Channel *channel) const;
+		Channel	*getOrCreateChannel(std::string const &channelName, std::string const &key);
 	private:
 		std::string					_prefix;
 		std::string					_name;

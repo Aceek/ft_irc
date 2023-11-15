@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/15 06:23:11 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:28:08 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,6 @@ std::string	Server::getServerMessage(int messageServer) const {
 
 	}
 }
-
-// void Server::RPL_LIST(Client &client) const {
-// 		std::string RPL_TOPIC =	":server " +
-// 								channel.getName() +
-// 								" :" + (!channel.getTopic().empty() ?
-// 								channel.getTopic() : " :No topic is set");
-								
-// 		this->_server->setMessageQueue(client.getClientFd(), RPL_TOPIC);
-// }
 
 void Server::RPL_LIST(Client &client) {
 	std::string RPL_LIST =	":server " +

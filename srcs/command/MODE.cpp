@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:47:16 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:44:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,10 @@ int Command::MODE() {
 			}
             case 'l':
                 // Set/unset the limit of users for the channel
-                if (++it != this->_args.end()) {
-                    channel->setUserLimit(s == '+' ? atoi(it->c_str()) : -1);
-                } else {
+                if (++it == this->_args.end()) {
                     return ERR_NEEDMOREPARAMS;
                 }
+                channel->setUserLimit(s == '+' ? atoi(it->c_str()) : -1);
                 break;
             default:
                 return ERR_UNKNOWNMODE;

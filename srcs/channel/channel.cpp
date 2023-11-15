@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 05:56:14 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:43:42 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void Channel::delUser(Client &client) {
 	this->_users.erase(&client);
 	this->_operators.erase(&client);
 	this->_invitedUsers.erase(&client);
-
 }
 
 void Channel::inviteUser(Client &client) {

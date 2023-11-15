@@ -35,33 +35,37 @@ int Command::PRIVMSG() {
 	//!!! is it possible to send a message to ourselve ? if so check double output msg
 	for (std::vector<std::string>::iterator it = receivers.begin();
 		it != receivers.end(); ++it) {
+			std::string const	&receiver = *it;
 			//to be rework with formated server response
-			std::string privmsgMessage = ":" + this->_client.getNicknameOrUsername(true) +
-								" " + this->_name +
-								" " + *it +
-								" :" + message;
-			if ((*it)[0] == '#') {
-				Channel	*channel = this->_server.getChannel(*it);
-					if (!channel) {
-						return ERR_NOSUCHCHANNEL;
-					} else if (!channel->isClientPresent(this->_client)) {
-						return ERR_CANNOTSENDTOCHAN;
-					} else {
-						this->_server.sendMessageToChannel(*channel, privmsgMessage);
-						//!!! not sur if the message should be send back for each receiver
-						this->_server.setMessageQueue(this->_client.getClientFd(), privmsgMessage);
-					}
+			std::string privmsgMessage =	":" + this->_client.getNicknameOrUsername(true) +
+											" " + this->_name +
+											" " + receiver +
+											" :" + message;
+			
+			if (isValidChannelName(receiver)) {
+				Channel	*channel = this->_server.getChannel(receiver);
+				if (!channel) {
+					return ERR_NOSUCHCHANNEL;
+				}
+				if (!channel->isClientPresent(this->_client)) {
+					return ERR_NOTONCHANNEL;
+				}
+				
+				this->_server.sendMessageToChannel(*channel, privmsgMessage);
 			} else {
-    			Client *client = this->_server.getClientByNickname(*it);
-    				if (!client) {
-        				return ERR_NOSUCHNICK;
-   					} else {
-						this->_server.setMessageQueue(client->getClientFd(), privmsgMessage);
-						//!!! not sur if the message should be send back for each receiver
-						this->_server.setMessageQueue(this->_client.getClientFd(), privmsgMessage);
-					}
+    			Client *client = this->_server.getClientByNickname(receiver);
+				if (!client) {
+					return ERR_NOSUCHNICK;
+				}
+				
+				const int	senderFd = this->_client.getClientFd();
+				const int	receiverFd = client->getClientFd();
+				if (receiverFd != senderFd) {
+					this->_server.setMessageQueue(senderFd, privmsgMessage);
+				}
+				this->_server.setMessageQueue(receiverFd, privmsgMessage);
 			}
-		}
+	}
 		
     return ERR_NONE;
 }

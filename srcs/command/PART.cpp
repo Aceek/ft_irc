@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 03:57:53 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:53:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ int Command::PART() {
     }
 
     std::vector<std::string> channels = ft_split(this->_args[0], ",");    
-    for (size_t i = 0; i < channels.size(); ++i) {
-        std::string const	&channelName = channels[i];
+    for (std::vector<std::string>::const_iterator it = channels.begin();
+		it != channels.end(); ++it) {
+        std::string const	&channelName = *it;
       	Channel				*channel = this->_server.getChannel(channelName);
 		if (!channel) {
         	return ERR_NOSUCHCHANNEL;
-        } else if (!channel->isClientPresent(this->_client)) {
+        }
+		if (!channel->isClientPresent(this->_client)) {
         	return ERR_NOTONCHANNEL;
         }
 

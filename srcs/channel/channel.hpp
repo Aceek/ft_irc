@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 00:49:32 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 05:56:21 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ class Channel {
 		void	addUser(Client &client, bool asOperator);
 		void	delUser(Client &client);
 		void	inviteUser(Client &client);
-
-   		void 	RPL_NOTOPIC(Client &client) const;
-		void	RPL_TOPIC(Client &client) const;
-    	void	RPL_NAMREPLY(Client &client) const;
-    	void	RPL_ENDOFNAMES(Client &client) const;
 	
 		/*channel_accessors*/
 		std::string const			&getName(void) const;

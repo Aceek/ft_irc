@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:48:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 04:57:32 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ int Command::JOIN() {
 		this->_server.sendMessageToChannel(*channel, joinMessage);
 
 		//to be rework with formated server response
-		channel->RPL_TOPIC(this->_client);
-		channel->RPL_NAMREPLY(this->_client);
-		channel->RPL_ENDOFNAMES(this->_client);
+		this->_server.RPL_TOPIC(*channel, this->_client);
+		this->_server.RPL_NAMREPLY(*channel, this->_client);
+		this->_server.RPL_ENDOFNAMES(*channel, this->_client);
     }
 
     return ERR_NONE;

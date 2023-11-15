@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server_operator.cpp                                :+:      :+:    :+:   */
+/*   LIST.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 04:51:53 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 04:53:28 by pbeheyt          ###   ########.fr       */
+/*   Created: 2023/11/13 03:48:24 by pbeheyt           #+#    #+#             */
+/*   Updated: 2023/11/15 05:17:12 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.hpp"
+#include "command.hpp"
 
-void Server::grantOperatorStatus(int clientFd) {
-    this->_operatorClients.insert(clientFd);
-}
+int Command::LIST() {
+	this->_server.RPL_LIST(this->_client);
 
-void Server::revokeOperatorStatus(int clientFd) {
-    this->_operatorClients.erase(clientFd);
-}
-
-bool Server::isOperator(int clientFd) const {
-    return this->_operatorClients.count(clientFd);
+    return ERR_NONE;
 }

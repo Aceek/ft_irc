@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:50:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 03:57:53 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,18 @@ int Command::PART() {
         	return ERR_NOTONCHANNEL;
         }
 
+		//to be rework with formated server response
+		std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
+									" " + this->_name + 
+									" " + channelName;
+		
+		this->_server.sendMessage(this->_client.getClientFd(),partMessage);
+
 		channel->delUser(this->_client);
 		
 		if (channel->getCount() < 1) {
 			this->_server.delChannel((channelName));
 		} else {
-    
-			//to be rework with formated server response
-			std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
-										" " + this->_name + 
-										" " + channelName;
-			
 			this->_server.sendMessageToChannel(*channel, partMessage);					
 		}
 	}

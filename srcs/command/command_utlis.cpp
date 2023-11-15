@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:13:47 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 03:24:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,5 @@ bool Command::checkTopicRestriction(Channel const *channel) const {
 }
 
 void Command::addUserToChannel(Channel *const channel) const {
-    channel->addUser(this->_client, this->_server.isOperator(this->_client.getClientFd()));
+    channel->addUser(this->_client, channel->isOperator(this->_client));
 }

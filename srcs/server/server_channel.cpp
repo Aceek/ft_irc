@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_channel.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:51:53 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 03:41:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/15 04:50:01 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,5 @@ void Server::sendMessageToChannel(Channel const &channel, std::string const &mes
 	for (std::set<Client *>::iterator it = channel.getOperators().begin();
 		it != channel.getOperators().end(); ++it) {
 			setMessageQueue((*it)->getClientFd(), message);
-	}
-}
-
-void Server::printAllChannels(void) {
-    std::cout << "List of Channels:" << std::endl;
-	std::cout << std::endl;
-
-    for (std::map<std::string, Channel>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
-        std::cout << "Channel Name: " << it->first << std::endl;
-		if (!it->second.getKey().empty()) {
-        	std::cout << "Key: " << it->second.getKey() << std::endl;
-		}
-		std::cout << std::endl;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/15 05:49:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:23:11 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,19 @@ std::string	Server::getServerMessage(int messageServer) const {
 // }
 
 void Server::RPL_LIST(Client &client) {
-	std::string RPL_LIST =	":server :\n" +
-							getChannelsNames();
+	std::string RPL_LIST =	":server " +
+							client.getNicknameOrUsername(true) +
+							" =\n" + getChannelsNames();
 	
 	setMessageQueue(client.getClientFd(), RPL_LIST);
+}
+
+void Server::RPL_LISTEND(Client &client) {
+    std::string RPL_LISTEND =	":server " +
+								client.getNicknameOrUsername(true) +
+								" :End of /LIST list.";
+								
+	setMessageQueue(client.getClientFd(), RPL_LISTEND);
 }
 
 void Server::RPL_TOPIC(Channel const &channel, Client &client) {

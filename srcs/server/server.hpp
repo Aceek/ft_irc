@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/15 05:43:04 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:16:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class Server {
 		std::string		getServerMessage(int messageServer) const;
 		std::string		getErrorMessage(int errorCode);
  		void			RPL_LIST(Client &client);
+		void			RPL_LISTEND(Client &client);
 		void			RPL_TOPIC(Channel const &channel, Client &client);
 		void			RPL_NAMREPLY(Channel const &channel, Client &client);
 		void			RPL_ENDOFNAMES(Channel const &channel, Client &client);

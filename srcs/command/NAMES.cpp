@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:24 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 05:53:36 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 06:20:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int Command::NAMES() {
             Channel const &channel = it->second;
             if (channel.isClientPresent(this->_client)) {
                 this->_server.RPL_NAMREPLY(channel, this->_client);
+        		this->_server.RPL_ENDOFNAMES(channel, this->_client);
             }
         }
 		
@@ -33,6 +34,7 @@ int Command::NAMES() {
 		}
 		if (channel->isClientPresent(this->_client)) {
 			this->_server.RPL_NAMREPLY(*channel, this->_client);
+       		this->_server.RPL_ENDOFNAMES(*channel, this->_client);
 		}
 	}
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 01:03:06 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/11 23:28:04 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/15 04:16:50 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,6 @@ void toUpperCase(std::string &str) {
     }
 }
 
+char toLowerCase(char c) {
+    return std::tolower(static_cast<unsigned char>(c));
+}

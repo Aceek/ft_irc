@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlouvrie <rlouvrie@student.42.fr >         +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:19:43 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/11/13 19:12:32 by rlouvrie         ###   ########.fr       */
+/*   Updated: 2023/11/15 04:32:53 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@
 # include <fstream>
 # include <stdexcept>
 # include <string>
+# include <sstream>
+# include <algorithm>
+# include <cctype>
 # include <sys/stat.h>
+# include "../utils/utils.hpp"
 
 class Bot
 {
@@ -26,11 +30,13 @@ class Bot
 		Bot(const Bot &cp);
 		Bot	&operator=(const Bot &rhs);
 		~Bot();
-		std::string	getFilename(void)						const;
-		bool		isDirectory(void)						const;
-		bool		isValidWord(const std::string &word)	const;
+		std::string	getFilename(void)								const;
+		bool		isDirectory(void)								const;
+		bool		isValidWord(const std::string &word)			const;
+		bool		isMessageForbidden(const std::string& message)	const;
 		void		setFilename(std::string filename);
 		void		loadFile(void);
+		int			activate(void);
 		class FileDoesNotExistException : public std::exception
 		{
 			const char* what() const throw()
@@ -62,5 +68,6 @@ class Bot
 	private:
 		std::set<std::string>	_forbiddenWords;
 		std::string				_filename;
+		bool					_isOn;
 };
 #endif

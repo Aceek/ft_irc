@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlouvrie <rlouvrie@student.42.fr >         +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:21:15 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/11/13 19:24:33 by rlouvrie         ###   ########.fr       */
+/*   Updated: 2023/11/15 04:34:42 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bot.hpp"
 
-Bot::Bot(void) : _filename("blacklist.txt") {}
+Bot::Bot(void) : _filename("blacklist.txt"), _isOn(false) {}
 
-Bot::Bot(const Bot &cp) : _filename(cp.getFilename()) {}
+Bot::Bot(const Bot &cp) : _filename(cp.getFilename()), _isOn(false) {}
 
 Bot &Bot::operator=(const Bot &rhs)
 {
 	if (this != &rhs)
+	{
 		this->setFilename(rhs.getFilename());
+		this->_isOn = false;
+	}
 	return (*this);
 }
 
@@ -92,4 +95,29 @@ void Bot::setFilename(std::string filename)
 {
 	this->_filename = filename;
 	this->_forbiddenWords.clear();
+}
+
+bool	Bot::isMessageForbidden(const std::string& message) const
+{
+        std::istringstream iss(message);
+        std::string word;
+
+        while (iss >> word) {
+            std::transform(word.begin(), word.end(), word.begin(), toLowerCase);
+            if (_forbiddenWords.find(word) != _forbiddenWords.end())
+            	return (true);
+        }
+        return (false);
+}
+
+int		Bot::activate(void)
+{
+	try {
+		this->loadFile();
+	}
+	catch (const std::exception& e){
+		return (666);
+	}
+	this->_isOn = true;
+	return (0);
 }

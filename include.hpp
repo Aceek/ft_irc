@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/14 09:12:26 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/16 05:17:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <deque>
+#include <cerrno>
 
 #include "srcs/channel/channel.hpp"
 #include "srcs/client/client.hpp"
@@ -74,6 +75,9 @@ enum messageServer {
 	SERVER_DELCLIENT = 503,
 	ERR_SERVER_ACCEPTCLIENT = 504,
 	SERVER_NEWCLIENT = 505,
+	ERR_NOENDCARACT = 506,
+	ERR_COMMAND_SIZE = 507,
+	ERR_BUFFER_SIZE = 508
 	
 	
 

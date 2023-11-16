@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/14 03:27:08 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/16 06:29:39 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ class Client {
 		~Client();
 
 		void	clearCommand();
-		void	addToCommand(const char *buffer);
-		bool	verifyCommand();
+		void	addToCommand(const std::string &buffer);
+		bool	verifyCommand(Server &server);
 
 		/*client_accessors*/
 		int							getClientFd() const;

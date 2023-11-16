@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/14 06:28:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/16 06:50:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 	// Liason de la socket avec info server
 
 	if (bind(_serverFd, (struct sockaddr *)&_serverAdress, sizeof(_serverAdress)) < 0) {
+		close (this->_serverFd);
+		printServerInput(std::string(strerror(errno)));
 		throw std::runtime_error("Error lors de la liaison de la socket");
 	}
 
 	// Passage en mode ecoute
 	if (listen(this->_serverFd, SOMAXCONN) < 0) {
+		close (this->_serverFd);
 		throw std::runtime_error("Error lors de la mise en ecoute de la socket");
 	}
 	addToPoll(this->_serverFd, POLLIN);
@@ -62,6 +65,7 @@ void	Server::routine() {
 	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
 		if (ready == -1) {
+			printServerInput(std::string(strerror(errno)));
 			break;
 		}
 		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
@@ -70,13 +74,14 @@ void	Server::routine() {
 				continue ;
 			} if (it->revents & POLLIN) {
 				routinePOLLIN(it);
-			} if (it->revents & POLLOUT) {
+			} else if (it->revents & POLLOUT) {
 				verifyMessageSend(it->fd);
 			}
 		}
 		removeClients();
 		addClientsToPoll();
 	}
+	closingFdClients();
 	close(this->_serverFd);
 	printServerInput(getServerMessage(SERVER_CLOSING));
 }
@@ -150,32 +155,37 @@ Server::~Server() {
 	close(this->_serverFd);
 };
 
+void	Server::tryCommand(Client &client, const int clientFd) {
+	int		errorCode = 0;
+
+	try {
+		Command command(client.getClientCommand(), client, *this);
+		if ((errorCode = command.exec())) {
+			setMessageQueue(clientFd, getErrorMessage(errorCode));
+			printClientInput(client.getClientCommand(), client);
+		}
+	} catch(const std::exception& e) {
+		setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
+	}
+	client.clearCommand();
+}
+
+
 bool	Server::processCommand(const int &clientFd) {
 	
 	char	buffer[MAX_COMMAND_SIZE + 1] = "";
 	Client	&client = this->_clients[clientFd];
-	int		errorCode = 0;
 
 	memset(buffer, 0, sizeof(buffer));
 
 	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
 	if (bytesReceived == -1 || bytesReceived == 0) { // a faire
-		printServerInput(getServerMessage(ERR_SERVER_RECV));
 		return (false);
-	}
+	} 
+	buffer[bytesReceived] = '\0';
 	client.addToCommand(buffer);
-	if (client.verifyCommand()) {
-		try {
-			Command command(client.getClientCommand(), client, *this);
-			//test print args
-			if ((errorCode = command.exec())) {
-				setMessageQueue(clientFd, getErrorMessage(errorCode));
-			printClientInput(client.getClientCommand(), client);
-			}
-		} catch(const std::exception& e) {
-			setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
-		}
-		client.clearCommand();
+	if (client.verifyCommand(*this)) {
+		tryCommand(client, clientFd);
 	}
 	return (true);
 }

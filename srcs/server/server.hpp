@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/15 06:16:48 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/16 06:50:11 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ class Server {
 		void		addToPoll(int fd, short events);
 		void		routine();
 		bool		processCommand(const int &clientFd);
+		void		tryCommand(Client &client, const int clientFd);
+
 		void		removeClient(const int clientFd);
 		void		removeClients();
 		void		addClientsToPoll();
@@ -65,7 +67,7 @@ class Server {
 		
 		/*server_message*/
 		std::string		getServerMessage(int messageServer) const;
-		std::string		getErrorMessage(int errorCode);
+		std::string		getErrorMessage(int errorCode) const;
  		void			RPL_LIST(Client &client);
 		void			RPL_LISTEND(Client &client);
 		void			RPL_TOPIC(Channel const &channel, Client &client);
@@ -75,7 +77,8 @@ class Server {
 		void			printServerInput(const std::string &message) const;
 		
 		/*server_utlis*/
-		bool isChannelPresent(std::string const &channelName);
+		bool	isChannelPresent(std::string const &channelName);
+		void	closingFdClients();
 		
 	private:
 		int 									_port;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   server_message.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/15 06:28:08 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/16 05:19:23 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-std::string Server::getErrorMessage(int errorCode) {
+std::string Server::getErrorMessage(int errorCode) const {
 	// need add system add nickname of user .. 
 	switch (errorCode) {
     case ERR_NONE:
@@ -65,6 +65,10 @@ std::string Server::getErrorMessage(int errorCode) {
         return "[Channel] 476: Bad channel mask";
     case ERR_CHANOPRIVSNEEDED:
         return "[Channel] 482: You're not channel operator";
+    case ERR_COMMAND_SIZE:
+        return "[Command] 507: Command max format 512 char. Reseting command";
+	case ERR_BUFFER_SIZE:
+		return( "[BUFFER] : 508 : Error BUFFER maxsize max 512 char, can't add buffer to command");
 	default:
         return "Unknown error";
     }
@@ -75,22 +79,31 @@ std::string	Server::getServerMessage(int messageServer) const {
 	switch (messageServer)
 	{
 	case ERR_SERVER_SENDING:
-	return ("Error sending message to client");
+	return ("[SENDING] 500 : Error sending message to client");
 
 	case ERR_SERVER_RECV:
-	return("Error: receving message from client. Deconection");
+	return("[RECEVING] : 501 : Error: receving message from client. Deconection");
 
 	case SERVER_CLOSING:
-	return("Closing Server ...");
+	return("[SERVER] : 502 : Closing Server ...");
 
 	case SERVER_DELCLIENT:
-	return("Client supprimé du server");
+	return("[CLIENT] : 503 : Client supprimé du server");
 
 	case ERR_SERVER_ACCEPTCLIENT:
-	return( "Erreur acceptation du client");
+	return( "[CLIENT] : 504 : Erreur acceptation du client");
 
 	case SERVER_NEWCLIENT:
-	return( "new client on server");
+	return( "[CLIENT] : 505 : new client on server");
+
+	case ERR_NOENDCARACT:
+	return( "[COMMAND] : 506 : Commande pas de caractere de fin");
+
+	case ERR_COMMAND_SIZE:
+	return( "[COMMAND] : 507 : Error command size max 512 char, reseting command");
+
+case ERR_BUFFER_SIZE:
+	return( "[BUFFER] : 508 : Error BUFFER maxsize max 512 char, can't add buffer to command");
 	
 	default:
 	return("Unknow error");

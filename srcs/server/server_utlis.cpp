@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_utlis.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 00:50:56 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/16 02:54:44 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,13 @@ bool Server::isChannelPresent(std::string const &channelName) {
     }
 
     return false;
+}
+
+void	Server::closingFdClients() {
+	ClientMap::iterator it = this->_clients.begin();
+	for (; it != this->_clients.end(); it++) {
+		if (close (it->second.getClientFd()) == -1) {
+			printServerInput(std::string(strerror(errno)));
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/16 07:05:23 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/16 07:10:32 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ bool	Client::verifyCommand(Server &server) {
 	
 	// } else if (this->_command.find("\n") == std::string::npos) {
 	if (this->_command.find("\r\n") == std::string::npos) {
-		// server.printServerInput(server.getServerMessage(ERR_NOENDCARACT));
 		return (false);
 	} else if (this->_command.empty() || this->_command.size() > BUFFER_SIZE) {
 		server.printServerInput(server.getServerMessage(ERR_COMMAND_SIZE));

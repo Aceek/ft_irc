@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/16 06:50:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/16 07:30:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ void Server::removeClient(const int clientFd) {
 		this->_clients.erase(clientFd);
 	}
 
+	std::map<int, std::deque<std::string> >::iterator itMsg
+		= this->_messageQueue.find(clientFd);
+	if (itMsg != this->_messageQueue.end()) {
+		this->_messageQueue.erase(clientFd);
+	}
+
 	if (close (clientFd) == -1) {
 		perror("Error closing client socket");
 	}
@@ -181,7 +187,7 @@ bool	Server::processCommand(const int &clientFd) {
 	int		bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
 	if (bytesReceived == -1 || bytesReceived == 0) { // a faire
 		return (false);
-	} 
+	}
 	buffer[bytesReceived] = '\0';
 	client.addToCommand(buffer);
 	if (client.verifyCommand(*this)) {

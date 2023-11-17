@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/17 09:04:52 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/17 20:39:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ Command::Command(std::string const &line, Client &client, Server &server) :
 		}
 		this->_args.push_back(arg);
 	}
-	if (this->_name != "PASS" && !this->_client.isPasswordSetUp()) {
-		throw std::runtime_error("Error : Password required");
-	}
+	// if (this->_name != "PASS" && !this->_client.isPasswordSetUp()) {
+		// throw std::runtime_error("Error : Password required");
+	// }
 }
 
 Command::Command(Command const &rhs) :

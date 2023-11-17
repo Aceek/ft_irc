@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/17 08:29:11 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/17 09:19:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ std::string Server::getErrorMessage(int errorCode) const {
         return "[Password] 3: Server password required to log in";
     case ERR_PASSWRONG:
         return "[Password] 4: Password does not match with server's password";
+    case ERR_FILEINVALID:
+        return "[File] 5: Can't open file";
     case ERR_NOSUCHNICK:
         return "[User] 401: No such nick";
     case ERR_NOSUCHCHANNEL:
@@ -105,8 +107,8 @@ std::string	Server::getServerMessage(int messageServer) const {
 	case ERR_BUFFER_SIZE:
 		return( "[BUFFER] : 508 : Error BUFFER maxsize max 512 char, can't add buffer to command");
 	
-	case ERR_INVALIDFILE:
-		return( "[FILE] : 509 : Invalid file");
+	case ERR_INVALIDFILEPATH:
+		return( "[FILE] : 509 : Invalid file path");
 	
 	default:
 		return("Unknow error");

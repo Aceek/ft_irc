@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/17 08:27:04 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/17 09:09:27 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,20 +215,17 @@ void Server::sendFile(const int clientFd, const std::string &filePath) {
 
     // Determine the file size
     fileStream.seekg(0, std::ios::end);
-    std::size_t fileSize = fileStream.tellg();
+    int fileSize = fileStream.tellg();
     fileStream.seekg(0, std::ios::beg);
 
-    const std::size_t chunkSize = MAX_COMMAND_SIZE; // Adjust as needed
-    char buffer[MAX_COMMAND_SIZE]; // Fixed-size buffer for C++98
+    const int chunkSize = MAX_COMMAND_SIZE;
+    char buffer[MAX_COMMAND_SIZE];
 
     while (fileSize > 0) {
-        std::size_t bytesRead = fileStream.readsome(buffer, std::min(fileSize, chunkSize));
-
-        // Placeholder for sending the buffer over the direct connection
-        ssize_t bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
+        int bytesRead = fileStream.readsome(buffer, std::min(fileSize, chunkSize));
+        int bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
 
         if (bytesSent == -1) {
-            // Handle error sending file
             printServerInput(getServerMessage(ERR_SERVER_SENDING));
             break;
         }

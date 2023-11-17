@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/17 08:29:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/17 09:18:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ enum ErrorCode {
     ERR_PASSFORMAT = 2,      // variable perso
     ERR_PASSNEEDED = 3,      // variable perso
     ERR_PASSWRONG = 4,       // variable perso
+	ERR_FILEINVALID = 5,
     ERR_NOSUCHNICK = 401,
     ERR_NOSUCHCHANNEL = 403,
     ERR_CANNOTSENDTOCHAN = 404,
@@ -79,7 +80,7 @@ enum messageServer {
 	ERR_NOENDCARACT = 506,
 	ERR_COMMAND_SIZE = 507,
 	ERR_BUFFER_SIZE = 508,
-	ERR_INVALIDFILE = 509,
+	ERR_INVALIDFILEPATH = 509,
 	
 
 };

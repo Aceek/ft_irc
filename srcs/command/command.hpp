@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 07:19:48 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/17 08:00:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Command {
 		int LIST();
 		int MODE();
 		int PART();
-		int PONG();
+		int SENDFILE();
 		int PRIVMSG();
 		int TOPIC();
 		int USER();

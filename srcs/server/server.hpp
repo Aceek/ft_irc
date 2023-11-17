@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/16 06:50:11 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/17 07:52:52 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ class Server {
 		void		verifyMessageSend(const int clientfd);
 		void		routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
 
-
+		void	sendFile(const int clientFd, const std::string& filePath);
 		void	sendMessage(const int clientFd,
 				const std::string &message) const;
 

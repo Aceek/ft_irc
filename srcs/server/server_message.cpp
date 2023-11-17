@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_message.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/16 05:19:23 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/17 08:29:11 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,34 +79,37 @@ std::string	Server::getServerMessage(int messageServer) const {
 	switch (messageServer)
 	{
 	case ERR_SERVER_SENDING:
-	return ("[SENDING] 500 : Error sending message to client");
+		return ("[SENDING] 500 : Error sending message to client");
 
 	case ERR_SERVER_RECV:
-	return("[RECEVING] : 501 : Error: receving message from client. Deconection");
+		return("[RECEVING] : 501 : Error: receving message from client. Deconection");
 
 	case SERVER_CLOSING:
-	return("[SERVER] : 502 : Closing Server ...");
+		return("[SERVER] : 502 : Closing Server ...");
 
 	case SERVER_DELCLIENT:
-	return("[CLIENT] : 503 : Client supprimé du server");
+		return("[CLIENT] : 503 : Client supprimé du server");
 
 	case ERR_SERVER_ACCEPTCLIENT:
-	return( "[CLIENT] : 504 : Erreur acceptation du client");
+		return( "[CLIENT] : 504 : Erreur acceptation du client");
 
 	case SERVER_NEWCLIENT:
-	return( "[CLIENT] : 505 : new client on server");
+		return( "[CLIENT] : 505 : new client on server");
 
 	case ERR_NOENDCARACT:
-	return( "[COMMAND] : 506 : Commande pas de caractere de fin");
+		return( "[COMMAND] : 506 : Commande pas de caractere de fin");
 
 	case ERR_COMMAND_SIZE:
-	return( "[COMMAND] : 507 : Error command size max 512 char, reseting command");
+		return( "[COMMAND] : 507 : Error command size max 512 char, reseting command");
 
-case ERR_BUFFER_SIZE:
-	return( "[BUFFER] : 508 : Error BUFFER maxsize max 512 char, can't add buffer to command");
+	case ERR_BUFFER_SIZE:
+		return( "[BUFFER] : 508 : Error BUFFER maxsize max 512 char, can't add buffer to command");
+	
+	case ERR_INVALIDFILE:
+		return( "[FILE] : 509 : Invalid file");
 	
 	default:
-	return("Unknow error");
+		return("Unknow error");
 
 	}
 }

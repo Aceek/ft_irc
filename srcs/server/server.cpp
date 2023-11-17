@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/16 07:30:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/17 08:27:04 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,39 @@ void Server::sendMessage(const int clientFd, const std::string &message) const {
 		// gestion erreur a faire !
 		printServerInput(getServerMessage(ERR_SERVER_SENDING));
 	}
+}
+
+void Server::sendFile(const int clientFd, const std::string &filePath) {
+    std::ifstream fileStream(filePath.c_str(), std::ios::binary);
+    if (!fileStream.is_open()) {
+        printServerInput(getServerMessage(ERR_SERVER_SENDING));
+        return;
+    }
+
+    // Determine the file size
+    fileStream.seekg(0, std::ios::end);
+    std::size_t fileSize = fileStream.tellg();
+    fileStream.seekg(0, std::ios::beg);
+
+    const std::size_t chunkSize = MAX_COMMAND_SIZE; // Adjust as needed
+    char buffer[MAX_COMMAND_SIZE]; // Fixed-size buffer for C++98
+
+    while (fileSize > 0) {
+        std::size_t bytesRead = fileStream.readsome(buffer, std::min(fileSize, chunkSize));
+
+        // Placeholder for sending the buffer over the direct connection
+        ssize_t bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
+
+        if (bytesSent == -1) {
+            // Handle error sending file
+            printServerInput(getServerMessage(ERR_SERVER_SENDING));
+            break;
+        }
+
+        fileSize -= bytesRead;
+    }
+
+    fileStream.close();
 }
 
 void Server::verifyMessageSend(const int clientFd) {

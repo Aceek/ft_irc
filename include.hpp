@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/16 05:17:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/17 08:29:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <unistd.h>
+#include <fstream>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -77,8 +78,8 @@ enum messageServer {
 	SERVER_NEWCLIENT = 505,
 	ERR_NOENDCARACT = 506,
 	ERR_COMMAND_SIZE = 507,
-	ERR_BUFFER_SIZE = 508
-	
+	ERR_BUFFER_SIZE = 508,
+	ERR_INVALIDFILE = 509,
 	
 
 };

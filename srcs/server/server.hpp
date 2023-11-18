@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/17 07:52:52 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/18 11:39:40 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 class Client;
 class Channel;
+class serverReply;
 
 #define MAX_COMMAND_SIZE 512
 
@@ -48,6 +49,7 @@ class Server {
 
 		/*server_accessors*/
 		const std::string	&getPassword() const;
+		serverReply			*getServerReply() const;
 		Client 				*getClientByNickname(std::string const &nickname);
 		const ClientMap		&getClients() const;
 		Channel				*getChannel(std::string const &channelName);
@@ -81,6 +83,7 @@ class Server {
 		void	closingFdClients();
 		
 	private:
+		serverReply								*_serverReply;
 		int 									_port;
 		std::string								_password;
 		int										_serverFd;
@@ -91,7 +94,6 @@ class Server {
 		std::vector<int>						_clientsToAdd;
 		std::map<std::string, Channel>			_channels;
 		std::map<int, std::deque<std::string> >	_messageQueue;
-
 		
 };
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/17 09:09:27 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/18 11:35:28 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 		throw std::runtime_error("Error lors de la mise en ecoute de la socket");
 	}
 	addToPoll(this->_serverFd, POLLIN);
+	
+	serverReply reply(this);
+	this->_serverReply = &reply;
 }
 
 void	Server::addToPoll(int fd, short events) {

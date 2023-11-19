@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 07:20:20 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/19 10:40:26 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ int Command::JOIN() {
         
 		//to be rework with formated server response
 		std::string joinMessage = 	":" + this->_client.getNicknameOrUsername(true) +
-									" " + this->_name +
+									"!" + this->_client.getNicknameOrUsername(true) +
+									"@localhost " + this->_name +
 									" " + channelName;
 
 		this->_server.sendMessageToChannel(*channel, joinMessage);
 
 		//to be rework with formated server response
-		this->_server.RPL_TOPIC(*channel, this->_client);
-		this->_server.RPL_NAMREPLY(*channel, this->_client);
-		this->_server.RPL_ENDOFNAMES(*channel, this->_client);
+		// this->_server.RPL_TOPIC(*channel, this->_client);
+		// this->_server.RPL_NAMREPLY(*channel, this->_client);
+		// this->_server.RPL_ENDOFNAMES(*channel, this->_client);
     }
 
     return ERR_NONE;

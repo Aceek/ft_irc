@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/17 20:39:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/19 11:32:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ void Command::initCommandsMap(void) {
 }
 
 int Command::exec(void) {
-    CommandMap::iterator it = this->_commands.find(this->_name);
+    if (this->_name == "CAP"){
+		return (ERR_NONE);
+	}
+	CommandMap::iterator it = this->_commands.find(this->_name);
     if (it != this->_commands.end()) {
         return ((this->*(it->second).func)());
-    } else {
-		return (ERR_UNKNOWNCOMMAND);
-	}
-	return (ERR_NONE);
+    }
+	return (ERR_UNKNOWNCOMMAND);
 }

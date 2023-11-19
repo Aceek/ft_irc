@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PASS.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 11:11:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/19 14:18:17 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ int	Command::PASS() {
 	} else {
 		return (ERR_PASSWRONG);
 	}
-	this->_server.setMessageQueue(this->_client.getClientFd(), "Password match, Welcome to irc server");
+	std::string passMessage = 	":" + this->_client.getPrefix() +
+								" 001 " + this->_name;
+	
+	this->_server.setMessageQueue(this->_client.getClientFd(), passMessage);
+	// this->_server.setMessageQueue(this->_client.getClientFd(), "Password match, Welcome to irc server");
 	return (ERR_NONE);
 }

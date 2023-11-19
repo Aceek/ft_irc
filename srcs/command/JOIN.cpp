@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 10:40:26 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/19 14:14:24 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ int Command::JOIN() {
         addUserToChannel(channel);
         
 		//to be rework with formated server response
-		std::string joinMessage = 	":" + this->_client.getNicknameOrUsername(true) +
-									"!" + this->_client.getNicknameOrUsername(true) +
-									"@localhost " + this->_name +
+		std::string joinMessage = 	":" + this->_client.getPrefix() + 
+									" " + this->_name +
 									" " + channelName;
 
 		this->_server.sendMessageToChannel(*channel, joinMessage);

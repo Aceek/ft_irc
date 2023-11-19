@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:25:35 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 14:06:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/19 17:11:06 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,10 @@ void	Client::setRegister() {
 	this->_register = true;
 }
 
-const std::string &Client::getHostname(void) const {
-    return (this->_hostname.empty() ? this->_hostaddr : this->_hostname);
-}
-
-std::string Client::getPrefix(void) const
-{
-    if (this->getHostname().empty()) {
-        return (this->_nickname.empty() ? std::string("") : this->_nickname);
-    }
-
+std::string Client::getPrefix(void) const {
     std::string prefix = this->_nickname;
     if (!this->_username.empty())
         prefix += "!" + this->_username;
     
-    return prefix + "@" + this->getHostname();
+    return prefix + "@" + this->_hostname;
 }

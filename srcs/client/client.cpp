@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/19 14:05:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/19 17:13:13 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,9 @@ Client::~Client() {
 }
 
 Client::Client(int fd, const struct sockaddr_in &addr)
-		: _clientFd(fd), _clientAdress(addr), _nickname(""), _command(""),
-		_username(""), _realName(""), _passRegister(false), _register(false) {
-	this->_hostaddr = inet_ntoa(addr.sin_addr);
-	{
-		char	tmp[NI_MAXHOST];
-		if (getnameinfo((struct sockaddr *)&addr, sizeof(addr), tmp, NI_MAXHOST,
-				NULL, 0, NI_NUMERICSERV))
-			//error handler
-			return;
-		else
-			this->_hostname = tmp;
-	}
-}
+    : _clientFd(fd), _clientAdress(addr), _nickname(""), _command(""),
+      _username(""), _realName(""), _hostname("localhost"),
+      _passRegister(false), _register(false) {}
 
 const struct sockaddr_in& Client::getClientAddress() const {
 	return (this->_clientAdress);

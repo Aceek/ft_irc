@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:49:03 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/13 11:11:31 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:34:54 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ int Command::USER() {
 	this->_client.setRealName(this->_trailor);
 	this->_client.setUsername(this->_args[0]);
 	this->_client.setRegister();
+
+
+	std::string message = " " +  this->_client.getNicknameOrUsername(true) + " :You made it ! " + this->_client.getNicknameOrUsername(true) + "!" + this->_client.getNicknameOrUsername(false) + "@localhost";
+	std::string message2 = ":localhost 001" + message + "\r\n";
+	this->_server.setMessageQueue(this->_client.getClientFd(), message2);
+	
 	this->_server.setMessageQueue(this->_client.getClientFd(),
 	"User successfully register: " + this->_args[0]);
 	

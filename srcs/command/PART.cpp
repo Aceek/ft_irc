@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PART.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 06:53:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/19 18:25:32 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int Command::PART() {
 									" " + this->_name + 
 									" " + channelName;
 		
-		this->_server.sendMessage(this->_client.getClientFd(),partMessage);
+		// this->_server.sendMessage(this->_client.getClientFd(),partMessage);
 
 		channel->delUser(this->_client);
 		

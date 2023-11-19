@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/18 11:35:28 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:45:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	Server::acceptClient() {
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
 	this->_clientsToAdd.push_back(clientFd);
 	printServerInput(getServerMessage(SERVER_NEWCLIENT));
-	
+
 	return (clientFd);
 }
 
@@ -164,20 +164,40 @@ Server::~Server() {
 	close(this->_serverFd);
 };
 
-void	Server::tryCommand(Client &client, const int clientFd) {
-	int		errorCode = 0;
+void Server::tryCommand(Client &client, const int clientFd) {
+    int errorCode = 0;
 
-	try {
-		Command command(client.getClientCommand(), client, *this);
-		if ((errorCode = command.exec())) {
-			setMessageQueue(clientFd, getErrorMessage(errorCode));
-			printClientInput(client.getClientCommand(), client);
-		}
-	} catch(const std::exception& e) {
-		setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
-	}
-	client.clearCommand();
+    std::string clientCommand = client.getClientCommand();
+
+    // Trouver la position du premier '\n' dans la chaîne
+    size_t newlinePos = clientCommand.find('\n');
+
+    // Boucler tant qu'il y a des commandes dans la chaîne
+    while (newlinePos != std::string::npos) {
+        // Extraire la première commande jusqu'au '\n'
+        std::string currentCommand = clientCommand.substr(0, newlinePos);
+
+        try {
+            Command command(currentCommand, client, *this);
+            printClientInput(currentCommand, client);
+
+            if ((errorCode = command.exec())) {
+                setMessageQueue(clientFd, getErrorMessage(errorCode));
+            }
+        } catch(const std::exception& e) {
+            setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
+        }
+
+        // Supprimer la commande traitée de la chaîne
+        clientCommand = clientCommand.substr(newlinePos + 1);
+
+        // Trouver la position du prochain '\n' dans la chaîne mise à jour
+        newlinePos = clientCommand.find('\n');
+    }
+
+    client.clearCommand();
 }
+
 
 
 bool	Server::processCommand(const int &clientFd) {

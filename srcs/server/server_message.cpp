@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_message.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/17 09:19:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/19 18:42:14 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,12 @@ std::string	Server::getServerMessage(int messageServer) const {
 }
 
 void Server::RPL_LIST(Client &client) {
+	
 	std::string RPL_LIST =	":server " +
 							client.getNicknameOrUsername(true) +
 							" =\n" + getChannelsNames();
 	
-	setMessageQueue(client.getClientFd(), RPL_LIST);
+	setMessageQueue(client.getClientFd(),  RPL_LIST);
 }
 
 void Server::RPL_LISTEND(Client &client) {

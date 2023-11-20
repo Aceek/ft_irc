@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:47:51 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 16:05:20 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,25 @@ int Command::KICK() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string const	&channelName = this->_args[0];
-    Channel				*channel = this->_server.getChannel(channelName);
-    if (!channel) {
+    this->_targetChannel = this->_server.getChannel(this->_args[0]);
+    if (!this->_targetChannel) {
         return ERR_NOSUCHCHANNEL;
     }
-    if (!channel->isOperator(this->_client)) {
+    if (!this->_targetChannel->isOperator(this->_client)) {
         return ERR_CHANOPRIVSNEEDED;
     }
    
-    std::string const	&nickname = this->_args[1];
-	Client				*client = this->_server.getClientByNickname(nickname);
-	if (!client) {
+	this->_targetClient = this->_server.getClientByNickname(this->_args[1]);
+	if (!this->_targetClient) {
     	return ERR_NOSUCHNICK;
     }
-    if (!channel->isClientPresent(*client)) {
+    if (!this->_targetChannel->isClientPresent(*this->_targetClient)) {
         return ERR_NOTONCHANNEL;
     }
 
-	//to be rework with formated server response
-	std::string kickMessage = 	":" + this->_client.getNicknameOrUsername(true) +
-                              	" " + this->_name +
-                              	" " + channelName;
-								" " + nickname;							
-	if (!this->_trailor.empty()) {
-    	kickMessage += " :" + this->_trailor;
-	}
-
-	this->_server.sendMessageToChannel(*channel, kickMessage);
+	this->_server.getServerReply()->KICK(*this, *this->_targetChannel);
 	
-	channel->delUser(*client);
+	this->_targetChannel->delUser(*this->_targetClient);
 
     return ERR_NONE;
 }

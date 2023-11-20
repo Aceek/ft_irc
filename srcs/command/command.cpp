@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 18:56:58 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:28:55 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void Command::initCommandsMap(void) {
     this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
     this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
     this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver>{,<receiver>} <text to be sent>");
-    this->_commands["SENDFILE"] = CommandInfo(&Command::SENDFILE, "receiver>{,<receiver>} <file path>");
     this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
     this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
     this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");

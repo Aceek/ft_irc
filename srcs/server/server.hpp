@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 14:46:50 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 22:40:13 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ class Server {
 		void	closingFdClients();
 		
 	private:
-		serverReply								*_serverReply;
 		int 									_port;
 		std::string								_password;
 		int										_serverFd;
@@ -89,7 +88,7 @@ class Server {
 		std::vector<int>						_clientsToAdd;
 		std::map<std::string, Channel>			_channels;
 		std::map<int, std::deque<std::string> >	_messageQueue;
-		
+		serverReply								*_serverReply;
 };
 
 #endif // SERVER_HPP

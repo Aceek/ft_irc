@@ -6,17 +6,18 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/19 17:45:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 23:01:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password) {
+Server::Server(int port, std::string password) : _port(port), _password(password), _serverReply(new serverReply(*this)) {
 	
 	// Creer la socket et on la relie a un fd
 	this->_serverFd = socket(AF_INET, SOCK_STREAM, 0);
 	if (this->_serverFd == -1) {
+		delete(this->_serverReply);
 		throw std::runtime_error("Error lors de creation de la socket server");
 	}
 
@@ -29,6 +30,7 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 
 	if (bind(_serverFd, (struct sockaddr *)&_serverAdress, sizeof(_serverAdress)) < 0) {
 		close (this->_serverFd);
+		delete(this->_serverReply);
 		printServerInput(std::string(strerror(errno)));
 		throw std::runtime_error("Error lors de la liaison de la socket");
 	}
@@ -36,12 +38,10 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 	// Passage en mode ecoute
 	if (listen(this->_serverFd, SOMAXCONN) < 0) {
 		close (this->_serverFd);
+		delete(this->_serverReply);
 		throw std::runtime_error("Error lors de la mise en ecoute de la socket");
 	}
 	addToPoll(this->_serverFd, POLLIN);
-	
-	serverReply reply(this);
-	this->_serverReply = &reply;
 }
 
 void	Server::addToPoll(int fd, short events) {
@@ -162,6 +162,7 @@ int	Server::acceptClient() {
 Server::Server() {};
 Server::~Server() {
 	close(this->_serverFd);
+	delete(this->_serverReply);
 };
 
 void Server::tryCommand(Client &client, const int clientFd) {

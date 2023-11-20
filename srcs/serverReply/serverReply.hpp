@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 21:24:32 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 22:45:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ class Command;
 class serverReply
 {
 private:
-	Server	*_server;
+	Server	&_server;
 public:
-	serverReply();
-	serverReply(Server *server);
+	serverReply(Server &server);
 	~serverReply();
 
 	// void	RPL_LIST(Client &client);
@@ -50,6 +49,8 @@ public:
 	void	PRIVMSG(Command &cmd, Channel &receiver);
 	void	MODE(Command &cmd, Channel &receiver);
 	void	TOPIC(Command &cmd, Channel &receiver);
+
+	void	CAP_RPL(const int clientFd);
 };
 
 #endif // SERVERREPLY_HPP

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 16:50:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:35:33 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ public:
 	std::string		buildPartMessage(Command &cmd);
 	std::string		buildKickMessage(Command &cmd);
 	std::string		buildPrivmsgMessage(Command &cmd, bool channel);
+	std::string		buildModeMessage(Command &cmd);
 	std::string		buildTopicMessage(Command &cmd);
 	
 	void	INVITE(Command &cmd, Client &receiver);
@@ -47,6 +48,7 @@ public:
 	void	PART(Command &cmd, Channel &receiver);
 	void	PRIVMSG(Command &cmd, Client &receiver);
 	void	PRIVMSG(Command &cmd, Channel &receiver);
+	void	MODE(Command &cmd, Channel &receiver);
 	void	TOPIC(Command &cmd, Channel &receiver);
 };
 

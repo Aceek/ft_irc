@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 15:14:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:02:01 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ std::string Server::getErrorMessage(int errorCode) const {
         return "[Channel] 476: Bad channel mask";
     case ERR_CHANOPRIVSNEEDED:
         return "[Channel] 482: You're not channel operator";
-    case ERR_COMMAND_SIZE:
+	case ERR_UMODEUNKNOWNFLAG:
+        return "[Mode] 501: Unknown MODE flag";
+	case ERR_COMMAND_SIZE:
         return "[Command] 507: Command max format 512 char. Reseting command";
 	case ERR_BUFFER_SIZE:
 		return( "[BUFFER] : 508 : Error BUFFER maxsize max 512 char, can't add buffer to command");

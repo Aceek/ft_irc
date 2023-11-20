@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 16:28:50 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:38:58 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ class Command {
     	Server							&getServer(void) const;
 		Channel							&getTargetChannel(void) const;
     	Client							&getTargetClient(void) const;
-    	std::string const				&getMode(void) const;
+    	std::string const				&getModeSet(void) const;
+		std::vector<std::string> const	&getModeArgs(void) const;
 		
 		/*command_utlis*/
 		bool	isValidNickname() const;
@@ -65,7 +66,8 @@ class Command {
     	bool	checkTopicRestriction(Channel const *channel) const;
 		void	addUserToChannel(Channel *channel) const;
 		Channel	*getOrCreateChannel(std::string const &channelName, std::string const &key);
-	
+		bool	isValidMode(const std::string &str);
+		
 	private:
 		std::string					_prefix;
 		std::string					_name;
@@ -73,7 +75,8 @@ class Command {
 		std::string					_trailor;
 		Channel						*_targetChannel;
 		Client						*_targetClient;
-		std::string					_mode;
+		std::string					_modeSet;
+		std::vector<std::string>	_modeArgs;
 
 		Client	&_client;
 		Server	&_server;

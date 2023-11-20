@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 06:44:34 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:54:21 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,76 +18,88 @@ int Command::MODE() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string	const	&channelName = this->_args[0];
-    Channel 			*channel = this->_server.getChannel(channelName);
-    if (!channel) {
+    this->_targetChannel = this->_server.getChannel(this->_args[0]);
+    if (!this->_targetChannel) {
         return ERR_NOSUCHCHANNEL;
     }
-    if (!channel->isOperator(this->_client)) {
+    if (!this->_targetChannel->isOperator(this->_client)) {
         return ERR_CHANOPRIVSNEEDED;
     }
 
-    for (std::vector<std::string>::const_iterator it = this->_args.begin() + 1; 
-		it != this->_args.end(); ++it) {
-        char s = (*it)[0];
-        if (s != '+' && s != '-') {
-            return ERR_UNKNOWNMODE;
-        }
+    this->_modeSet = this->_args[1];
+	if (!isValidMode(this->_modeSet)) {
+		return ERR_UMODEUNKNOWNFLAG;
+	}
 
-        char c = (*it)[1];
-        switch (c) {
+	for (std::vector<std::string>::const_iterator it = this->_args.begin() + 2;
+		it != this->_args.end(); ++it) {
+			this->_modeArgs.push_back(*it);
+	}
+
+	size_t	i = 0;
+	char	s = this->_modeSet[0];
+    for (std::string::const_iterator it = this->_modeSet.begin(); 
+		it != this->_modeSet.end(); ++it) {
+        
+		switch (*it) {
+			case '+':
+				s = '+';
+                break;
+			case '-':
+				s = '-';
+                break;
             case 'i':
                 // Set/unset the channel on invitation only
-                channel->setInviteOnly(s == '+');
+                this->_targetChannel->setInviteOnly(s == '+');
                 break;
             case 't':
                 // Set/unset restrictions on the TOPIC command for channel operators
-                channel->setTopicRestricted(s == '+');
+                this->_targetChannel->setTopicRestricted(s == '+');
                 break;
 			case 'k':
 				// Set/unset the channel key (password)
 				if (s == '+') {
-					if (++it == this->_args.end()) {
+					if (i >= this->_modeArgs.size()) {
 						return ERR_NEEDMOREPARAMS;
 					} 
-					if (!isValidPassword(*it)) {
+					if (!isValidPassword(this->_modeArgs[i])) {
+						++i;
 						return ERR_PASSFORMAT;
 					}
-					channel->setKey(*it);
+					this->_targetChannel->setKey(this->_modeArgs[i]);
+					++i;
 				} else {
-					channel->setKey("");
+					this->_targetChannel->setKey("");
 				}
 				break;
 			case 'o': {
 				// Give/take operator privilege from a user
-				if (++it == this->_args.end()) {
+				if (i >= this->_modeArgs.size()) {
 					return ERR_NEEDMOREPARAMS;
-				}
-				Client *client = this->_server.getClientByNickname(*it);
-				if (!client) {
+				} 
+				this->_targetClient = this->_server.getClientByNickname(this->_modeArgs[i]);
+				++i;
+				if (!this->_targetClient) {
 					return ERR_NOSUCHNICK;
 				}
-				channel->addUser(*client, s == '+');
+				this->_targetChannel->addUser(*this->_targetClient, s == '+');
 				break;
 			}
             case 'l':
                 // Set/unset the limit of users for the channel
-                if (++it == this->_args.end()) {
-                    return ERR_NEEDMOREPARAMS;
-                }
-                channel->setUserLimit(s == '+' ? atoi(it->c_str()) : -1);
+				if (i >= this->_modeArgs.size()) {
+					return ERR_NEEDMOREPARAMS;
+				} 
+                this->_targetChannel->setUserLimit(s == '+' ? 
+					atoi(this->_modeArgs[i].c_str()) : -1);
+				++i;
                 break;
             default:
                 return ERR_UNKNOWNMODE;
-			}
-			//to be rework with formated server response
-			std::string modeMessage =	":" + this->_client.getNicknameOrUsername(true) +
-										" " + this->_name +
-										" " + channelName +
-										" " + s + c;
-
-		this->_server.sendMessageToChannel(*channel, modeMessage);
+		}
     }
+	
+	this->_server.getServerReply()->MODE(*this, *this->_targetChannel);
 	
     return ERR_NONE;
 }

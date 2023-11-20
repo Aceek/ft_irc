@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:24:10 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 14:54:51 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:38:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ Client &Command::getTargetClient(void) const {
     return *this->_targetClient;
 }
 
-std::string const &Command::getMode(void) const {
-    return this->_mode;
+std::string const &Command::getModeSet(void) const {
+    return this->_modeSet;
+}
+
+std::vector<std::string> const &Command::getModeArgs(void) const {
+    return this->_modeArgs;
 }

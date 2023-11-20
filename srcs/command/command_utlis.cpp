@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 07:19:56 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:47:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,25 @@ Channel *Command::getOrCreateChannel(std::string const &channelName, std::string
         }
     }
     return channel;
+}
+
+bool Command::isValidMode(const std::string &str) {
+    if (str.empty()) {
+        return false;  
+    }
+
+    char firstChar = str[0];
+    if (firstChar != '+' && firstChar != '-') {
+        return false;
+    }
+
+    const char validChars[] = {'i', 't', 'k', 'o', 'l', '+' , '-', '\0'};
+    for (size_t i = 1; i < str.length(); ++i) {
+        char modeChar = std::tolower(str[i]);
+        if (std::find(validChars, validChars + sizeof(validChars) - 1, modeChar) == validChars + sizeof(validChars) - 1) {
+            return false;
+        }
+    }
+
+    return true;
 }

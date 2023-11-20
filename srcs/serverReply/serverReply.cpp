@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 16:55:01 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:07:17 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ std::string serverReply::buildInviteMessage(Command &cmd) {
 }
 
 std::string serverReply::buildJoinMessage(Command &cmd) {
-    return ":" + cmd.getClient().getPrefix() +
+	return ":" + cmd.getClient().getPrefix() +
            " " + cmd.getName() +
            " " + cmd.getTargetChannel().getName();
 }
@@ -40,6 +40,20 @@ std::string serverReply::buildKickMessage(Command &cmd) {
 	
 	msg += (!cmd.getTrailor().empty()) ? " :" + cmd.getTrailor() : "";
 	
+	return msg;
+}
+
+std::string serverReply::buildModeMessage(Command &cmd) {
+	std::string msg =	":" + cmd.getClient().getPrefix() +
+            			" " + cmd.getName() +
+						" " + cmd.getTargetChannel().getName() +
+						" " + cmd.getModeSet();
+	
+	for (std::vector<std::string>::const_iterator it = cmd.getModeArgs().begin();
+		it != cmd.getModeArgs().end(); ++it) {
+		msg += " " + *it;
+	}
+
 	return msg;
 }
 
@@ -84,22 +98,28 @@ void serverReply::INVITE(Command &cmd, Channel &receiver) {
 }
 
 void serverReply::JOIN(Command &cmd, Channel &receiver) {
-    const std::string& msg = buildInviteMessage(cmd);
+    const std::string& msg = buildJoinMessage(cmd);
     this->_server->sendMessageToChannel(receiver, msg);
+	std::cout << msg << std::endl;
 }
 
 void serverReply::PART(Command &cmd, Client &receiver) {
-    const std::string& msg = buildInviteMessage(cmd);
+    const std::string& msg = buildPartMessage(cmd);
     this->_server->setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::PART(Command &cmd, Channel &receiver) {
-    const std::string& msg = buildInviteMessage(cmd);
+    const std::string& msg = buildPartMessage(cmd);
     this->_server->sendMessageToChannel(receiver, msg);
 }
 
 void serverReply::KICK(Command &cmd, Channel &receiver) {
     const std::string& msg = buildKickMessage(cmd);
+    this->_server->sendMessageToChannel(receiver, msg);
+}
+
+void serverReply::MODE(Command &cmd, Channel &receiver) {
+    const std::string& msg = buildModeMessage(cmd);
     this->_server->sendMessageToChannel(receiver, msg);
 }
 

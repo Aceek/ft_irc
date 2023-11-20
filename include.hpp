@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/18 11:30:56 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:00:47 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 #include <cstdio>
 #include <deque>
 #include <cerrno>
+#include <algorithm>
 
 #include "srcs/channel/channel.hpp"
 #include "srcs/client/client.hpp"
@@ -69,19 +70,20 @@ enum ErrorCode {
     ERR_BADCHANNELKEY = 475,
     ERR_BADCHANMASK = 476,
     ERR_CHANOPRIVSNEEDED = 482,
+	ERR_UMODEUNKNOWNFLAG = 501,
 };
 
 enum messageServer {
-	ERR_SERVER_SENDING = 500,
-	ERR_SERVER_RECV = 501,
-	SERVER_CLOSING = 502,
-	SERVER_DELCLIENT = 503,
-	ERR_SERVER_ACCEPTCLIENT = 504,
-	SERVER_NEWCLIENT = 505,
-	ERR_NOENDCARACT = 506,
-	ERR_COMMAND_SIZE = 507,
-	ERR_BUFFER_SIZE = 508,
-	ERR_INVALIDFILEPATH = 509,
+	ERR_SERVER_SENDING = 600,
+	ERR_SERVER_RECV = 601,
+	SERVER_CLOSING = 602,
+	SERVER_DELCLIENT = 603,
+	ERR_SERVER_ACCEPTCLIENT = 604,
+	SERVER_NEWCLIENT = 605,
+	ERR_NOENDCARACT = 606,
+	ERR_COMMAND_SIZE = 607,
+	ERR_BUFFER_SIZE = 608,
+	ERR_INVALIDFILEPATH = 609,
 	
 
 };

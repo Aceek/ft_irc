@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 15:46:37 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:58:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int Command::JOIN() {
 
         addUserToChannel(this->_targetChannel);
         
-		this->_server.getServerReply()->INVITE(*this, *this->_targetChannel);
+		this->_server.getServerReply()->JOIN(*this, *this->_targetChannel);
 		
 		//to be rework with formated server response
 		// this->_server.RPL_TOPIC(*channel, this->_client);

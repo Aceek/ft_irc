@@ -15,11 +15,10 @@
 
 int Command::PRIVMSG() {
 /*	Parameters: <receiver>{,<receiver>} <text to be sent> */
-    if ((this->_args.size() < 2 && this->_trailor.empty()) ||
-		(this->_args.size() < 1 )) {
+    if (this->_args.size() < 1 ) {
         return ERR_NEEDMOREPARAMS;
     }
-	if (!this->_trailor.empty()) {
+	if (this->_trailor.empty()) {
 		return ERR_NOTEXTTOSEND;
 	}
 

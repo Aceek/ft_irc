@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 05:00:33 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:13:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int Command::TOPIC() {
 	}
 
 	if (this->_trailor.empty()) {
-		this->_server.RPL_TOPIC(*channel, this->_client);
+		// this->_server.RPL_TOPIC(*channel, this->_client);
 	} else {
         std::string	const	&newTopic = this->_trailor;
         channel->setTopic(newTopic);

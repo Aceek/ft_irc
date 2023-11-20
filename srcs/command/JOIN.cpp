@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 14:14:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:46:37 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,29 @@ int Command::JOIN() {
 		ft_split(this->_args[1], ",") : std::vector<std::string>();
 
     for (size_t i = 0; i < channels.size(); ++i) {
-        std::string const &channelName = channels[i];
-        if (!isValidChannelName(channelName)) {
+        if (!isValidChannelName(channels[i])) {
             return ERR_BADCHANMASK;
         }
 		
         std::string	key = (i < keys.size()) ? keys[i] : "";
-        Channel	*channel = getOrCreateChannel(channelName, key);
-        if (channel->isClientPresent(this->_client)) {
+        this->_targetChannel = getOrCreateChannel(channels[i], key);
+        if (this->_targetChannel->isClientPresent(this->_client)) {
 			return ERR_USERONCHANNEL;
 		}
-		if (!isValidChannelKey(channel, key)) {
+		if (!isValidChannelKey(this->_targetChannel, key)) {
             return ERR_BADCHANNELKEY;
         }
-        if (checkInviteOnlyAndNotInvited(channel)) {
+        if (checkInviteOnlyAndNotInvited(this->_targetChannel)) {
             return ERR_INVITEONLYCHAN;
         }
-        if (checkChannelFull(channel)) {
+        if (checkChannelFull(this->_targetChannel)) {
             return ERR_CHANNELISFULL;
         }
 
-        addUserToChannel(channel);
+        addUserToChannel(this->_targetChannel);
         
-		//to be rework with formated server response
-		std::string joinMessage = 	":" + this->_client.getPrefix() + 
-									" " + this->_name +
-									" " + channelName;
-
-		this->_server.sendMessageToChannel(*channel, joinMessage);
-
+		this->_server.getServerReply()->INVITE(*this, *this->_targetChannel);
+		
 		//to be rework with formated server response
 		// this->_server.RPL_TOPIC(*channel, this->_client);
 		// this->_server.RPL_NAMREPLY(*channel, this->_client);

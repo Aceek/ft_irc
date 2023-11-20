@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_message.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/19 18:42:14 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:14:23 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,50 +114,6 @@ std::string	Server::getServerMessage(int messageServer) const {
 		return("Unknow error");
 
 	}
-}
-
-void Server::RPL_LIST(Client &client) {
-	
-	std::string RPL_LIST =	":server " +
-							client.getNicknameOrUsername(true) +
-							" =\n" + getChannelsNames();
-	
-	setMessageQueue(client.getClientFd(),  RPL_LIST);
-}
-
-void Server::RPL_LISTEND(Client &client) {
-    std::string RPL_LISTEND =	":server " +
-								client.getNicknameOrUsername(true) +
-								" :End of /LIST list.";
-								
-	setMessageQueue(client.getClientFd(), RPL_LISTEND);
-}
-
-void Server::RPL_TOPIC(Channel const &channel, Client &client) {
-	std::string RPL_TOPIC =	":server " +
-							channel.getName() +
-							" :" + (!channel.getTopic().empty() ?
-							channel.getTopic() : "No topic is set");
-							
-	setMessageQueue(client.getClientFd(), RPL_TOPIC);
-}
-
-void Server::RPL_NAMREPLY(Channel const &channel, Client &client) {
-    std::string RPL_NAMREPLY =	":server " + 
-								client.getNicknameOrUsername(true) + 
-								" = " + channel.getName() +
-								" :" + channel.getNicknames();
-
-   setMessageQueue(client.getClientFd(), RPL_NAMREPLY);
-}
-
-void Server::RPL_ENDOFNAMES(Channel const &channel, Client &client) {
-    std::string RPL_ENDOFNAMES =	":server " +
-									client.getNicknameOrUsername(true) +
-									" " + channel.getName() +
-									" :End of /NAMES list.";
-								
-	setMessageQueue(client.getClientFd(), RPL_ENDOFNAMES);
 }
 
 void	Server::printClientInput(const std::string &message, const Client &client) const {

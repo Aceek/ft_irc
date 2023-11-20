@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PART.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 18:25:32 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:48:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,22 @@ int Command::PART() {
     std::vector<std::string> channels = ft_split(this->_args[0], ",");    
     for (std::vector<std::string>::const_iterator it = channels.begin();
 		it != channels.end(); ++it) {
-        std::string const	&channelName = *it;
-      	Channel				*channel = this->_server.getChannel(channelName);
-		if (!channel) {
+      this->_targetChannel = this->_server.getChannel(*it);
+		if (!this->_targetChannel) {
         	return ERR_NOSUCHCHANNEL;
         }
-		if (!channel->isClientPresent(this->_client)) {
+		if (!this->_targetChannel->isClientPresent(this->_client)) {
         	return ERR_NOTONCHANNEL;
         }
-
-		//to be rework with formated server response
-		std::string partMessage =	":" + this->_client.getNicknameOrUsername(true) +
-									" " + this->_name + 
-									" " + channelName;
 		
-		// this->_server.sendMessage(this->_client.getClientFd(),partMessage);
+		this->_server.getServerReply()->PART(*this, *this->_targetClient);
 
-		channel->delUser(this->_client);
+		this->_targetChannel->delUser(this->_client);
 		
-		if (channel->getCount() < 1) {
-			this->_server.delChannel((channelName));
+		if (this->_targetChannel->getCount() < 1) {
+			this->_server.delChannel((*it));
 		} else {
-			this->_server.sendMessageToChannel(*channel, partMessage);					
+			this->_server.getServerReply()->PART(*this, *this->_targetChannel);
 		}
 	}
 	

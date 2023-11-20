@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/18 11:39:40 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:46:50 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ class Server {
 		/*server_message*/
 		std::string		getServerMessage(int messageServer) const;
 		std::string		getErrorMessage(int errorCode) const;
- 		void			RPL_LIST(Client &client);
-		void			RPL_LISTEND(Client &client);
-		void			RPL_TOPIC(Channel const &channel, Client &client);
-		void			RPL_NAMREPLY(Channel const &channel, Client &client);
-		void			RPL_ENDOFNAMES(Channel const &channel, Client &client);
 		void			printClientInput(const std::string &message, const Client &client) const;
 		void			printServerInput(const std::string &message) const;
 		

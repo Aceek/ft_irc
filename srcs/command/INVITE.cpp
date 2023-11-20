@@ -6,23 +6,11 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/14 04:49:07 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:46:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
-
-// static void sendInviteMessage(Command const &cmd, Channel const *channel, 
-// 	std::string const &channelName, std::string const&nickname, Client const &client) {
-//     std::string inviteMessage = ":" + cmd.getClient().getNicknameOrUsername(true) +
-//                               	" " + cmd.getName() +
-// 								" " + nickname +
-//                               	" " + channelName;
-
-//     channel->sendMessageToAll(inviteMessage);
-	
-// 	cmd.getServer().setMessageQueue(client.getClientFd(), inviteMessage);
-// }
 
 int Command::INVITE() {
 /*   Parameters: <nickname> <channel>	*/
@@ -30,37 +18,28 @@ int Command::INVITE() {
         return ERR_NEEDMOREPARAMS;
     }
 
-    std::string const	&channelName = this->_args[1];
-    Channel				*channel = this->_server.getChannel(channelName);
-    if (!channel) {
+    this->_targetChannel = this->_server.getChannel(this->_args[1]);
+    if (!this->_targetChannel) {
         return ERR_NOSUCHCHANNEL;
     }
-	if (!channel->isClientPresent(this->_client)) {
+	if (!this->_targetChannel->isClientPresent(this->_client)) {
         return ERR_NOTONCHANNEL;
     }
-    if (!channel->isOperator(getClient())) {
+    if (!this->_targetChannel->isOperator(getClient())) {
         return ERR_CHANOPRIVSNEEDED;
     }
 	
-    std::string const	&nickname = this->_args[0];
-	Client				*client = this->_server.getClientByNickname(nickname);
-	if (!client) {
+	this->_targetClient = this->_server.getClientByNickname(this->_args[0]);
+	if (!this->_targetClient) {
     	return ERR_NOSUCHNICK;
     }
-	if (channel->isClientPresent(*client)) {
+	if (this->_targetChannel->isClientPresent(*this->_targetClient)) {
         return ERR_USERONCHANNEL;
     }
 
-	channel->inviteUser(*client);
+	this->_targetChannel->inviteUser(*this->_targetClient);
 	
-	//to be rework with formated server response
-    std::string inviteMessage = ":" + this->_client.getNicknameOrUsername(true) +
-                              	" " + this->_name +
-								" " + nickname +
-                              	" " + channelName;
-
-	this->_server.sendMessageToChannel(*channel, inviteMessage);
-	this->_server.setMessageQueue(client->getClientFd(), inviteMessage);
+    this->_server.getServerReply()->JOIN(*this, *this->_targetChannel);
 
     return ERR_NONE;
 }

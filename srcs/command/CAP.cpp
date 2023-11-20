@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   serverReply.cpp                                    :+:      :+:    :+:   */
+/*   CAP.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/18 11:43:15 by ilinhard         ###   ########.fr       */
+/*   Created: 2023/11/20 20:52:22 by ilinhard          #+#    #+#             */
+/*   Updated: 2023/11/20 21:59:29 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "serverReply.hpp"
+#include "command.hpp"
 
-serverReply::serverReply() {}
-serverReply::serverReply(const Server *server) : _server(server) {}
+int	Command::CAP() {
+	// Server does no handle capability negociation 
 
-serverReply::~serverReply() {}
+	// this->_server.getServerReply()->CAP_RPL(this->_client.getClientFd());
+	// this->_server.getServerReply().CAP_RPL(this->_client.getClientFd());
+	return (ERR_NONE);
+}

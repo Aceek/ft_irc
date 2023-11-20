@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/18 11:30:56 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:59:20 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 #include "srcs/channel/channel.hpp"
 #include "srcs/client/client.hpp"
 #include "srcs/command/command.hpp"
-#include "srcs/serverReply/serverReply.hpp"
 #include "srcs/server/server.hpp"
 #include "srcs/utils/utils.hpp"
 

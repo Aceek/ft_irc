@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 18:56:58 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:28:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ Command &Command::operator=(Command const &rhs) {
 	this->_args = rhs._args;
 	this->_trailor = rhs._trailor;
 	this->_client = rhs._client;
-	this->_server = rhs._server;
+	// this->_server = rhs._server;
 
     return *this;
 }
@@ -85,6 +85,7 @@ void Command::initCommandsMap(void) {
     this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
     this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
     this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");
+    // this->_commands["CAP"] = CommandInfo(&Command::CAP, "<subcommand> [:<capabilities>]");
 }
 
 int Command::exec(void) {

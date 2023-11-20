@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/18 11:41:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:00:56 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 const std::string	&Server::getPassword() const {
 	return (this->_password);
-}
-
-
-serverReply	*Server::getServerReply() const {
-	return (this->_serverReply);
 }
 
 Client *Server::getClientByNickname(std::string const &nickname) {

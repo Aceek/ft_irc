@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/19 17:45:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:58:42 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 	}
 	addToPoll(this->_serverFd, POLLIN);
 	
-	serverReply reply(this);
-	this->_serverReply = &reply;
 }
 
 void	Server::addToPoll(int fd, short events) {
@@ -159,7 +157,7 @@ int	Server::acceptClient() {
 	return (clientFd);
 }
 
-Server::Server() {};
+// Server::Server() {};
 Server::~Server() {
 	close(this->_serverFd);
 };

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 15:48:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 20:03:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int Command::PART() {
         	return ERR_NOTONCHANNEL;
         }
 		
-		this->_server.getServerReply()->PART(*this, *this->_targetClient);
+		this->_server.getServerReply()->PART(*this, this->_client);
 
 		this->_targetChannel->delUser(this->_client);
 		

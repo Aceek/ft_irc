@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 19:07:17 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 21:25:14 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,12 @@ void serverReply::INVITE(Command &cmd, Client &receiver) {
 
 void serverReply::INVITE(Command &cmd, Channel &receiver) {
     const std::string& msg = buildInviteMessage(cmd);
-    this->_server->sendMessageToChannel(receiver, msg);
+	this->_server->sendMessageToChannel(receiver, msg);
 }
 
 void serverReply::JOIN(Command &cmd, Channel &receiver) {
-    const std::string& msg = buildJoinMessage(cmd);
+    std::string msg = buildJoinMessage(cmd);
     this->_server->sendMessageToChannel(receiver, msg);
-	std::cout << msg << std::endl;
 }
 
 void serverReply::PART(Command &cmd, Client &receiver) {

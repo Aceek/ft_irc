@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 18:47:07 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 20:46:16 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ Channel *Command::getOrCreateChannel(std::string const &channelName, std::string
     if (!channel) {
         this->_server.addChannel(channelName);
         channel = this->_server.getChannel(channelName);
+		std::cout << channel->getName() <<std::endl;
         if (!key.empty()) {
             channel->setKey(key);
         }

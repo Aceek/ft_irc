@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 15:46:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:46:53 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int Command::INVITE() {
 /*   Parameters: <nickname> <channel>	*/
-    if (this->getArgs().size() < 2) {
+    if (this->_args.size() < 2) {
         return ERR_NEEDMOREPARAMS;
     }
 
@@ -39,7 +39,8 @@ int Command::INVITE() {
 
 	this->_targetChannel->inviteUser(*this->_targetClient);
 	
-    this->_server.getServerReply()->JOIN(*this, *this->_targetChannel);
+    this->_server.getServerReply()->INVITE(*this, *this->_targetClient);
+    this->_server.getServerReply()->INVITE(*this, *this->_targetChannel);
 
     return ERR_NONE;
 }

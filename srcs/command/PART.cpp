@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:05:05 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 20:23:08 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int Command::PART() {
 /*   Parameters: <channel>{,<channel>}	*/
 	if (this->_args.size() < 1) {
+		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 
@@ -23,9 +24,11 @@ int Command::PART() {
 		it != channels.end(); ++it) {
 	  this->_targetChannel = this->_server.getChannel(*it);
 		if (!this->_targetChannel) {
+			this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 			return ERR_NOSUCHCHANNEL;
 		}
 		if (!this->_targetChannel->isClientPresent(this->_client)) {
+			this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
 			return ERR_NOTONCHANNEL;
 		}
 		

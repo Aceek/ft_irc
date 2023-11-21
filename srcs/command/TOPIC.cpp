@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:43 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 20:24:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,21 @@
 int Command::TOPIC() {
 	/* Parameters: <channel> [<topic>] */
 	if (this->_args.size() < 1) {
+		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 
 	this->_targetChannel = this->_server.getChannel(this->_args[0]);
 	if (!this->_targetChannel) {
+		this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 		return ERR_NOSUCHCHANNEL;
 	}
 	if (!this->_targetChannel->isClientPresent(this->_client)) {
+		this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
 		return ERR_NOTONCHANNEL;
 	}
 	if (!checkTopicRestriction(this->_targetChannel)) {
+		this->_server.getServerReply()->CHANOPRIVSNEEDED(*this, this->_client);
 		return ERR_CHANOPRIVSNEEDED;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:05:46 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 20:54:54 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int Command::JOIN() {
 /*   Parameters: <channel>{,<channel>} [<key>{,<key>}]	*/
   if (this->_args.size() < 1) {
+		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 
@@ -24,21 +25,26 @@ int Command::JOIN() {
 
 	for (size_t i = 0; i < channels.size(); ++i) {
 		if (!isValidChannelName(channels[i])) {
+			this->_server.getServerReply()->BADCHANMASK(channels[i], this->_client);
 			return ERR_BADCHANMASK;
 		}
 		
 		std::string	key = (i < keys.size()) ? keys[i] : "";
 		this->_targetChannel = getOrCreateChannel(channels[i], key);
 		if (this->_targetChannel->isClientPresent(this->_client)) {
+			this->_server.getServerReply()->USERONCHANNEL(*this, this->_client);
 			return ERR_USERONCHANNEL;
 		}
 		if (!isValidChannelKey(this->_targetChannel, key)) {
+			this->_server.getServerReply()->BADCHANNELKEY(*this, this->_client);
 			return ERR_BADCHANNELKEY;
 		}
 		if (checkInviteOnlyAndNotInvited(this->_targetChannel)) {
+			this->_server.getServerReply()->INVITEONLYCHAN(*this, this->_client);
 			return ERR_INVITEONLYCHAN;
 		}
 		if (checkChannelFull(this->_targetChannel)) {
+			this->_server.getServerReply()->CHANNELISFULL(*this, this->_client);
 			return ERR_CHANNELISFULL;
 		}
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:57:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 18:52:14 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ class Command {
 		std::string const				&getTrailor(void) const;
 		Client							&getClient(void) const;
 		Server							&getServer(void) const;
-		Channel							&getTargetChannel(void) const;
-		Client							&getTargetClient(void) const;
+		Channel							*getTargetChannel(void) const;
+		Client							*getTargetClient(void) const;
 		std::string const				&getModeSet(void) const;
 		std::vector<std::string> const	&getModeArgs(void) const;
 		

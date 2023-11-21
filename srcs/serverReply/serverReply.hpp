@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:02 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 20:50:33 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,24 @@ public:
 	// void	RPL_TOPIC(Channel const &channel, Client &client);
 	// void	RPL_NAMREPLY(Channel const &channel, Client &client);
 	// void	RPL_ENDOFNAMES(Channel const &channel, Client &client);
+	
+    void NOSUCHNICK(Command const &cmd, Client &receiver);
+    void NOSUCHCHANNEL(Command const &cmd, Client &receiver);
+    void CANNOTSENDTOCHAN(Command const &cmd, Client &receiver);
+    void NOTEXTTOSEND(Command const &cmd, Client &receiver);
+	void UNKNOWNCOMMAND(Command const &cmd, Client &receiver);
+    void NOTONCHANNEL(Command const &cmd, Client &receiver);
+    void USERONCHANNEL(Command const &cmd, Client &receiver);
+    void NEEDMOREPARAMS(Command const &cmd, Client &receiver);
+    void ALREADYREGISTRED(Command const &cmd, Client &receiver);
+    void PASSWDMISMATCH(Command const &cmd, Client &receiver);
+    void CHANNELISFULL(Command const &cmd, Client &receiver);
+    void UNKNOWNMODE(Command const &cmd, Client &receiver);
+    void INVITEONLYCHAN(Command const &cmd, Client &receiver);
+    void BADCHANNELKEY(Command const &cmd, Client &receiver);
+	void BADCHANMASK(std::string const &channel, Client &receiver);
+    void CHANOPRIVSNEEDED(Command const &cmd, Client &receiver);
+    void UMODEUNKNOWNFLAG(Command const &cmd, Client &receiver);
 
 	std::string		buildInviteMessage(Command &cmd);
 	std::string		buildJoinMessage(Command &cmd);
@@ -49,6 +67,7 @@ public:
 	void	PRIVMSG(Command &cmd, Channel &receiver);
 	void	MODE(Command &cmd, Channel &receiver);
 	void	TOPIC(Command &cmd, Channel &receiver);
+
 
 	void	CAP_RPL(const int clientFd);
 	void	NICK_RPL(const int errorCode, const Command &command);

@@ -16,9 +16,11 @@
 int Command::PRIVMSG() {
 /*	Parameters: <receiver>{,<receiver>} <text to be sent> */
 	if (this->_args.size() < 1 ) {
+		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 	if (this->_trailor.empty()) {
+		this->_server.getServerReply()->NOTEXTTOSEND(*this, this->_client);
 		return ERR_NOTEXTTOSEND;
 	}
 
@@ -29,9 +31,11 @@ int Command::PRIVMSG() {
 			if (isValidChannelName(*it)) {
 				this->_targetChannel = this->_server.getChannel(*it);
 				if (!this->_targetChannel) {
+					this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 					return ERR_NOSUCHCHANNEL;
 				}
 				if (!this->_targetChannel->isClientPresent(this->_client)) {
+					this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
 					return ERR_NOTONCHANNEL;
 				}
 
@@ -39,6 +43,7 @@ int Command::PRIVMSG() {
 			} else {
 				this->_targetClient = this->_server.getClientByNickname(*it);
 				if (!this->_targetClient) {
+					this->_server.getServerReply()->NOSUCHNICK(*this, this->_client);
 					return ERR_NOSUCHNICK;
 				}
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:13:27 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:56:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,10 @@ bool Command::checkInviteOnlyAndNotInvited(Channel const *channel) const {
 	return channel->getInviteOnly() && !channel->isClientInvited(this->_client);
 }
 
+bool Command::checkInviteOnlyAndNotOperator(Channel const *channel) const {
+	return channel->getInviteOnly() && !channel->isOperator(this->_client);
+}
+
 bool Command::checkChannelFull(Channel const *channel) const {
 	return channel->getCount() >= channel->getUserLimit() && channel->getUserLimit() >= 0;
 }
@@ -102,7 +106,7 @@ bool Command::checkTopicRestriction(Channel const *channel) const {
 	return true;
 }
 
-void Command::addUserToChannel(Channel *const channel) const {
+void Command::addUserToChannel(Channel *channel) const {
 	channel->addUser(this->_client, channel->isOperator(this->_client));
 }
 

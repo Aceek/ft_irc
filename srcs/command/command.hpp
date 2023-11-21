@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:06:07 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:57:03 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ class Command {
 		bool	isValidChannelName(std::string const &channelName) const;
 		bool	isValidChannelKey(Channel const *channel, std::string const &key) const;
 		bool	checkInviteOnlyAndNotInvited(Channel const *channel) const;
+		bool	checkInviteOnlyAndNotOperator(Channel const *channel) const;
 		bool	checkChannelFull(Channel const *channel) const;
 		bool	checkTopicRestriction(Channel const *channel) const;
 		void	addUserToChannel(Channel *channel) const;

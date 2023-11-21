@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:01:59 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:45:42 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@ serverReply::serverReply(Server &server) : _server(server) {}
 serverReply::~serverReply() {}
 
 /* ************************************************************************** */
+
+// void serverReply::error(const int errorCode, Command &cmd, Client &receiver) {
+	
+// 	std::string msg;
+// 	std::string prefix = cmd.getTargetClient().getNicknameOrUsername(true);
+// 	switch(errorCode) {
+// 		case ERR_NOSUCHNICK:
+// 			msg = prefix +
+// 	}
+// 	this->_server.setMessageQueue(receiver.getClientFd(), msg);
+// }
 
 std::string serverReply::buildInviteMessage(Command &cmd) {
 	return ":" + cmd.getClient().getPrefix() +
@@ -68,9 +79,8 @@ std::string serverReply::buildPrivmsgMessage(Command &cmd, bool channel) {
 						" ";
 	
 
-	(void)channel;
-	// msg += (channel) ? cmd.getTargetChannel().getName() : 
-	// 	cmd.getTargetClient().getNicknameOrUsername(true); // SEGFAULT 
+	msg += (channel) ? cmd.getTargetChannel().getName() : 
+		cmd.getTargetClient().getNicknameOrUsername(true); 
 	
 	msg += (!cmd.getTrailor().empty()) ? " :" + cmd.getTrailor() : "";
 
@@ -124,12 +134,12 @@ void serverReply::MODE(Command &cmd, Channel &receiver) {
 }
 
 void serverReply::PRIVMSG(Command &cmd, Client &receiver) {
-	const std::string& msg = buildPrivmsgMessage(cmd, true);
+	const std::string& msg = buildPrivmsgMessage(cmd, false);
 	this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::PRIVMSG(Command &cmd, Channel &receiver) {
-	const std::string& msg = buildPrivmsgMessage(cmd, false);
+	const std::string& msg = buildPrivmsgMessage(cmd, true);
 	this->_server.sendMessageToChannel(receiver, msg);
 }
 

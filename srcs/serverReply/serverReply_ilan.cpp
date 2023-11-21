@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 04:31:55 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:49:48 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void serverReply::NICK_RPL(const int errorCode, const Command &command) {
 
 
 void serverReply::NICK_SUCCES(const Client& client, const std::string &oldNick) {
-	int clientFdWhoChange = client.getClientFd();
+	int clientFd = client.getClientFd();
     std::string hostname = "localhost";
     std::string newNickname = client.getNicknameOrUsername(true);
 
@@ -54,16 +54,7 @@ void serverReply::NICK_SUCCES(const Client& client, const std::string &oldNick) 
     std::string message = ":" + oldNick + "!" + 
 	username + "@" + hostname + " NICK :" + newNickname;
 
-    std::map<const int, Client> clients = this->_server.getClients();
-
-    std::map<const int, Client>::const_iterator it;
-    for (it = clients.begin(); it != clients.end(); ++it) {
-        const int clientFd = it->first;
-
-        if (clientFdWhoChange != clientFd) {
-            this->_server.setMessageQueue(clientFd, message);
-        }
-    }
+	this->_server.setMessageQueue(clientFd, message);
 }
 
 

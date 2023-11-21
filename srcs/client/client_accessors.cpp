@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client_accessors.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:25:35 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 01:58:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:07:47 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	Client::setNickRegister() {
 
 
 std::string Client::getPrefix(void) const {
-    std::string prefix = this->_nickname;
-    if (!this->_username.empty())
-        prefix += "!" + this->_username;
-    
-    return prefix + "@" + this->_hostname;
+	std::string prefix = this->_nickname;
+	if (!this->_username.empty())
+		prefix += "!" + this->_username;
+	
+	return prefix + "@" + this->_hostname;
 }

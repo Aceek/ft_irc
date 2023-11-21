@@ -15,14 +15,14 @@
 
 int Command::PRIVMSG() {
 /*	Parameters: <receiver>{,<receiver>} <text to be sent> */
-    if (this->_args.size() < 1 ) {
-        return ERR_NEEDMOREPARAMS;
-    }
+	if (this->_args.size() < 1 ) {
+		return ERR_NEEDMOREPARAMS;
+	}
 	if (this->_trailor.empty()) {
 		return ERR_NOTEXTTOSEND;
 	}
 
-    std::vector<std::string> receivers = ft_split(this->_args[0], ",");
+	std::vector<std::string> receivers = ft_split(this->_args[0], ",");
 	//!!! is it possible to send a message to ourselve ? if so check double output msg
 	for (std::vector<std::string>::iterator it = receivers.begin();
 		it != receivers.end(); ++it) {
@@ -37,7 +37,7 @@ int Command::PRIVMSG() {
 
 				this->_server.getServerReply()->PRIVMSG(*this, *this->_targetChannel);
 			} else {
-    			this->_targetClient = this->_server.getClientByNickname(*it);
+				this->_targetClient = this->_server.getClientByNickname(*it);
 				if (!this->_targetClient) {
 					return ERR_NOSUCHNICK;
 				}
@@ -47,5 +47,5 @@ int Command::PRIVMSG() {
 			}
 	}
 		
-    return ERR_NONE;
+	return ERR_NONE;
 }

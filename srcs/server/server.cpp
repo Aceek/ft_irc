@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 01:14:40 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:09:27 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,21 +166,21 @@ Server::~Server() {
 };
 
 void Server::tryCommand(Client &client, const int clientFd) {
-    std::string clientCommand = client.getClientCommand();
-    size_t newlinePos = clientCommand.find('\n');
+	std::string clientCommand = client.getClientCommand();
+	size_t newlinePos = clientCommand.find('\n');
 
-    while (newlinePos != std::string::npos) {
-        std::string currentCommand = clientCommand.substr(0, newlinePos);
-        try {
-            Command command(currentCommand, client, *this);
+	while (newlinePos != std::string::npos) {
+		std::string currentCommand = clientCommand.substr(0, newlinePos);
+		try {
+			Command command(currentCommand, client, *this);
 			command.exec();
-        } catch(const std::exception& e) {
-            setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
-        }
-        clientCommand = clientCommand.substr(newlinePos + 1);
-        newlinePos = clientCommand.find('\n');
-    }
-    client.clearCommand();
+		} catch(const std::exception& e) {
+			setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
+		}
+		clientCommand = clientCommand.substr(newlinePos + 1);
+		newlinePos = clientCommand.find('\n');
+	}
+	client.clearCommand();
 }
 
 
@@ -215,33 +215,33 @@ void Server::sendMessage(const int clientFd, const std::string &message) const {
 }
 
 void Server::sendFile(const int clientFd, const std::string &filePath) {
-    std::ifstream fileStream(filePath.c_str(), std::ios::binary);
-    if (!fileStream.is_open()) {
-        printServerInput(getServerMessage(ERR_SERVER_SENDING));
-        return;
-    }
+	std::ifstream fileStream(filePath.c_str(), std::ios::binary);
+	if (!fileStream.is_open()) {
+		printServerInput(getServerMessage(ERR_SERVER_SENDING));
+		return;
+	}
 
-    // Determine the file size
-    fileStream.seekg(0, std::ios::end);
-    int fileSize = fileStream.tellg();
-    fileStream.seekg(0, std::ios::beg);
+	// Determine the file size
+	fileStream.seekg(0, std::ios::end);
+	int fileSize = fileStream.tellg();
+	fileStream.seekg(0, std::ios::beg);
 
-    const int chunkSize = MAX_COMMAND_SIZE;
-    char buffer[MAX_COMMAND_SIZE];
+	const int chunkSize = MAX_COMMAND_SIZE;
+	char buffer[MAX_COMMAND_SIZE];
 
-    while (fileSize > 0) {
-        int bytesRead = fileStream.readsome(buffer, std::min(fileSize, chunkSize));
-        int bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
+	while (fileSize > 0) {
+		int bytesRead = fileStream.readsome(buffer, std::min(fileSize, chunkSize));
+		int bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
 
-        if (bytesSent == -1) {
-            printServerInput(getServerMessage(ERR_SERVER_SENDING));
-            break;
-        }
+		if (bytesSent == -1) {
+			printServerInput(getServerMessage(ERR_SERVER_SENDING));
+			break;
+		}
 
-        fileSize -= bytesRead;
-    }
+		fileSize -= bytesRead;
+	}
 
-    fileStream.close();
+	fileStream.close();
 }
 
 void Server::verifyMessageSend(const int clientFd) {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 02:02:11 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:08:02 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ Client::~Client() {
 }
 
 Client::Client(int fd, const struct sockaddr_in &addr)
-    : _clientFd(fd), _clientAdress(addr), _nickname(""), _command(""),
-      _username(""), _realName(""), _hostname("localhost"),
-      _passRegister(false), _userRegister(false), _nickRegister(false) {}
+	: _clientFd(fd), _clientAdress(addr), _nickname(""), _command(""),
+	  _username(""), _realName(""), _hostname("localhost"),
+	  _passRegister(false), _userRegister(false), _nickRegister(false) {}
 
 const struct sockaddr_in& Client::getClientAddress() const {
 	return (this->_clientAdress);

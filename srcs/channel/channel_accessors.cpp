@@ -6,34 +6,34 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 05:33:42 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:06:43 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "channel.hpp"
 
 std::string const &Channel::getName(void) const {
-    return this->_name;
+	return this->_name;
 }
 
 std::string const &Channel::getTopic(void) const {
-    return this->_topic;
+	return this->_topic;
 }
 
 void Channel::setTopic(std::string const &topic) {
-    this->_topic = topic;
+	this->_topic = topic;
 }
 
 std::string const &Channel::getKey(void) const {
-    return this->_key;
+	return this->_key;
 }
 
 std::set<Client *> const &Channel::getUsers(void) const {
-    return this->_users;
+	return this->_users;
 }
 
 std::set<Client *> const &Channel::getOperators(void) const {
-    return this->_operators;
+	return this->_operators;
 }
 
 void Channel::setKey(std::string const &key) {
@@ -45,21 +45,21 @@ int Channel::getCount(void) const {
 }
 
 std::string const Channel::getNicknames(void) const {
-    std::string userNicks;
+	std::string userNicks;
 
-    for (std::set<Client *>::iterator it = this->_operators.begin();
-         it != this->_operators.end(); ++it) {
-        userNicks += "@" + (*it)->getNicknameOrUsername(true) + " ";
-    }
-    for (std::set<Client *>::iterator it = this->_users.begin();
-         it != this->_users.end(); ++it) {
-        userNicks += (*it)->getNicknameOrUsername(true) + " ";
-    }
-    if (!userNicks.empty()) {
-        userNicks.erase(userNicks.size() - 1);
-    }
+	for (std::set<Client *>::iterator it = this->_operators.begin();
+		 it != this->_operators.end(); ++it) {
+		userNicks += "@" + (*it)->getNicknameOrUsername(true) + " ";
+	}
+	for (std::set<Client *>::iterator it = this->_users.begin();
+		 it != this->_users.end(); ++it) {
+		userNicks += (*it)->getNicknameOrUsername(true) + " ";
+	}
+	if (!userNicks.empty()) {
+		userNicks.erase(userNicks.size() - 1);
+	}
 
-    return userNicks;
+	return userNicks;
 }
 
 bool Channel::getInviteOnly(void) const {
@@ -71,7 +71,7 @@ void Channel::setInviteOnly(bool inviteOnly) {
 }
 
 bool Channel::getTopicRestricted(void) const {
-    return this->_topicRestricted;
+	return this->_topicRestricted;
 }
 
 void Channel::setTopicRestricted(bool topicRestricted) {
@@ -79,7 +79,7 @@ void Channel::setTopicRestricted(bool topicRestricted) {
 }
 
 int Channel::getUserLimit(void) const {
-    return this->_userLimit;
+	return this->_userLimit;
 }
 
 void Channel::setUserLimit(int userLimit) {

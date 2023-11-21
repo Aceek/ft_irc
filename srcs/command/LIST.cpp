@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:24 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 21:00:25 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:05:31 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ int Command::LIST() {
 	// this->_server.RPL_LIST(this->_client);
 	// this->_server.RPL_LISTEND(this->_client);
 
-    return ERR_NONE;
+	return ERR_NONE;
 }

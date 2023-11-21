@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 05:56:21 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:06:59 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class Channel {
 		int							getUserLimit(void) const;
 		void						setUserLimit(int userLimit);
 		std::set<Client *> const	&getUsers(void) const;
-        std::set<Client *> const 	&getOperators(void) const;
+		std::set<Client *> const 	&getOperators(void) const;
 
 		/*channel_utils*/
 		bool	isUser(Client &client) const;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 04:18:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:06:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ class Command {
 		std::vector<std::string> const	&getArgs(void) const;
 		std::string const				&getTrailor(void) const;
 		Client							&getClient(void) const;
-    	Server							&getServer(void) const;
+		Server							&getServer(void) const;
 		Channel							&getTargetChannel(void) const;
-    	Client							&getTargetClient(void) const;
-    	std::string const				&getModeSet(void) const;
+		Client							&getTargetClient(void) const;
+		std::string const				&getModeSet(void) const;
 		std::vector<std::string> const	&getModeArgs(void) const;
 		
 		/*command_utlis*/
@@ -61,10 +61,10 @@ class Command {
 		bool	isValidPassword() const;
 		bool	isValidPassword(std::string const &key) const;
 		bool	isValidChannelName(std::string const &channelName) const;
-    	bool	isValidChannelKey(Channel const *channel, std::string const &key) const;
-    	bool	checkInviteOnlyAndNotInvited(Channel const *channel) const;
-    	bool	checkChannelFull(Channel const *channel) const;
-    	bool	checkTopicRestriction(Channel const *channel) const;
+		bool	isValidChannelKey(Channel const *channel, std::string const &key) const;
+		bool	checkInviteOnlyAndNotInvited(Channel const *channel) const;
+		bool	checkChannelFull(Channel const *channel) const;
+		bool	checkTopicRestriction(Channel const *channel) const;
 		void	addUserToChannel(Channel *channel) const;
 		Channel	*getOrCreateChannel(std::string const &channelName, std::string const &key);
 		bool	isValidMode(const std::string &str);
@@ -86,8 +86,8 @@ class Command {
 		typedef int (Command::*cmdFt)();
 
 		struct CommandInfo {
-        	cmdFt		func;
-        	std::string	params;
+			cmdFt		func;
+			std::string	params;
 
 			CommandInfo() {}
 			CommandInfo(cmdFt func, std::string const &params) : 
@@ -95,9 +95,9 @@ class Command {
 				params(params) {}
 			~CommandInfo() {}
 			
-    	};
+		};
 
-    	typedef std::map<std::string, CommandInfo> CommandMap;
+		typedef std::map<std::string, CommandInfo> CommandMap;
 		CommandMap	_commands;
 };
 

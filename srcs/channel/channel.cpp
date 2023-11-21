@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/15 06:43:42 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:06:54 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ Channel::Channel(Channel const &rhs) :
 	_server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const  &rhs) {
-    if (this == &rhs) {
-        return *this;
-    }
+	if (this == &rhs) {
+		return *this;
+	}
 
 	this->_name = rhs._name;
 	this->_topic = rhs._topic;
@@ -47,7 +47,7 @@ Channel &Channel::operator=(Channel const  &rhs) {
 	this->_userLimit = rhs._userLimit;
 	this->_server = rhs._server;
 
-    return *this;
+	return *this;
 }
 
 Channel::~Channel(void) {}
@@ -55,7 +55,7 @@ Channel::~Channel(void) {}
 /* ************************************************************************** */
 
 void Channel::addUser(Client &client, bool asOperator) {
-    if (asOperator || (this->_users.empty() && this->_operators.empty())) {
+	if (asOperator || (this->_users.empty() && this->_operators.empty())) {
 		// add to operators list if there's no duplicate and erase it if needed in users list
 		if (this->_operators.insert(&client).second) {
 			this->_users.erase(&client);

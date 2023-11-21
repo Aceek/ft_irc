@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:24 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 15:13:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:05:14 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int Command::NAMES() {
 /*	Parameters: [<channel>{,<channel>}]	*/
-    if (this->_args.empty()) {
-        for (ChannelMap::const_iterator it = this->_server.getChannels().begin();
+	if (this->_args.empty()) {
+		for (ChannelMap::const_iterator it = this->_server.getChannels().begin();
 		 	it != this->_server.getChannels().end(); ++it) {
-            Channel const &channel = it->second;
-            if (channel.isClientPresent(this->_client)) {
-                // this->_server.RPL_NAMREPLY(channel, this->_client);
-        		// this->_server.RPL_ENDOFNAMES(channel, this->_client);
-            }
-        }
+			Channel const &channel = it->second;
+			if (channel.isClientPresent(this->_client)) {
+				// this->_server.RPL_NAMREPLY(channel, this->_client);
+				// this->_server.RPL_ENDOFNAMES(channel, this->_client);
+			}
+		}
 		
-        return ERR_NONE;
-    }
+		return ERR_NONE;
+	}
 	for (std::vector<std::string>::iterator it = this->_args.begin(); 
 		it != this->_args.end(); ++it) {
 		Channel	*channel = this->_server.getChannel(*it);
@@ -34,9 +34,9 @@ int Command::NAMES() {
 		}
 		if (channel->isClientPresent(this->_client)) {
 			// this->_server.RPL_NAMREPLY(*channel, this->_client);
-       		// this->_server.RPL_ENDOFNAMES(*channel, this->_client);
+	   		// this->_server.RPL_ENDOFNAMES(*channel, this->_client);
 		}
 	}
 
-    return ERR_NONE;
+	return ERR_NONE;
 }

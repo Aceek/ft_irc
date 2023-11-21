@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utlis.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 23:45:29 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:06:24 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ bool Command::isValidNicknameorUsername() const {
 		return false;
 	}
 
-    // Vérifie que le reste du pseudonyme est composé de caractères valides
-    for (size_t i = 1; i < nickname.length(); ++i) {
-        char ch = nickname[i];
-        if (!(isalnum(ch) || strchr("-.", ch) != 0 || strchr("[\\]^_{|}", ch) != 0)) {
-            return false;
-        }
-    }
+	// Vérifie que le reste du pseudonyme est composé de caractères valides
+	for (size_t i = 1; i < nickname.length(); ++i) {
+		char ch = nickname[i];
+		if (!(isalnum(ch) || strchr("-.", ch) != 0 || strchr("[\\]^_{|}", ch) != 0)) {
+			return false;
+		}
+	}
 
 	return (true);
 }
@@ -78,64 +78,64 @@ bool Command::isValidPassword(std::string const &key) const {
 }
 
 bool Command::isValidChannelName(std::string const &channelName) const {
-    return !channelName.empty() && channelName[0] == '#';
+	return !channelName.empty() && channelName[0] == '#';
 }
 bool Command::isValidChannelKey(Channel const *channel, std::string const &key) const {
-    if (channel->getKey().empty()) {
+	if (channel->getKey().empty()) {
 		return true;
 	}
 	return key == channel->getKey();
 }
 
 bool Command::checkInviteOnlyAndNotInvited(Channel const *channel) const {
-    return channel->getInviteOnly() && !channel->isClientInvited(this->_client);
+	return channel->getInviteOnly() && !channel->isClientInvited(this->_client);
 }
 
 bool Command::checkChannelFull(Channel const *channel) const {
-    return channel->getCount() >= channel->getUserLimit() && channel->getUserLimit() >= 0;
+	return channel->getCount() >= channel->getUserLimit() && channel->getUserLimit() >= 0;
 }
 
 bool Command::checkTopicRestriction(Channel const *channel) const {
-    if (channel->getTopicRestricted() && !channel->isOperator(this->_client)) {
-        return false;
-    }
-    return true;
+	if (channel->getTopicRestricted() && !channel->isOperator(this->_client)) {
+		return false;
+	}
+	return true;
 }
 
 void Command::addUserToChannel(Channel *const channel) const {
-    channel->addUser(this->_client, channel->isOperator(this->_client));
+	channel->addUser(this->_client, channel->isOperator(this->_client));
 }
 
 Channel *Command::getOrCreateChannel(std::string const &channelName, std::string const &key) {
-    Channel *channel = this->_server.getChannel(channelName);
-    if (!channel) {
-        this->_server.addChannel(channelName);
-        channel = this->_server.getChannel(channelName);
+	Channel *channel = this->_server.getChannel(channelName);
+	if (!channel) {
+		this->_server.addChannel(channelName);
+		channel = this->_server.getChannel(channelName);
 		std::cout << channel->getName() <<std::endl;
-        if (!key.empty()) {
-            channel->setKey(key);
-        }
-    }
-    return channel;
+		if (!key.empty()) {
+			channel->setKey(key);
+		}
+	}
+	return channel;
 }
 
 bool Command::isValidMode(const std::string &str) {
-    if (str.empty()) {
-        return false;  
-    }
+	if (str.empty()) {
+		return false;  
+	}
 
-    char firstChar = str[0];
-    if (firstChar != '+' && firstChar != '-') {
-        return false;
-    }
+	char firstChar = str[0];
+	if (firstChar != '+' && firstChar != '-') {
+		return false;
+	}
 
-    const char validChars[] = {'i', 't', 'k', 'o', 'l', '+' , '-', '\0'};
-    for (size_t i = 1; i < str.length(); ++i) {
-        char modeChar = std::tolower(str[i]);
-        if (std::find(validChars, validChars + sizeof(validChars) - 1, modeChar) == validChars + sizeof(validChars) - 1) {
-            return false;
-        }
-    }
+	const char validChars[] = {'i', 't', 'k', 'o', 'l', '+' , '-', '\0'};
+	for (size_t i = 1; i < str.length(); ++i) {
+		char modeChar = std::tolower(str[i]);
+		if (std::find(validChars, validChars + sizeof(validChars) - 1, modeChar) == validChars + sizeof(validChars) - 1) {
+			return false;
+		}
+	}
 
-    return true;
+	return true;
 }

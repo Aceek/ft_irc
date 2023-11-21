@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 04:17:53 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:06:15 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ Command::Command(Command const &rhs) :
 	_server(rhs._server) {}
 
 Command &Command::operator=(Command const &rhs) {
-    if (this == &rhs) {
-        return *this;
-    }
+	if (this == &rhs) {
+		return *this;
+	}
 
 	this->_prefix = rhs._prefix;
 	this->_name = rhs._name;
@@ -63,7 +63,7 @@ Command &Command::operator=(Command const &rhs) {
 	this->_client = rhs._client;
 	this->_server = rhs._server;
 
-    return *this;
+	return *this;
 }
 
 Command::~Command(void) {}
@@ -71,29 +71,29 @@ Command::~Command(void) {}
 /* ************************************************************************** */
 
 void Command::initCommandsMap(void) {
-    this->_commands["HELP"] = CommandInfo(&Command::HELP, "none");
-    this->_commands["INVITE"] = CommandInfo(&Command::INVITE, "<nickname> <channel>");
-    this->_commands["JOIN"] = CommandInfo(&Command::JOIN, "<channel>{,<channel>} [<key>{,<key>}]");
-    this->_commands["KICK"] = CommandInfo(&Command::KICK, "<channel> <user> [<comment>]");
-    this->_commands["LIST"] = CommandInfo(&Command::LIST, "none");
-    this->_commands["MODE"] = CommandInfo(&Command::MODE, "<channel> <+/-modes> [parameters]");
-    this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
-    this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
-    this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
-    this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
-    this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver>{,<receiver>} <text to be sent>");
-    this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
-    this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
-    this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");
-    this->_commands["CAP"] = CommandInfo(&Command::CAP, "<subcommand> [:<capabilities>]");
-    this->_commands["PING"] = CommandInfo(&Command::PONG, "<token>");
+	this->_commands["HELP"] = CommandInfo(&Command::HELP, "none");
+	this->_commands["INVITE"] = CommandInfo(&Command::INVITE, "<nickname> <channel>");
+	this->_commands["JOIN"] = CommandInfo(&Command::JOIN, "<channel>{,<channel>} [<key>{,<key>}]");
+	this->_commands["KICK"] = CommandInfo(&Command::KICK, "<channel> <user> [<comment>]");
+	this->_commands["LIST"] = CommandInfo(&Command::LIST, "none");
+	this->_commands["MODE"] = CommandInfo(&Command::MODE, "<channel> <+/-modes> [parameters]");
+	this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
+	this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
+	this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
+	this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");
+	this->_commands["PRIVMSG"] = CommandInfo(&Command::PRIVMSG, "<receiver>{,<receiver>} <text to be sent>");
+	this->_commands["TOPIC"] = CommandInfo(&Command::TOPIC, "<channel> [<topic>]");
+	this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
+	this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");
+	this->_commands["CAP"] = CommandInfo(&Command::CAP, "<subcommand> [:<capabilities>]");
+	this->_commands["PING"] = CommandInfo(&Command::PONG, "<token>");
 }
 
 void Command::exec(void) {
 	this->_server.printClientInput(this->_command, this->_client);
 
 	CommandMap::iterator it = this->_commands.find(this->_name);
-    if (it != this->_commands.end()) {
-        (this->*(it->second).func)();
-    }
+	if (it != this->_commands.end()) {
+		(this->*(it->second).func)();
+	}
 }

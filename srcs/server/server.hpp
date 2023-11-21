@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 22:40:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:09:36 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class Server {
 		Server(int port, std::string password);
 		Server(/* args */);
 		~Server();
-			
+
 		void		addToPoll(int fd, short events);
 		void		routine();
 		bool		processCommand(const int &clientFd);
@@ -58,7 +58,7 @@ class Server {
 		void				setClientToRemove(const int clientFd);
 		void				setMessageQueue(const int clientfd,
 							const std::string &message);
-	
+
 		// test function to remove !!
 		int					getWaitingMessage(int clientFd);
 
@@ -66,17 +66,17 @@ class Server {
 		void	addChannel(std::string const &channelName);
 		void	delChannel(std::string const &channelName);
 		void 	sendMessageToChannel(Channel const &channel, std::string const &message);
-		
+
 		/*server_message*/
 		std::string		getServerMessage(int messageServer) const;
 		std::string		getErrorMessage(int errorCode) const;
 		void			printClientInput(const std::string &message, const Client &client) const;
 		void			printServerInput(const std::string &message) const;
-		
+
 		/*server_utlis*/
 		bool	isChannelPresent(std::string const &channelName);
 		void	closingFdClients();
-		
+
 	private:
 		int 									_port;
 		std::string								_password;

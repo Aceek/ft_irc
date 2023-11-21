@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_accessors.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/18 11:41:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:09:08 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ const std::map<const int, Client> &Server::getClients() const {
 }
 
 Channel *Server::getChannel(std::string const &channelName) {
-    std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
+	std::map<std::string, Channel>::iterator it = this->_channels.find(channelName);
 
-    if (it != this->_channels.end() && it->first == channelName) {
-        return &it->second;
-    }
+	if (it != this->_channels.end() && it->first == channelName) {
+		return &it->second;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 const ChannelMap &Server::getChannels() {
@@ -51,19 +51,19 @@ const ChannelMap &Server::getChannels() {
 }
 
 std::string Server::getChannelsNames() const {
-    std::string allChannelNames;
+	std::string allChannelNames;
 
-    for (ChannelMap::const_iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
-        allChannelNames +=	it->second.getName() + 
+	for (ChannelMap::const_iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
+		allChannelNames +=	it->second.getName() + 
 							(!it->second.getTopic().empty() ? 
 							" : " + it->second.getTopic() : "") +
 							"\n";
-    }
-    if (!allChannelNames.empty()) {
-        allChannelNames.erase(allChannelNames.size() - 1);
-    }
+	}
+	if (!allChannelNames.empty()) {
+		allChannelNames.erase(allChannelNames.size() - 1);
+	}
 
-    return allChannelNames;
+	return allChannelNames;
 }
 
 void	Server::setClientToRemove(const int clientFd) {

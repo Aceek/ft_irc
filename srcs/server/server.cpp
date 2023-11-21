@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 23:01:10 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:14:40 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,36 +166,20 @@ Server::~Server() {
 };
 
 void Server::tryCommand(Client &client, const int clientFd) {
-    int errorCode = 0;
-
     std::string clientCommand = client.getClientCommand();
-
-    // Trouver la position du premier '\n' dans la chaîne
     size_t newlinePos = clientCommand.find('\n');
 
-    // Boucler tant qu'il y a des commandes dans la chaîne
     while (newlinePos != std::string::npos) {
-        // Extraire la première commande jusqu'au '\n'
         std::string currentCommand = clientCommand.substr(0, newlinePos);
-
         try {
             Command command(currentCommand, client, *this);
-            printClientInput(currentCommand, client);
-
-            if ((errorCode = command.exec())) {
-                setMessageQueue(clientFd, getErrorMessage(errorCode));
-            }
+			command.exec();
         } catch(const std::exception& e) {
             setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
         }
-
-        // Supprimer la commande traitée de la chaîne
         clientCommand = clientCommand.substr(newlinePos + 1);
-
-        // Trouver la position du prochain '\n' dans la chaîne mise à jour
         newlinePos = clientCommand.find('\n');
     }
-
     client.clearCommand();
 }
 

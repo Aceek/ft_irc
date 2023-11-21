@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_message.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 18:02:01 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 01:15:44 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ std::string Server::getErrorMessage(int errorCode) const {
 	switch (errorCode) {
     case ERR_NONE:
         return "No error";
-    case ERR_REALNAME:
-        return "[RealName] 1: Real Name bad format (max 25 char) + alphanumeric characters only";
+    // case ERR_REALNAME:
+        // return "[RealName] 1: Real Name bad format (max 25 char) + alphanumeric characters only";
     case ERR_PASSFORMAT:
         return "[Password] 2: Password bad format (max 25 char) + alphanumeric characters only";
     case ERR_PASSNEEDED:

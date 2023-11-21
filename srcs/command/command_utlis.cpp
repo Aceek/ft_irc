@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   command_utlis.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 20:46:16 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/20 23:45:29 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
-bool Command::isValidNickname() const {
+bool Command::isValidNicknameorUsername() const {
 	std::string nickname = this->_args[0];
 	char firstChar = nickname[0];
 	if (this->_args[0].size() > 9) {
@@ -35,7 +35,7 @@ bool Command::isValidNickname() const {
 	return (true);
 }
 
-bool	Command::isNicknameOrUsernameAvailable(bool useNickname) const {
+bool	Command::isNicknameAvailable(bool useNickname) const {
 	// Vérifie que le pseudonyme n'est pas deja utilisé par un autre utilisateur
 	// pour le moment un client ne peut pas se reatribuer le meme username
 	std::string name = this->_args[0];
@@ -49,19 +49,6 @@ bool	Command::isNicknameOrUsernameAvailable(bool useNickname) const {
 		}
 	}
 	return (true);
-}
-
-bool	Command::isValidRealName() const {
-	if (this->_trailor.size() > 25) {
-		return (false);
-	}
-	for (size_t i = 0; i < this->_trailor.size(); i++) {
-		if (!isalnum(this->_trailor[i]) && !std::isspace(this->_trailor[i])) {
-			return (false);
-		}
-	}
-	return (true);
-	
 }
 
 bool Command::isValidPassword() const {

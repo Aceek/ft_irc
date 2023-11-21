@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 22:43:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:13:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Command {
 		~Command(void);
 	
 		void initCommandsMap(void);
-		int exec(void);
+		void exec();
 
 		int INVITE();
 		int JOIN();
@@ -55,9 +55,8 @@ class Command {
 		std::vector<std::string> const	&getModeArgs(void) const;
 		
 		/*command_utlis*/
-		bool	isValidNickname() const;
-		bool	isNicknameOrUsernameAvailable(bool useNickname) const;
-		bool	isValidRealName() const;
+		bool	isValidNicknameorUsername() const;
+		bool	isNicknameAvailable(bool useNickname) const;
 		bool	isValidPassword() const;
 		bool	isValidPassword(std::string const &key) const;
 		bool	isValidChannelName(std::string const &channelName) const;
@@ -70,6 +69,7 @@ class Command {
 		bool	isValidMode(const std::string &str);
 		
 	private:
+		std::string					_command;
 		std::string					_prefix;
 		std::string					_name;
 		std::vector<std::string>	_args;

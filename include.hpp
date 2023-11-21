@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 18:00:47 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 00:09:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@
 
 enum ErrorCode {
     ERR_NONE = 0,
-    ERR_REALNAME = 1,        // variable perso
     ERR_PASSFORMAT = 2,      // variable perso
     ERR_PASSNEEDED = 3,      // variable perso
     ERR_PASSWRONG = 4,       // variable perso
@@ -84,6 +83,7 @@ enum messageServer {
 	ERR_COMMAND_SIZE = 607,
 	ERR_BUFFER_SIZE = 608,
 	ERR_INVALIDFILEPATH = 609,
+	NICK_CHANGE_SUCCESS = 610,
 	
 
 };

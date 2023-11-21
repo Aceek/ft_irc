@@ -6,23 +6,35 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:27 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/18 11:43:22 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:01:41 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
-int	Command::NICK() {
-	bool useNickname = true;
-	if (this->_args.empty() || this->_args[0].empty()) {
-		return (ERR_NONICKNAMEGIVEN);
-	} else if (!isValidNickname()) {
-		return (ERR_ERRONEUSNICKNAME);
-	} else if (!isNicknameOrUsernameAvailable(useNickname)) {
-		return (ERR_NICKNAMEINUSE);
+
+int Command::NICK() {
+    serverReply* serverReply = this->_server.getServerReply();
+
+    if (this->_args.empty() || this->_args[0].empty()) {
+        serverReply->NICK_RPL(ERR_NONICKNAMEGIVEN, this->_client);
+        return (ERR_NONICKNAMEGIVEN);
+    } else if (!isValidNicknameorUsername()) {
+        serverReply->NICK_RPL(ERR_ERRONEUSNICKNAME, this->_client);
+        return (ERR_ERRONEUSNICKNAME);
+    } else if (!isNicknameAvailable(true)) {
+        serverReply->NICK_RPL(ERR_NICKNAMEINUSE, this->_client);
+        return (ERR_NICKNAMEINUSE);
+    }
+	
+    std::string oldNickname = this->_client.getNicknameOrUsername(true);
+
+	if (oldNickname.empty()) {
+		std::ostringstream ss;
+		ss << this->_client.getClientFd();
+		oldNickname = ss.str();
 	}
-	this->_client.setNickname(this->_args[0]);
-	this->_server.setMessageQueue(this->_client.getClientFd(),
-	"NICK updated successfully: " + this->_args[0]);
-	return(ERR_NONE);
+    this->_client.setNickname(this->_args[0]);
+	serverReply->NICK_SUCCES(this->_client, oldNickname);
+    return (ERR_NONE);
 }

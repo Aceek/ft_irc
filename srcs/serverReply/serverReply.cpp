@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 20:53:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 21:47:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ serverReply::~serverReply() {}
 
 /* ************************************************************************** */
 
-void serverReply::NOSUCHNICK(Command const &cmd, Client &receiver) {
+void serverReply::NOSUCHNICK(Command const &cmd, std::string const &nick, Client &receiver) {
     std::string const &client = cmd.getClient().getPrefix();
-    std::string const &channel = cmd.getTargetChannel()->getName();
-	std::string msg = client + " 401 * " + channel + " :No such nick/channel";
+	std::string msg = client + " 401 * " + nick + " :No such nick/channel";
     this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }
 

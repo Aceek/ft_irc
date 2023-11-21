@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 20:50:33 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 21:48:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ public:
 	// void	RPL_NAMREPLY(Channel const &channel, Client &client);
 	// void	RPL_ENDOFNAMES(Channel const &channel, Client &client);
 	
-    void NOSUCHNICK(Command const &cmd, Client &receiver);
+    void NOSUCHNICK(Command const &cmd, std::string const &nick, Client &receiver);
     void NOSUCHCHANNEL(Command const &cmd, Client &receiver);
     void CANNOTSENDTOCHAN(Command const &cmd, Client &receiver);
     void NOTEXTTOSEND(Command const &cmd, Client &receiver);

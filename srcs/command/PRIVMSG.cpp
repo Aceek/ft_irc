@@ -43,7 +43,7 @@ int Command::PRIVMSG() {
 			} else {
 				this->_targetClient = this->_server.getClientByNickname(*it);
 				if (!this->_targetClient) {
-					this->_server.getServerReply()->NOSUCHNICK(*this, this->_client);
+					this->_server.getServerReply()->NOSUCHNICK(*this, *it, this->_client);
 					return ERR_NOSUCHNICK;
 				}
 

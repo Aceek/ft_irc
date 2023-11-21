@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 20:18:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 21:47:36 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int Command::INVITE() {
 	
 	this->_targetClient = this->_server.getClientByNickname(this->_args[0]);
 	if (!this->_targetClient) {
-		this->_server.getServerReply()->NOSUCHNICK(*this, this->_client);
+		this->_server.getServerReply()->NOSUCHNICK(*this, this->_args[0], this->_client);
 		return ERR_NOSUCHNICK;
 	}
 	if (this->_targetChannel->isClientPresent(*this->_targetClient)) {

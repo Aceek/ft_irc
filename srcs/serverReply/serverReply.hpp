@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 00:51:14 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 02:46:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ public:
 	void	TOPIC(Command &cmd, Channel &receiver);
 
 	void	CAP_RPL(const int clientFd);
-	void	NICK_RPL(const int errorCode, const Client &client);
+	void	NICK_RPL(const int errorCode, const Command &command);
 	void	NICK_SUCCES(const Client& client, const std::string &oldNick);
+	void	WELCOME_RPL(const Client &client);
 
 	void	USER_RPL(const int errorCode, const Client &client);
 	

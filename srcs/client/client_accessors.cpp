@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client_accessors.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:25:35 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/19 17:11:06 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 01:58:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,14 @@ void	Client::setPassRegister() {
 	this->_passRegister = true;
 }
 
-void	Client::setRegister() {
-	this->_register = true;
+void	Client::setUserRegister() {
+	this->_userRegister = true;
 }
+
+void	Client::setNickRegister() {
+	this->_nickRegister = true;
+}
+
 
 std::string Client::getPrefix(void) const {
     std::string prefix = this->_nickname;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/19 17:10:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/21 01:57:40 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ class Client {
 		void						setUsername(std::string const &username);
 		void						setRealName(std::string const &realName);
 		void						setPassRegister();
-		void						setRegister();
+		void						setUserRegister();
+		void						setNickRegister();
     	std::string					getPrefix(void) const;
 
 		/*client_utils*/
-		bool	isRegister() const;
+		bool	isUserRegister() const;
+		bool	isNickRegister() const;
 		bool	isPasswordSetUp() const;
 		
 	private:
@@ -54,7 +56,8 @@ class Client {
 		std::string			_realName;
 		std::string			_hostname;
 		bool				_passRegister;
-		bool				_register;
+		bool				_userRegister;
+		bool				_nickRegister;
 };
 
 #endif  // CLIENT_HPP

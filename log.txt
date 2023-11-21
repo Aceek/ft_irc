@@ -1,40 +1,32 @@
-<< NICK acek
-<< USER ilan ilan localhost :ilan
->> NICK updated successfully: acek
-<< NICK acek
-<< USER ilan ilan localhost :ilan
->> NICK updated successfully: acek
-<< NICK acek
-<< USER ilan ilan localhost :ilan
->> [Nick] 433: Nickname is already in use
->> [Nick] 433: Nickname is already in use
-<< CAP LS 302
-<< JOIN :
->> [Command] 421: Unknown command
->> [Command] 461: Not enough parameters
-<< CAP LS 302
-<< JOIN :
->> [Command] 461: Not enough parameters
 << CAP LS 302
 << JOIN :
 >> :localhost CAP * LS :
 << CAP END
-<< NICK acek
+<< NICK @ilan
 << USER ilan ilan localhost :ilan
 >> 
->> [Command] 461: Not enough parameters
+>> :localhost 432 * :Erroneous nickname
+<< CAP LS 302
+<< JOIN :
 >> :localhost CAP * LS :
+<< CAP END
+<< NICK @ilan
+<< USER ilan ilan localhost :ilan
 >> 
->> NICK updated successfully: acek
->> :localhost 001 acek :You made it ! acek!ilan@localhost
+>> :localhost 432 @ilan :Erroneous nickname
+<< CAP LS 302
+<< JOIN :
+>> :localhost CAP * LS :
+<< CAP END
+<< NICK @ilan
+<< USER ilan ilan localhost :ilan
 >> 
->> User successfully register: ilan
-<< MODE acek +i
->> [Channel] 403: No such channel
-<< PING localhost
->> [Command] 421: Unknown command
-<< JOIN #test
->> :acek!ilan@localhost JOIN #test
-<< PART #test
->> :acek!ilan@localhost PART #test
-<< QUIT :leaving
+>> :localhost 432 * @ilan :Erroneous nickname
+<< CAP LS 302
+<< JOIN :
+>> :localhost CAP * LS :
+<< CAP END
+<< NICK @ilan
+<< USER ilan ilan localhost :ilan
+>> 
+>> :localhost 432 * @ilan :Erroneous nickname

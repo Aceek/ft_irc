@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:49:03 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/20 23:54:50 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 02:31:57 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int Command::USER() {
     serverReply* serverReply = this->_server.getServerReply();
 
-    if (this->_client.isRegister()) {
+    if (this->_client.isUserRegister()) {
         serverReply->USER_RPL(ERR_ALREADYREGISTRED, this->_client);
         return (ERR_ALREADYREGISTRED);
     }
@@ -29,9 +29,11 @@ int Command::USER() {
 
     this->_client.setRealName(this->_trailor);
     this->_client.setUsername(this->_args[0]);
-    this->_client.setRegister();
+    this->_client.setUserRegister();
 
-	// pas de confirm message
+	if (this->_client.isNickRegister() && this->_client.isUserRegister()) {
+		serverReply->WELCOME_RPL(this->_client);
+	}
 
     return (ERR_NONE);
 }

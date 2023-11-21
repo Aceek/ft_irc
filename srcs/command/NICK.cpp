@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:27 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 02:49:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:32:15 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int Command::NICK() {
 		oldNickname = ss.str();
 	}
     this->_client.setNickname(this->_args[0]);
-	this->_client.setNickRegister();
 	serverReply->NICK_SUCCES(this->_client, oldNickname);
 
-	if (this->_client.isNickRegister() && this->_client.isUserRegister()) {
+	if (!this->_client.isNickRegister() && this->_client.isUserRegister()) {
 		serverReply->WELCOME_RPL(this->_client);
 	}
+	this->_client.setNickRegister();
 
     return (ERR_NONE);
 }

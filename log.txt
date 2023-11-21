@@ -2,31 +2,43 @@
 << JOIN :
 >> :localhost CAP * LS :
 << CAP END
-<< NICK @ilan
+<< NICK acek
 << USER ilan ilan localhost :ilan
 >> 
->> :localhost 432 * :Erroneous nickname
-<< CAP LS 302
-<< JOIN :
->> :localhost CAP * LS :
-<< CAP END
-<< NICK @ilan
-<< USER ilan ilan localhost :ilan
+>> :localhost 001 acek :Welcome to the ft_irc Network, acek!ilan@localhost
 >> 
->> :localhost 432 @ilan :Erroneous nickname
-<< CAP LS 302
-<< JOIN :
->> :localhost CAP * LS :
-<< CAP END
-<< NICK @ilan
-<< USER ilan ilan localhost :ilan
->> 
->> :localhost 432 * @ilan :Erroneous nickname
-<< CAP LS 302
-<< JOIN :
->> :localhost CAP * LS :
-<< CAP END
-<< NICK @ilan
-<< USER ilan ilan localhost :ilan
->> 
->> :localhost 432 * @ilan :Erroneous nickname
+<< MODE acek +i
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+<< JOIN #test
+>> :acek!ilan@localhost JOIN #test
+<< PRIVMSG #test :yo
+>> :acek!ilan@localhost PRIVMSG  :yo
+<< PRIVMSG #test :wda
+>> :acek!ilan@localhost PRIVMSG  :wda
+<< PRIVMSG #test :awd
+>> :acek!ilan@localhost PRIVMSG  :awd
+<< PRIVMSG #test :awf
+>> :acek!ilan@localhost PRIVMSG  :awf
+<< PRIVMSG #test :ok
+>> :acek!ilan@localhost PRIVMSG  :ok
+<< PRIVMSG #test :ca 
+>> :acek!ilan@localhost PRIVMSG  :ca 
+<< PRIVMSG #test :la
+>> :acek!ilan@localhost PRIVMSG  :la
+<< PRIVMSG #test :g
+>> :acek!ilan@localhost PRIVMSG  :g
+<< PRIVMSG #test :pas
+>> :acek!ilan@localhost PRIVMSG  :pas
+<< PRIVMSG #test :de 
+>> :acek!ilan@localhost PRIVMSG  :de 
+<< PRIVMSG #test :o
+>> :acek!ilan@localhost PRIVMSG  :o
+<< NICK acek
+>> :localhost 433 * acek :Nickname is already in use
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+>> :5!ilan@localhost NICK :acek_
+<< QUIT :leaving

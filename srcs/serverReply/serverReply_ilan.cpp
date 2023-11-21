@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 03:31:56 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:31:55 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,25 @@ void serverReply::WELCOME_RPL(const Client &client) {
 
 	this->_server.setMessageQueue(client.getClientFd(), message);
 
+}
+
+
+void	serverReply::PONG_RPL(const int errorCode, const Command &command) {
+
+    std::string replyMessage;
+	std::string nick = command.getClient().getNicknameOrUsername(true);
+	if (nick.empty()) {
+		nick = "unknow";
+	}
+
+    switch (errorCode) {
+        case ERR_NEEDMOREPARAMS:
+            replyMessage = ":localhost 461 * PING :Not enough parameters";
+            break;
+        case RPL_PONG:
+            replyMessage = ":localhost PONG " + command.getArgs()[0] + " :" + nick;
+            break;
+    }
+
+    _server.setMessageQueue(command.getClient().getClientFd(), replyMessage);
 }

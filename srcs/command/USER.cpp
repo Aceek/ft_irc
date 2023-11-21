@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:49:03 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 02:31:57 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:32:33 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int Command::USER() {
 
     this->_client.setRealName(this->_trailor);
     this->_client.setUsername(this->_args[0]);
-    this->_client.setUserRegister();
 
-	if (this->_client.isNickRegister() && this->_client.isUserRegister()) {
+	if (this->_client.isNickRegister() && !this->_client.isUserRegister()) {
 		serverReply->WELCOME_RPL(this->_client);
 	}
+    this->_client.setUserRegister();
 
     return (ERR_NONE);
 }

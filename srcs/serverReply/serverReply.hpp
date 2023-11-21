@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 02:46:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:17:44 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ public:
 	void	NICK_RPL(const int errorCode, const Command &command);
 	void	NICK_SUCCES(const Client& client, const std::string &oldNick);
 	void	WELCOME_RPL(const Client &client);
+	void	PONG_RPL(const int errorCode, const Command &command);
 
 	void	USER_RPL(const int errorCode, const Client &client);
 	

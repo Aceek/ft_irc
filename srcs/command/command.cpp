@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 01:18:18 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:17:53 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Command::Command(void) {} (pas de constructeur par default pour ref client)
 
 Command::Command(std::string const &line, Client &client, Server &server) : 
-	_command(line),
+	_command(line), _prefix(""), _name(""), _args(), _trailor(""),
 	_client(client),
 	_server(server) {
 	initCommandsMap();
@@ -86,6 +86,7 @@ void Command::initCommandsMap(void) {
     this->_commands["USER"] = CommandInfo(&Command::USER, "<username> <hostname> <servername> <realname>");
     this->_commands["QUIT"] = CommandInfo(&Command::QUIT, "none");
     this->_commands["CAP"] = CommandInfo(&Command::CAP, "<subcommand> [:<capabilities>]");
+    this->_commands["PING"] = CommandInfo(&Command::PONG, "<token>");
 }
 
 void Command::exec(void) {

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/20 22:39:36 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:01:52 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ std::string serverReply::buildPrivmsgMessage(Command &cmd, bool channel) {
             			" " + cmd.getName() +
 						" ";
 	
-	msg += (channel) ? cmd.getTargetChannel().getName() : 
-		cmd.getTargetClient().getNicknameOrUsername(true);
+
+	(void)channel;
+	// msg += (channel) ? cmd.getTargetChannel().getName() : 
+	// 	cmd.getTargetClient().getNicknameOrUsername(true); // SEGFAULT 
 	
 	msg += (!cmd.getTrailor().empty()) ? " :" + cmd.getTrailor() : "";
 

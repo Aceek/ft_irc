@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 01:13:10 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:18:13 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Command {
 		int	QUIT();
 		int	HELP();
 		int	CAP();
+		int PONG();
 
 		/*command_accessors*/
 		std::string const				&getPrefix(void) const;

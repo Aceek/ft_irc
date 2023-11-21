@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 00:09:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/21 04:16:11 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ enum messageServer {
 	ERR_BUFFER_SIZE = 608,
 	ERR_INVALIDFILEPATH = 609,
 	NICK_CHANGE_SUCCESS = 610,
+	RPL_PONG = 611,
 	
 
 };

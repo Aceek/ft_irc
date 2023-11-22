@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:25:57 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:55:27 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,12 @@ bool	Client::verifyCommand() {
 	}
 
 	return (true);
+}
+
+void Client::addChannel(Channel &channel) {
+	this->_channels.insert(&channel);
+}
+
+void	Client::delChannel(Channel &channel) {
+	this->_channels.erase(&channel);
 }

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:06:54 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 15:50:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void Channel::addUser(Client &client, bool asOperator) {
 		}
 	}
 	this->_invitedUsers.erase(&client);
+	client.addChannel(*this);
 }
 
 void Channel::delUser(Client &client) {
@@ -73,6 +74,7 @@ void Channel::delUser(Client &client) {
 	this->_users.erase(&client);
 	this->_operators.erase(&client);
 	this->_invitedUsers.erase(&client);
+	client.delChannel(*this);
 }
 
 void Channel::inviteUser(Client &client) {

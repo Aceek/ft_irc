@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:23:28 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:55:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ class Client {
 		void	clearCommand();
 		void	addToCommand(const std::string &buffer);
 		bool	verifyCommand();
+		void	addChannel(Channel &channel);
+		void	delChannel(Channel &channel);
 
 		/*client_accessors*/
 		int							getClientFd() const;
@@ -41,12 +43,13 @@ class Client {
 		void						setUserRegister();
 		void						setNickRegister();
 		std::string					getPrefix(void) const;
+		std::set<Channel *> const	getChannels(void) const;
 
 		/*client_utils*/
 		bool	isUserRegister() const;
 		bool	isNickRegister() const;
 		bool	isPasswordSetUp() const;
-		
+
 	private:
 		int					_clientFd;
 		struct sockaddr_in	_clientAdress;
@@ -58,6 +61,7 @@ class Client {
 		bool				_passRegister;
 		bool				_userRegister;
 		bool				_nickRegister;
+		std::set<Channel *>	_channels;
 };
 
 #endif  // CLIENT_HPP

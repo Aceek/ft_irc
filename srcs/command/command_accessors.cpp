@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:24:10 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:06:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:20:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,20 @@ Server &Command::getServer(void) const {
 	return this->_server;
 }
 
-Channel &Command::getTargetChannel(void) const {
-	return *this->_targetChannel;
+Channel *Command::getTargetChannel(void) const {
+	return this->_targetChannel;
 }
 
-Client &Command::getTargetClient(void) const {
-	return *this->_targetClient;
+Client *Command::getTargetClient(void) const {
+	return this->_targetClient;
+}
+
+std::string const &Command::getTargetChannelName(void) const {
+	return this->_targetChannelName;
+}
+
+std::string const &Command::getNick(void) const {
+	return this->_nick;
 }
 
 std::string const &Command::getModeSet(void) const {

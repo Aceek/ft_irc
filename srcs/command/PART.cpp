@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:05:05 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:34:03 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,21 @@
 int Command::PART() {
 /*   Parameters: <channel>{,<channel>}	*/
 	if (this->_args.size() < 1) {
+		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 
 	std::vector<std::string> channels = ft_split(this->_args[0], ",");    
 	for (std::vector<std::string>::const_iterator it = channels.begin();
 		it != channels.end(); ++it) {
-	  this->_targetChannel = this->_server.getChannel(*it);
+		this->_targetChannelName = *it;
+		this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
 		if (!this->_targetChannel) {
+			this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 			return ERR_NOSUCHCHANNEL;
 		}
 		if (!this->_targetChannel->isClientPresent(this->_client)) {
+			this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
 			return ERR_NOTONCHANNEL;
 		}
 		

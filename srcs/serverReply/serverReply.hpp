@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 10:43:08 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:02:37 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,25 @@ public:
 	// void	RPL_TOPIC(Channel const &channel, Client &client);
 	// void	RPL_NAMREPLY(Channel const &channel, Client &client);
 	// void	RPL_ENDOFNAMES(Channel const &channel, Client &client);
+	
+    void NOSUCHNICK(Command const &cmd, Client &receiver);
+    void NOSUCHCHANNEL(Command const &cmd, Client &receiver);
+    void CANNOTSENDTOCHAN(Command const &cmd, Client &receiver);
+    void NOTEXTTOSEND(Command const &cmd, Client &receiver);
+	void UNKNOWNCOMMAND(Command const &cmd, Client &receiver);
+    void USERNOTINCHANNEL(Command const &cmd, Client &receiver);
+    void NOTONCHANNEL(Command const &cmd, Client &receiver);
+    void USERONCHANNEL(Command const &cmd, Client &receiver);
+    void NEEDMOREPARAMS(Command const &cmd, Client &receiver);
+    void ALREADYREGISTRED(Command const &cmd, Client &receiver);
+    void PASSWDMISMATCH(Command const &cmd, Client &receiver);
+    void CHANNELISFULL(Command const &cmd, Client &receiver);
+    void UNKNOWNMODE(Command const &cmd, Client &receiver);
+    void INVITEONLYCHAN(Command const &cmd, Client &receiver);
+    void BADCHANNELKEY(Command const &cmd, Client &receiver);
+	void BADCHANMASK(Command const &cmd, Client &receiver);
+    void CHANOPRIVSNEEDED(Command const &cmd, Client &receiver);
+    void UMODEUNKNOWNFLAG(Command const &cmd, Client &receiver);
 
 	std::string		buildInviteMessage(Command &cmd);
 	std::string		buildJoinMessage(Command &cmd);

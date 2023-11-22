@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:13:27 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:28:25 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,10 @@ bool Command::checkInviteOnlyAndNotInvited(Channel const *channel) const {
 	return channel->getInviteOnly() && !channel->isClientInvited(this->_client);
 }
 
+bool Command::checkInviteOnlyAndNotOperator(Channel const *channel) const {
+	return channel->getInviteOnly() && !channel->isOperator(this->_client);
+}
+
 bool Command::checkChannelFull(Channel const *channel) const {
 	return channel->getCount() >= channel->getUserLimit() && channel->getUserLimit() >= 0;
 }
@@ -102,7 +106,7 @@ bool Command::checkTopicRestriction(Channel const *channel) const {
 	return true;
 }
 
-void Command::addUserToChannel(Channel *const channel) const {
+void Command::addUserToChannel(Channel *channel) const {
 	channel->addUser(this->_client, channel->isOperator(this->_client));
 }
 
@@ -119,22 +123,47 @@ Channel *Command::getOrCreateChannel(std::string const &channelName, std::string
 }
 
 bool Command::isValidMode(const std::string &str) {
-	if (str.empty()) {
-		return false;  
-	}
-
-	char firstChar = str[0];
-	if (firstChar != '+' && firstChar != '-') {
+	if (str.empty() || (str[0] != '+' && str[0] != '-')) {
 		return false;
 	}
 
-	const char validChars[] = {'i', 't', 'k', 'o', 'l', '+' , '-', '\0'};
+	bool hasAlpha = false;
+
 	for (size_t i = 1; i < str.length(); ++i) {
-		char modeChar = std::tolower(str[i]);
-		if (std::find(validChars, validChars + sizeof(validChars) - 1, modeChar) == validChars + sizeof(validChars) - 1) {
-			return false;
+		char c = str[i];
+
+		if (!(std::isalpha(c) || c == '+' || c == '-')) {
+			return false; 
+		}
+
+		if (std::isalpha(c)) {
+			hasAlpha = true;
 		}
 	}
 
-	return true;
+	return hasAlpha;
+}
+
+bool Command::isRecognizedMode(const std::string &str) {
+	if (str.empty() || (str[0] != '+' && str[0] != '-')) {
+		return false;
+	}
+
+	const char validChars[] = {'i', 't', 'k', 'o', 'l', '+', '-'};
+	const char validModes[] = {'i', 't', 'k', 'o', 'l'};
+	bool hasValidMode = false;
+
+	for (size_t i = 1; i < str.length(); ++i) {
+		char c = std::tolower(str[i]);
+
+		if (std::find(validChars, validChars + sizeof(validChars), c) == validChars + sizeof(validChars)) {
+			return false;
+		}
+
+		if (std::find(validModes, validModes + sizeof(validModes), c) != validModes + sizeof(validModes)) {
+			hasValidMode = true;
+		}
+	}
+
+	return hasValidMode;
 }

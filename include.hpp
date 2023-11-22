@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 10:54:23 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:00:11 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ enum ErrorCode {
 	ERR_ERRONEUSNICKNAME = 432,
 	ERR_NICKNAMEINUSE = 433,
 	ERR_NICKCOLLISION = 436,
+	ERR_USERNOTINCHANNEL = 441,
 	ERR_NOTONCHANNEL = 442,
 	ERR_USERONCHANNEL = 443,
 	ERR_NEEDMOREPARAMS = 461,
@@ -73,6 +74,7 @@ enum messageServer {
 #include <deque>
 #include <cerrno>
 #include <algorithm>
+#include <cctype>
 
 #include "srcs/channel/channel.hpp"
 #include "srcs/client/client.hpp"
@@ -80,7 +82,5 @@ enum messageServer {
 #include "srcs/serverReply/serverReply.hpp"
 #include "srcs/server/server.hpp"
 #include "srcs/utils/utils.hpp"
-
-
 
 #endif // INCLUDE_HPP

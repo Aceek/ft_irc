@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 09:03:27 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:53:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ class Command {
 		std::string const				&getTrailor(void) const;
 		Client							&getClient(void) const;
 		Server							&getServer(void) const;
-		Channel							&getTargetChannel(void) const;
-		Client							&getTargetClient(void) const;
+		Channel							*getTargetChannel(void) const;
+		Client							*getTargetClient(void) const;
+		std::string const				&getTargetChannelName(void) const;
+		std::string const				&getNick(void) const;
 		std::string const				&getModeSet(void) const;
 		std::vector<std::string> const	&getModeArgs(void) const;
 		
@@ -63,11 +65,13 @@ class Command {
 		bool	isValidChannelName(std::string const &channelName) const;
 		bool	isValidChannelKey(Channel const *channel, std::string const &key) const;
 		bool	checkInviteOnlyAndNotInvited(Channel const *channel) const;
+		bool	checkInviteOnlyAndNotOperator(Channel const *channel) const;
 		bool	checkChannelFull(Channel const *channel) const;
 		bool	checkTopicRestriction(Channel const *channel) const;
 		void	addUserToChannel(Channel *channel) const;
 		Channel	*getOrCreateChannel(std::string const &channelName, std::string const &key);
 		bool	isValidMode(const std::string &str);
+		bool	isRecognizedMode(const std::string &str);
 		
 	private:
 		std::string					_command;
@@ -77,6 +81,8 @@ class Command {
 		std::string					_trailor;
 		Channel						*_targetChannel;
 		Client						*_targetClient;
+		std::string					_targetChannelName;
+		std::string					_nick;
 		std::string					_modeSet;
 		std::vector<std::string>	_modeArgs;
 

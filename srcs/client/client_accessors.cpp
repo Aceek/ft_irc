@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:25:35 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:07:47 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:16:49 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	Client::setUserRegister() {
 void	Client::setNickRegister() {
 	this->_nickRegister = true;
 }
-
 
 std::string Client::getPrefix(void) const {
 	std::string prefix = this->_nickname;

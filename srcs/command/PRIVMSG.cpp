@@ -16,9 +16,11 @@
 int Command::PRIVMSG() {
 /*	Parameters: <receiver>{,<receiver>} <text to be sent> */
 	if (this->_args.size() < 1 ) {
+		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 	if (this->_trailor.empty()) {
+		this->_server.getServerReply()->NOTEXTTOSEND(*this, this->_client);
 		return ERR_NOTEXTTOSEND;
 	}
 
@@ -26,19 +28,24 @@ int Command::PRIVMSG() {
 	//!!! is it possible to send a message to ourselve ? if so check double output msg
 	for (std::vector<std::string>::iterator it = receivers.begin();
 		it != receivers.end(); ++it) {
-			if (isValidChannelName(*it)) {
-				this->_targetChannel = this->_server.getChannel(*it);
+			this->_targetChannelName = *it;
+			if (isValidChannelName(this->_targetChannelName)) {
+				this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
 				if (!this->_targetChannel) {
+					this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 					return ERR_NOSUCHCHANNEL;
 				}
 				if (!this->_targetChannel->isClientPresent(this->_client)) {
+					this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
 					return ERR_NOTONCHANNEL;
 				}
 
 				this->_server.getServerReply()->PRIVMSG(*this, *this->_targetChannel);
 			} else {
-				this->_targetClient = this->_server.getClientByNickname(*it);
+				this->_nick = *it;
+				this->_targetClient = this->_server.getClientByNickname(this->_nick);
 				if (!this->_targetClient) {
+					this->_server.getServerReply()->NOSUCHNICK(*this, this->_client);
 					return ERR_NOSUCHNICK;
 				}
 

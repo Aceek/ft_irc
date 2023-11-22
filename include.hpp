@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 12:36:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:16:26 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 #include <deque>
 #include <cerrno>
 #include <algorithm>
+#include <cctype>
 
 #include "srcs/channel/channel.hpp"
 #include "srcs/client/client.hpp"

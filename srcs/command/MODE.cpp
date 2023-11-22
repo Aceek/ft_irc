@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 11:32:30 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:35:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int Command::MODE() {
 		return ERR_NEEDMOREPARAMS;
 	}
 
-	this->_targetChannel = this->_server.getChannel(this->_args[0]);
+	this->_targetChannelName = this->_args[0];
+	this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
 	if (!this->_targetChannel) {
 		this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 		return ERR_NOSUCHCHANNEL;
@@ -32,6 +33,10 @@ int Command::MODE() {
 	if (!isValidMode(this->_modeSet)) {
 		this->_server.getServerReply()->UMODEUNKNOWNFLAG(*this, this->_client);
 		return ERR_UMODEUNKNOWNFLAG;
+	}
+	if (!isRecognizedMode(this->_modeSet)) {
+		this->_server.getServerReply()->UNKNOWNMODE(*this, this->_client);
+		return ERR_UNKNOWNMODE;
 	}
 
 	for (std::vector<std::string>::const_iterator it = this->_args.begin() + 2;
@@ -95,13 +100,16 @@ int Command::MODE() {
 			}
 			case 'l':
 				// Set/unset the limit of users for the channel
-				if (i >= this->_modeArgs.size()) {
-					this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
-					return ERR_NEEDMOREPARAMS;
-				} 
-				this->_targetChannel->setUserLimit(s == '+' ? 
-					atoi(this->_modeArgs[i].c_str()) : -1);
-				++i;
+				if (s == '+') {
+					if (i >= this->_modeArgs.size()) {
+						this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
+						return ERR_NEEDMOREPARAMS;
+					}
+					this->_targetChannel->setUserLimit(atoi(this->_modeArgs[i].c_str()));
+					++i;
+				} else {
+					this->_targetChannel->setUserLimit(-1);
+				}
 				break;
 			default:
 				this->_server.getServerReply()->UNKNOWNMODE(*this, this->_client);

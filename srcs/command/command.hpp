@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 11:20:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:00:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ class Command {
 		void	addUserToChannel(Channel *channel) const;
 		Channel	*getOrCreateChannel(std::string const &channelName, std::string const &key);
 		bool	isValidMode(const std::string &str);
+		bool	isRecognizedMode(const std::string &str);
 		
 	private:
 		std::string					_command;

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 20:24:30 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:34:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int Command::TOPIC() {
 		return ERR_NEEDMOREPARAMS;
 	}
 
-	this->_targetChannel = this->_server.getChannel(this->_args[0]);
+	this->_targetChannelName = this->_args[0];
+	this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
 	if (!this->_targetChannel) {
 		this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 		return ERR_NOSUCHCHANNEL;

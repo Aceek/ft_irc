@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 20:54:54 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:22:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ int Command::JOIN() {
 		ft_split(this->_args[1], ",") : std::vector<std::string>();
 
 	for (size_t i = 0; i < channels.size(); ++i) {
-		if (!isValidChannelName(channels[i])) {
-			this->_server.getServerReply()->BADCHANMASK(channels[i], this->_client);
+		this->_targetChannelName = channels[i];
+		if (!isValidChannelName(this->_targetChannelName)) {
+			this->_server.getServerReply()->BADCHANMASK(*this, this->_client);
 			return ERR_BADCHANMASK;
 		}
 		
 		std::string	key = (i < keys.size()) ? keys[i] : "";
-		this->_targetChannel = getOrCreateChannel(channels[i], key);
+		this->_targetChannel = getOrCreateChannel(this->_targetChannelName, key);
 		if (this->_targetChannel->isClientPresent(this->_client)) {
 			this->_server.getServerReply()->USERONCHANNEL(*this, this->_client);
 			return ERR_USERONCHANNEL;

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 21:47:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:38:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ serverReply::~serverReply() {}
 
 /* ************************************************************************** */
 
-void serverReply::NOSUCHNICK(Command const &cmd, std::string const &nick, Client &receiver) {
+void serverReply::NOSUCHNICK(Command const &cmd, Client &receiver) {
     std::string const &client = cmd.getClient().getPrefix();
+    std::string const &nick = cmd.getNick();
 	std::string msg = client + " 401 * " + nick + " :No such nick/channel";
     this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }
@@ -113,7 +114,8 @@ void serverReply::BADCHANNELKEY(Command const &cmd, Client &receiver) {
     this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }
 
-void serverReply::BADCHANMASK(std::string const &channel, Client &receiver) {
+void serverReply::BADCHANMASK(Command const &cmd, Client &receiver) {
+    std::string const &channel = cmd.getTargetChannelName();
     std::string msg = channel + " 476 * :Bad Channel Mask";
     this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }

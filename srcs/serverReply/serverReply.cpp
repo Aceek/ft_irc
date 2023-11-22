@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 11:38:40 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:07:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void serverReply::NOSUCHNICK(Command const &cmd, Client &receiver) {
 
 void serverReply::NOSUCHCHANNEL(Command const &cmd, Client &receiver) {
     std::string const &client = cmd.getClient().getPrefix();
-    std::string const &channel = cmd.getTargetChannel()->getName();
+    std::string const &channel = cmd.getTargetChannelName();
     std::string msg = client + " 403 * "  + channel + " :No such channel";
     this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }

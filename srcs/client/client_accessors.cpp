@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:25:35 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 15:49:13 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 16:08:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ std::string Client::getPrefix(void) const {
 	return prefix + "@" + this->_hostname;
 }
 
-std::set<Channel *>	const Client::getChannels(void) const {
+std::set<Channel *>	const &Client::getChannels(void) const {
 	return this->_channels;
 }

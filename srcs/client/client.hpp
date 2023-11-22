@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 15:55:09 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 16:08:19 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class Client {
 		void						setUserRegister();
 		void						setNickRegister();
 		std::string					getPrefix(void) const;
-		std::set<Channel *> const	getChannels(void) const;
+		std::set<Channel *> const	&getChannels(void) const;
 
 		/*client_utils*/
 		bool	isUserRegister() const;

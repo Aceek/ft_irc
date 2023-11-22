@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 11:35:43 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:38:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ int Command::KICK() {
 		this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
 		return ERR_NOSUCHCHANNEL;
 	}
+	if (!this->_targetChannel->isClientPresent(this->_client)) {
+		this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
+		return ERR_NOTONCHANNEL;
+	}
 	if (!this->_targetChannel->isOperator(this->_client)) {
 		this->_server.getServerReply()->CHANOPRIVSNEEDED(*this, this->_client);
 		return ERR_CHANOPRIVSNEEDED;
@@ -37,8 +41,8 @@ int Command::KICK() {
 		return ERR_NOSUCHNICK;
 	}
 	if (!this->_targetChannel->isClientPresent(*this->_targetClient)) {
-		this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
-		return ERR_NOTONCHANNEL;
+		this->_server.getServerReply()->USERNOTINCHANNEL(*this, this->_client);
+		return ERR_USERNOTINCHANNEL;
 	}
 
 	this->_server.getServerReply()->KICK(*this, *this->_targetChannel);

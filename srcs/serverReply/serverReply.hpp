@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 11:26:08 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:38:51 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ public:
     void CANNOTSENDTOCHAN(Command const &cmd, Client &receiver);
     void NOTEXTTOSEND(Command const &cmd, Client &receiver);
 	void UNKNOWNCOMMAND(Command const &cmd, Client &receiver);
+    void USERNOTINCHANNEL(Command const &cmd, Client &receiver);
     void NOTONCHANNEL(Command const &cmd, Client &receiver);
     void USERONCHANNEL(Command const &cmd, Client &receiver);
     void NEEDMOREPARAMS(Command const &cmd, Client &receiver);

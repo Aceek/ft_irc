@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 12:07:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:38:58 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ void serverReply::UNKNOWNCOMMAND(Command const &cmd, Client &receiver) {
     std::string const &client = cmd.getClient().getPrefix();
     std::string const &command = cmd.getName();
     std::string msg = client + " 421 * "  + command + " :Unknown command";
+    this->_server.setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::USERNOTINCHANNEL(Command const &cmd, Client &receiver) {
+    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &nick = cmd.getNick();
+    std::string const &channel = cmd.getTargetChannel()->getName();
+    std::string msg = client + " 441 * "  + nick + " " + channel + " :They aren't on that channel";
     this->_server.setMessageQueue(receiver.getClientFd(), msg);
 }
 

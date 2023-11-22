@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 07:35:07 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 08:55:22 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,27 +116,5 @@ std::string	Server::getServerMessage(int messageServer) const {
 		return("Unknow error");
 
 	}
-}
-
-void	Server::printClientInput(const std::string &message, const Client &client) const {
-	
-	std::string clientNickname = client.getNicknameOrUsername(true);
-	int			clientFd = client.getClientFd();
-
-	std::cout << "[SERVER]: [CLIENT]";
-	
-	
-	if (!clientNickname.empty()) {
-		std::cout << "[" << clientNickname << "]: ";
-	} else {
-		std::cout << "[" << clientFd << "]: ";
-	}
-	
-	std::cout << message << std::endl;
-	
-}
-
-void	Server::printServerInput(const std::string &message) const {
-	std::cout << message << std::endl;
 }
 

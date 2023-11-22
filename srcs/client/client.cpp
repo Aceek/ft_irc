@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:02 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:01:08 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ void	Client::clearCommand() {
 }
 
 bool	Client::verifyCommand(Server &server) {
+	serverReply *serverReply = server.getServerReply();
 	
 	// } else if (this->_command.find("\n") == std::string::npos) {
 	if (this->_command.find("\r\n") == std::string::npos) {
 		return (false);
 	} else if (this->_command.empty() || this->_command.size() > BUFFER_SIZE) {
-		server.printServerInput(server.getServerMessage(ERR_COMMAND_SIZE));
+		serverReply->printServerInput(server.getServerMessage(ERR_COMMAND_SIZE));
 		server.setMessageQueue(this->_clientFd, server.getErrorMessage(ERR_COMMAND_SIZE));
 		this->_command.clear();
 		return (false);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_utlis.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:02:46 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	Server::closingFdClients() {
 	ClientMap::iterator it = this->_clients.begin();
 	for (; it != this->_clients.end(); it++) {
 		if (close (it->second.getClientFd()) == -1) {
-			printServerInput(std::string(strerror(errno)));
+			this->_serverReply->printServerInput(std::string(strerror(errno)));
 		}
 	}
 }

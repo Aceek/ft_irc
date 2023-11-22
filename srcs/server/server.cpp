@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 08:21:21 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 09:02:54 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 	if (bind(_serverFd, (struct sockaddr *)&_serverAdress, sizeof(_serverAdress)) < 0) {
 		close (this->_serverFd);
 		delete(this->_serverReply);
-		printServerInput(std::string(strerror(errno)));
+		this->_serverReply->printServerInput(std::string(strerror(errno)));
 		throw std::runtime_error("Error lors de la liaison de la socket");
 	}
 
@@ -68,7 +68,7 @@ void	Server::routine() {
 	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
 		if (ready == -1) {
-			printServerInput(std::string(strerror(errno)));
+			this->_serverReply->printServerInput(std::string(strerror(errno)));
 			break;
 		}
 		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
@@ -86,7 +86,7 @@ void	Server::routine() {
 	}
 	closingFdClients();
 	close(this->_serverFd);
-	printServerInput(getServerMessage(SERVER_CLOSING));
+	this->_serverReply->printServerInput(getServerMessage(SERVER_CLOSING));
 }
 
 void	Server::addClientsToPoll() {
@@ -135,7 +135,7 @@ void Server::removeClient(const int clientFd) {
 	}
 
 	// ajouter gestion message de retrait server A FAIRE ?
-	printServerInput(getServerMessage(SERVER_DELCLIENT));
+	this->_serverReply->printServerInput(getServerMessage(SERVER_DELCLIENT));
 }	
 
 int	Server::acceptClient() {
@@ -146,7 +146,7 @@ int	Server::acceptClient() {
 
 	
 	if (clientFd == -1) {
-		printServerInput(getServerMessage(ERR_SERVER_ACCEPTCLIENT));
+		this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_ACCEPTCLIENT));
 	}
 	
 	Client newClient(clientFd, clientAdress);
@@ -154,7 +154,7 @@ int	Server::acceptClient() {
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
 	this->_clientsToAdd.push_back(clientFd);
-	printServerInput(getServerMessage(SERVER_NEWCLIENT));
+	this->_serverReply->printServerInput(getServerMessage(SERVER_NEWCLIENT));
 
 	return (clientFd);
 }
@@ -206,14 +206,14 @@ void Server::sendMessage(const int clientFd, const std::string &message) const {
 
 	if (bytesSent == -1) {
 		// gestion erreur a faire !
-		printServerInput(getServerMessage(ERR_SERVER_SENDING));
+		this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
 	}
 }
 
 void Server::sendFile(const int clientFd, const std::string &filePath) {
 	std::ifstream fileStream(filePath.c_str(), std::ios::binary);
 	if (!fileStream.is_open()) {
-		printServerInput(getServerMessage(ERR_SERVER_SENDING));
+		this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
 		return;
 	}
 
@@ -230,7 +230,7 @@ void Server::sendFile(const int clientFd, const std::string &filePath) {
 		int bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
 
 		if (bytesSent == -1) {
-			printServerInput(getServerMessage(ERR_SERVER_SENDING));
+			this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
 			break;
 		}
 

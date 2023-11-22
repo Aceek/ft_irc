@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 08:43:45 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 09:14:11 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ public:
 	void	WELCOME_RPL(const Client &client);
 	void	PONG_RPL(const int errorCode, const Command &command);
 	void	PASS_RPL(const int errorCode, const Command &command);
-
-
 	void	USER_RPL(const int errorCode, const Client &client);
+
+
+	void	printServerInput(const std::string &message) const;
+	void 	displayClientCommand(const std::string& command, const Client& client) const;
 	
 
 };

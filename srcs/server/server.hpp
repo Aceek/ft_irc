@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 07:46:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 08:57:18 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ class Server {
 		/*server_message*/
 		std::string		getServerMessage(int messageServer) const;
 		std::string		getErrorMessage(int errorCode) const;
-		void			printClientInput(const std::string &message, const Client &client) const;
-		void			printServerInput(const std::string &message) const;
 
 		/*server_utlis*/
 		bool	isChannelPresent(std::string const &channelName);

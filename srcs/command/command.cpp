@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 08:48:36 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 09:13:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void Command::initCommandsMap(void) {
 }
 
 void Command::exec(void) {
-	this->_server.printClientInput(this->_command, this->_client);
+	serverReply *serverReply = this->_server.getServerReply();
+	serverReply->displayClientCommand(this->_command, this->_client);
 
 	CommandMap::iterator it = this->_commands.find(this->_name);
 	if ((it != this->_commands.end() &&

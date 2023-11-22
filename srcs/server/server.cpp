@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:02:54 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 09:52:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	Server::routine() {
 			} if (it->revents & POLLIN) {
 				routinePOLLIN(it);
 			} if (it->revents & POLLOUT) {
-				verifyMessageSend(it->fd);
+				this->_serverReply->verifyMessageSend(it->fd);
 			}
 		}
 		removeClients();
@@ -86,7 +86,7 @@ void	Server::routine() {
 	}
 	closingFdClients();
 	close(this->_serverFd);
-	this->_serverReply->printServerInput(getServerMessage(SERVER_CLOSING));
+	// this->_serverReply->printServerInput(getServerMessage(SERVER_CLOSING));
 }
 
 void	Server::addClientsToPoll() {
@@ -124,10 +124,11 @@ void Server::removeClient(const int clientFd) {
 		this->_clients.erase(clientFd);
 	}
 
+	messages &messages = this->_serverReply->getMessageQueue();
 	std::map<int, std::deque<std::string> >::iterator itMsg
-		= this->_messageQueue.find(clientFd);
-	if (itMsg != this->_messageQueue.end()) {
-		this->_messageQueue.erase(clientFd);
+		= messages.find(clientFd);
+	if (itMsg != messages.end()) {
+		messages.erase(clientFd);
 	}
 
 	if (close (clientFd) == -1) {
@@ -135,7 +136,7 @@ void Server::removeClient(const int clientFd) {
 	}
 
 	// ajouter gestion message de retrait server A FAIRE ?
-	this->_serverReply->printServerInput(getServerMessage(SERVER_DELCLIENT));
+	// this->_serverReply->printServerInput(getServerMessage(SERVER_DELCLIENT));
 }	
 
 int	Server::acceptClient() {
@@ -146,7 +147,7 @@ int	Server::acceptClient() {
 
 	
 	if (clientFd == -1) {
-		this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_ACCEPTCLIENT));
+		// this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_ACCEPTCLIENT));
 	}
 	
 	Client newClient(clientFd, clientAdress);
@@ -154,7 +155,7 @@ int	Server::acceptClient() {
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
 	this->_clientsToAdd.push_back(clientFd);
-	this->_serverReply->printServerInput(getServerMessage(SERVER_NEWCLIENT));
+	// this->_serverReply->printServerInput(getServerMessage(SERVER_NEWCLIENT));
 
 	return (clientFd);
 }
@@ -194,58 +195,18 @@ bool	Server::processCommand(const int &clientFd) {
 	}
 	buffer[bytesReceived] = '\0';
 	client.addToCommand(buffer);
-	if (client.verifyCommand(*this)) {
+	if (client.verifyCommand()) {
 		tryCommand(client);
 	}
 	return (true);
 }
 
-void Server::sendMessage(const int clientFd, const std::string &message) const {
-	std::string newMessage = message + "\n";
-	int bytesSent = send(clientFd, newMessage.c_str(), newMessage.size(), 0);
-
-	if (bytesSent == -1) {
-		// gestion erreur a faire !
-		this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
-	}
-}
-
-void Server::sendFile(const int clientFd, const std::string &filePath) {
-	std::ifstream fileStream(filePath.c_str(), std::ios::binary);
-	if (!fileStream.is_open()) {
-		this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
-		return;
-	}
-
-	// Determine the file size
-	fileStream.seekg(0, std::ios::end);
-	int fileSize = fileStream.tellg();
-	fileStream.seekg(0, std::ios::beg);
-
-	const int chunkSize = MAX_COMMAND_SIZE;
-	char buffer[MAX_COMMAND_SIZE];
-
-	while (fileSize > 0) {
-		int bytesRead = fileStream.readsome(buffer, std::min(fileSize, chunkSize));
-		int bytesSent = send(clientFd, buffer, static_cast<size_t>(bytesRead), 0);
-
-		if (bytesSent == -1) {
-			this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
-			break;
-		}
-
-		fileSize -= bytesRead;
-	}
-
-	fileStream.close();
-}
-
-void Server::verifyMessageSend(const int clientFd) {
+// void Server::verifyMessageSend(const int clientFd) {
 	
-	std::deque<std::string>& messages = this->_messageQueue[clientFd];
-	for (std::deque<std::string>::iterator msgIt = messages.begin();
-	msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
-		sendMessage(clientFd, *msgIt);
-	}
-	messages.clear();
-}
+// 	std::deque<std::string>& messages = this->_messageQueue[clientFd];
+// 	for (std::deque<std::string>::iterator msgIt = messages.begin();
+// 	msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
+// 		this->_serverReply->sendMessage(clientFd, *msgIt);
+// 	}
+// 	messages.clear();
+// }

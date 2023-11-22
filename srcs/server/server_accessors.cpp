@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_accessors.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:08 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:40:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,6 @@ void	Server::setClientToRemove(const int clientFd) {
 	this->_clientsToRemove.push_back(clientFd);
 }
 
-void Server::setMessageQueue(const int clientfd, const std::string &message) {
-	this->_messageQueue[clientfd].push_back(message);
-}
-
-// test function
-
-int	Server::getWaitingMessage(int clientFd) {
-	return (this->_messageQueue[clientFd].size());
-}
+// void Server::setMessageQueue(const int clientfd, const std::string &message) {
+// 	this->_messageQueue[clientfd].push_back(message);
+// }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:40:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:01:08 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 09:25:57 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,11 @@ void	Client::clearCommand() {
 	this->_command.clear();
 }
 
-bool	Client::verifyCommand(Server &server) {
-	serverReply *serverReply = server.getServerReply();
+bool	Client::verifyCommand() {
 	
-	// } else if (this->_command.find("\n") == std::string::npos) {
 	if (this->_command.find("\r\n") == std::string::npos) {
 		return (false);
 	} else if (this->_command.empty() || this->_command.size() > BUFFER_SIZE) {
-		serverReply->printServerInput(server.getServerMessage(ERR_COMMAND_SIZE));
-		server.setMessageQueue(this->_clientFd, server.getErrorMessage(ERR_COMMAND_SIZE));
 		this->_command.clear();
 		return (false);
 	}

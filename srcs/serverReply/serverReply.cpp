@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:01:59 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:54:48 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ std::string serverReply::buildTopicMessage(Command &cmd) {
 
 void serverReply::INVITE(Command &cmd, Client &receiver) {
 	const std::string& msg = buildInviteMessage(cmd);
-	this->_server.setMessageQueue(receiver.getClientFd(), msg);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::INVITE(Command &cmd, Channel &receiver) {
@@ -105,7 +105,7 @@ void serverReply::JOIN(Command &cmd, Channel &receiver) {
 
 void serverReply::PART(Command &cmd, Client &receiver) {
 	const std::string& msg = buildPartMessage(cmd);
-	this->_server.setMessageQueue(receiver.getClientFd(), msg);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::PART(Command &cmd, Channel &receiver) {
@@ -125,7 +125,7 @@ void serverReply::MODE(Command &cmd, Channel &receiver) {
 
 void serverReply::PRIVMSG(Command &cmd, Client &receiver) {
 	const std::string& msg = buildPrivmsgMessage(cmd, true);
-	this->_server.setMessageQueue(receiver.getClientFd(), msg);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::PRIVMSG(Command &cmd, Channel &receiver) {

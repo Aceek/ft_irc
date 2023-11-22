@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_channel.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:51:53 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:54:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void Server::sendMessageToChannel(Channel const &channel, std::string const &mes
 	
 	for (std::set<Client *>::iterator it = channel.getUsers().begin();
 		it != channel.getUsers().end(); ++it) {
-			setMessageQueue((*it)->getClientFd(), message);
+			_serverReply->setMessageQueue((*it)->getClientFd(), message);
 	}
 	for (std::set<Client *>::iterator it = channel.getOperators().begin();
 		it != channel.getOperators().end(); ++it) {
-			setMessageQueue((*it)->getClientFd(), message);
+			_serverReply->setMessageQueue((*it)->getClientFd(), message);
 	}
 }

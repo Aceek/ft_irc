@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:07 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:23:28 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Client {
 
 		void	clearCommand();
 		void	addToCommand(const std::string &buffer);
-		bool	verifyCommand(Server &server);
+		bool	verifyCommand();
 
 		/*client_accessors*/
 		int							getClientFd() const;

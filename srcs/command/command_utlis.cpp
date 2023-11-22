@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 12:12:55 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:23:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ bool Command::checkInviteOnlyAndNotInvited(Channel const *channel) const {
 }
 
 bool Command::checkInviteOnlyAndNotOperator(Channel const *channel) const {
-	// std::cout << "invietonly :" << channel->getInviteOnly() << std::endl;
 	return channel->getInviteOnly() && !channel->isOperator(this->_client);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 12:08:06 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:20:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int Command::INVITE() {
 		this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
 		return ERR_NOTONCHANNEL;
 	}
-	if (!checkInviteOnlyAndNotOperator(this->_targetChannel)) {
+	if (checkInviteOnlyAndNotOperator(this->_targetChannel)) {
 		this->_server.getServerReply()->CHANOPRIVSNEEDED(*this, this->_client);
 		return ERR_CHANOPRIVSNEEDED;
 	}

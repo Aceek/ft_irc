@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:52:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 10:53:19 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 	if (bind(_serverFd, (struct sockaddr *)&_serverAdress, sizeof(_serverAdress)) < 0) {
 		close (this->_serverFd);
 		delete(this->_serverReply);
-		this->_serverReply->printServerInput(std::string(strerror(errno)));
+		this->_serverReply->displayServerMessage(ERR_BIND);
 		throw std::runtime_error("Error lors de la liaison de la socket");
 	}
 
@@ -68,7 +68,7 @@ void	Server::routine() {
 	while (!serverShutdown) {
 		int ready = poll(this->_fds.data(), this->_fds.size(), -1);
 		if (ready == -1) {
-			this->_serverReply->printServerInput(std::string(strerror(errno)));
+			this->_serverReply->displayServerMessage(ERR_POLL);
 			break;
 		}
 		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
@@ -86,7 +86,7 @@ void	Server::routine() {
 	}
 	closingFdClients();
 	close(this->_serverFd);
-	// this->_serverReply->printServerInput(getServerMessage(SERVER_CLOSING));
+	this->_serverReply->displayServerMessage(SERVER_CLOSING);
 }
 
 void	Server::addClientsToPoll() {
@@ -135,8 +135,7 @@ void Server::removeClient(const int clientFd) {
 		perror("Error closing client socket");
 	}
 
-	// ajouter gestion message de retrait server A FAIRE ?
-	// this->_serverReply->printServerInput(getServerMessage(SERVER_DELCLIENT));
+	this->_serverReply->displayServerMessage(SERVER_DELCLIENT);
 }	
 
 int	Server::acceptClient() {
@@ -147,7 +146,7 @@ int	Server::acceptClient() {
 
 	
 	if (clientFd == -1) {
-		// this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_ACCEPTCLIENT));
+		this->_serverReply->displayServerMessage(ERR_SERVER_ACCEPTCLIENT);
 	}
 	
 	Client newClient(clientFd, clientAdress);
@@ -155,7 +154,7 @@ int	Server::acceptClient() {
 	
 	// Ajoutez le descripteur de fichier associé au client à _fds pour le suivi avec poll()
 	this->_clientsToAdd.push_back(clientFd);
-	// this->_serverReply->printServerInput(getServerMessage(SERVER_NEWCLIENT));
+	this->_serverReply->displayServerMessage(SERVER_NEWCLIENT);
 
 	return (clientFd);
 }

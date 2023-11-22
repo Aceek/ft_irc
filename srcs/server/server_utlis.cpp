@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 09:02:46 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 10:54:16 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	Server::closingFdClients() {
 	ClientMap::iterator it = this->_clients.begin();
 	for (; it != this->_clients.end(); it++) {
 		if (close (it->second.getClientFd()) == -1) {
-			this->_serverReply->printServerInput(std::string(strerror(errno)));
+			this->_serverReply->displayServerMessage(ERR_OPEN_FD);
 		}
 	}
 }

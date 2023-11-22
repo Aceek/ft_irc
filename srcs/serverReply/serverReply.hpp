@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:51:18 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 10:43:08 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ public:
 	void			USER_RPL(const int errorCode, const Client &client);	
 	void			printServerInput(const std::string &message) const;
 	void 			displayClientCommand(const std::string& command, const Client& client) const;
+	void			displayServerMessage(messageServer event) const;
+
 	void			sendMessage(const int clientFd, const std::string &message) const;
 	void 			verifyMessageSend(const int clientFd);
 	void			setMessageQueue(const int clientfd, const std::string &message);

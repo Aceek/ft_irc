@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:51:11 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/22 10:13:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	serverReply::CAP_RPL(const int clientFd) {
 	std::string message = ":localhost CAP * LS :\r\n";
 	setMessageQueue(clientFd, message);
 }
-
 
 void serverReply::NICK_RPL(const int errorCode, const Command &command) {
 	Client client = command.getClient();
@@ -40,7 +39,6 @@ void serverReply::NICK_RPL(const int errorCode, const Command &command) {
 	setMessageQueue(client.getClientFd(), replyMessage);
 }
 
-
 void serverReply::NICK_SUCCES(const Client& client, const std::string &oldNick) {
 	int clientFd = client.getClientFd();
 	std::string hostname = "localhost";
@@ -56,7 +54,6 @@ void serverReply::NICK_SUCCES(const Client& client, const std::string &oldNick) 
 
 	setMessageQueue(clientFd, message);
 }
-
 
 void serverReply::USER_RPL(const int errorCode, const Client &client) {
 	std::string replyMessage;
@@ -76,7 +73,6 @@ void serverReply::USER_RPL(const int errorCode, const Client &client) {
 	setMessageQueue(client.getClientFd(), replyMessage);
 }
 
-
 void serverReply::WELCOME_RPL(const Client &client) {
 	std::string serverName = "localhost";
 	std::string nick = client.getNicknameOrUsername(true);
@@ -93,7 +89,6 @@ void serverReply::WELCOME_RPL(const Client &client) {
 	setMessageQueue(client.getClientFd(), message);
 
 }
-
 
 void	serverReply::PONG_RPL(const int errorCode, const Command &command) {
 
@@ -133,32 +128,4 @@ void serverReply::PASS_RPL(const int errorCode, const Command &command) {
     }
 
     setMessageQueue(client.getClientFd(), replyMessage);
-}
-
-
-void serverReply::sendMessage(const int clientFd, const std::string &message) const {
-	std::string newMessage = message + "\n";
-	int bytesSent = send(clientFd, newMessage.c_str(), newMessage.size(), 0);
-
-	if (bytesSent == -1) {
-		// this->_serverReply->printServerInput(getServerMessage(ERR_SERVER_SENDING));
-	}
-}
-
-void serverReply::setMessageQueue(const int clientfd, const std::string &message) {
-	this->_messageQueue[clientfd].push_back(message);
-}
-
-messages &serverReply::getMessageQueue() {
-	return (this->_messageQueue);
-}
-
-void serverReply::verifyMessageSend(const int clientFd) {
-	
-	std::deque<std::string>& messages = this->_messageQueue[clientFd];
-	for (std::deque<std::string>::iterator msgIt = messages.begin();
-	msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
-		sendMessage(clientFd, *msgIt);
-	}
-	messages.clear();
 }

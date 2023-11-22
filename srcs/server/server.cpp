@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:27 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 08:21:21 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	Server::routine() {
 				continue ;
 			} if (it->revents & POLLIN) {
 				routinePOLLIN(it);
-			} else if (it->revents & POLLOUT) {
+			} if (it->revents & POLLOUT) {
 				verifyMessageSend(it->fd);
 			}
 		}
@@ -165,18 +165,14 @@ Server::~Server() {
 	delete(this->_serverReply);
 };
 
-void Server::tryCommand(Client &client, const int clientFd) {
+void Server::tryCommand(Client &client) {
 	std::string clientCommand = client.getClientCommand();
 	size_t newlinePos = clientCommand.find('\n');
 
 	while (newlinePos != std::string::npos) {
 		std::string currentCommand = clientCommand.substr(0, newlinePos);
-		try {
-			Command command(currentCommand, client, *this);
-			command.exec();
-		} catch(const std::exception& e) {
-			setMessageQueue(clientFd, getErrorMessage(ERR_PASSNEEDED));
-		}
+		Command command(currentCommand, client, *this);
+		command.exec();
 		clientCommand = clientCommand.substr(newlinePos + 1);
 		newlinePos = clientCommand.find('\n');
 	}
@@ -199,7 +195,7 @@ bool	Server::processCommand(const int &clientFd) {
 	buffer[bytesReceived] = '\0';
 	client.addToCommand(buffer);
 	if (client.verifyCommand(*this)) {
-		tryCommand(client, clientFd);
+		tryCommand(client);
 	}
 	return (true);
 }

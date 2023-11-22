@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_message.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 03:02:36 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:17 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 07:35:07 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ std::string Server::getErrorMessage(int errorCode) const {
 		return "[Channel] 443: User already on channel";
 	case ERR_NEEDMOREPARAMS:
 		return "[Command] 461: Not enough parameters";
-	case ERR_ALREADYREGISTRED:
+	case ERR_ALREADYREGISTERED:
 		return "[Password] 462: You may not reregister (already done)";
 	case ERR_PASSWDMISMATCH:
 		return "[Oper] 464: Password incorrect";

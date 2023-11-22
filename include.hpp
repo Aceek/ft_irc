@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:53 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 07:28:36 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ enum ErrorCode {
 	ERR_NOTONCHANNEL = 442,
 	ERR_USERONCHANNEL = 443,
 	ERR_NEEDMOREPARAMS = 461,
-	ERR_ALREADYREGISTRED = 462,
+	ERR_ALREADYREGISTERED = 462,
 	ERR_PASSWDMISMATCH = 464,
 	ERR_CHANNELISFULL = 471,
 	ERR_UNKNOWNMODE = 472,

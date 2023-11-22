@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   USER.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:49:03 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:48 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 07:34:48 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int Command::USER() {
 	serverReply* serverReply = this->_server.getServerReply();
 
 	if (this->_client.isUserRegister()) {
-		serverReply->USER_RPL(ERR_ALREADYREGISTRED, this->_client);
-		return (ERR_ALREADYREGISTRED);
+		serverReply->USER_RPL(ERR_ALREADYREGISTERED, this->_client);
+		return (ERR_ALREADYREGISTERED);
 	}
 	if (this->_args.empty() || this->_args[0].empty() || this->_trailor.empty()) {
 		serverReply->USER_RPL(ERR_NEEDMOREPARAMS, this->_client);

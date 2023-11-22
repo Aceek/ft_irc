@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:06:15 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 08:48:36 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ Command::Command(std::string const &line, Client &client, Server &server) :
 		}
 		this->_args.push_back(arg);
 	}
-	// if (this->_name != "PASS" && !this->_client.isPasswordSetUp()) {
-		// throw std::runtime_error("Error : Password required");
-	// }
 }
 
 Command::Command(Command const &rhs) :
@@ -93,7 +90,8 @@ void Command::exec(void) {
 	this->_server.printClientInput(this->_command, this->_client);
 
 	CommandMap::iterator it = this->_commands.find(this->_name);
-	if (it != this->_commands.end()) {
+	if ((it != this->_commands.end() &&
+	(this->_client.isPasswordSetUp() || it->first == "PASS" || it->first == "CAP"))) {
 		(this->*(it->second).func)();
 	}
 }

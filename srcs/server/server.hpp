@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:36 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 07:46:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class Server {
 		void		addToPoll(int fd, short events);
 		void		routine();
 		bool		processCommand(const int &clientFd);
-		void		tryCommand(Client &client, const int clientFd);
+		void		tryCommand(Client &client);
 
 		void		removeClient(const int clientFd);
 		void		removeClients();

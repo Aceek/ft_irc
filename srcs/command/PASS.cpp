@@ -3,35 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   PASS.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:26 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 08:44:18 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
 int	Command::PASS() {
+    serverReply *serverReply = this->_server.getServerReply();
 
-	if (this->_client.isPasswordSetUp()) {
-		return (ERR_ALREADYREGISTRED);
-	}
-	if (this->_args.empty() || this->_args[0].empty()) {
-		return (ERR_NEEDMOREPARAMS);
-	}
-	if (!isValidPassword()) {
-		return (ERR_PASSFORMAT);
-	}
-	if (this->_args[0] == this->_server.getPassword()) {
-		this->_client.setPassRegister();
-	} else {
-		return (ERR_PASSWRONG);
-	}
-	std::string passMessage = 	":" + this->_client.getPrefix() +
-								" 001 " + this->_name;
-	
-	this->_server.setMessageQueue(this->_client.getClientFd(), passMessage);
-	// this->_server.setMessageQueue(this->_client.getClientFd(), "Password match, Welcome to irc server");
-	return (ERR_NONE);
+    if (this->_client.isPasswordSetUp()) {
+        serverReply->PASS_RPL(ERR_ALREADYREGISTERED, *this);
+		QUIT();
+        return (ERR_ALREADYREGISTERED);
+    }
+    if (this->_args.empty() || this->_args[0].empty()) {
+        serverReply->PASS_RPL(ERR_NEEDMOREPARAMS, *this);
+		QUIT();
+        return (ERR_NEEDMOREPARAMS);
+    }
+    if (!isValidPassword()) {
+        serverReply->PASS_RPL(ERR_PASSWDMISMATCH, *this);
+		QUIT();
+        return (ERR_PASSWDMISMATCH);
+    }
+    if (this->_args[0] != this->_server.getPassword()) {
+        serverReply->PASS_RPL(ERR_PASSWDMISMATCH, *this);
+		QUIT();
+        return (ERR_PASSWDMISMATCH);
+    }
+    this->_client.setPassRegister();
+    return (ERR_NONE);
 }

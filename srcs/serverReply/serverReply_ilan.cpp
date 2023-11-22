@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply_ilan.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/21 15:08:53 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/22 08:43:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void serverReply::USER_RPL(const int errorCode, const Client &client) {
 	std::string replyMessage;
 
 	switch (errorCode) {
-		case ERR_ALREADYREGISTRED:
+		case ERR_ALREADYREGISTERED:
 			replyMessage = ":localhost 462 * :Unauthorized command (already registered)";
 			break;
 		case ERR_NEEDMOREPARAMS:
@@ -113,4 +113,24 @@ void	serverReply::PONG_RPL(const int errorCode, const Command &command) {
 	}
 
 	_server.setMessageQueue(command.getClient().getClientFd(), replyMessage);
+}
+
+void serverReply::PASS_RPL(const int errorCode, const Command &command) {
+    Client client = command.getClient();
+    std::string replyMessage;
+    std::string hostname = "localhost";
+
+    switch (errorCode) {
+        case ERR_NEEDMOREPARAMS:
+            replyMessage = ":" + hostname + " 461 * PASS :Not enough parameters";
+            break;
+        case ERR_ALREADYREGISTERED:
+            replyMessage = ":" + hostname + " 462 * :Unauthorized command (already registered)";
+            break;
+        case ERR_PASSWDMISMATCH:
+            replyMessage = ":" + hostname + " 464 * :Password incorrect";
+            break;
+    }
+
+    _server.setMessageQueue(client.getClientFd(), replyMessage);
 }

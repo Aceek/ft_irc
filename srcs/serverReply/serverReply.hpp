@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 15:02:37 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:02:22 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,17 @@ public:
 	
 	void			INVITE(Command &cmd, Client &receiver);
 	void			INVITE(Command &cmd, Channel &receiver);
+	void			KICK(Command &cmd, Client &receiver);
 	void			KICK(Command &cmd, Channel &receiver);
+	void			JOIN(Command &cmd, Client &receiver);
 	void			JOIN(Command &cmd, Channel &receiver);
 	void			PART(Command &cmd, Client &receiver);
 	void			PART(Command &cmd, Channel &receiver);
 	void			PRIVMSG(Command &cmd, Client &receiver);
 	void			PRIVMSG(Command &cmd, Channel &receiver);
+	void			MODE(Command &cmd, Client &receiver);
 	void			MODE(Command &cmd, Channel &receiver);
+	void			TOPIC(Command &cmd, Client &receiver);
 	void			TOPIC(Command &cmd, Channel &receiver);
 
 	void			CAP_RPL(const int clientFd);

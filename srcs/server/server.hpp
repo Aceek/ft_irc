@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 09:57:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/24 16:42:41 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Server {
 		/*server_channel*/
 		void	addChannel(std::string const &channelName);
 		void	delChannel(std::string const &channelName);
-		void 	sendMessageToChannel(Channel const &channel, std::string const &message);
+		void 	sendMessageToChannel(Client const &sender, Channel const &channel, std::string const &message);
 
 		/*server_utlis*/
 		bool	isChannelPresent(std::string const &channelName);

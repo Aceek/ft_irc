@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 14:53:00 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/24 15:45:57 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ class Command {
 		std::string const				&getName(void) const;
 		std::vector<std::string> const	&getArgs(void) const;
 		std::string const				&getTrailor(void) const;
+		bool const						&getHasTrailor(void) const;
 		Client							&getClient(void) const;
 		Server							&getServer(void) const;
 		Channel							*getTargetChannel(void) const;
@@ -79,6 +80,7 @@ class Command {
 		std::string					_name;
 		std::vector<std::string>	_args;
 		std::string					_trailor;
+		bool						_hasTrailor;
 		Channel						*_targetChannel;
 		Client						*_targetClient;
 		std::string					_targetChannelName;

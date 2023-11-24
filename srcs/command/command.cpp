@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 09:13:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/24 15:41:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 
 Command::Command(std::string const &line, Client &client, Server &server) : 
 	_command(line), _prefix(""), _name(""), _args(), _trailor(""),
-	_client(client),
-	_server(server) {
+	_hasTrailor(false), _client(client), _server(server) {
 	initCommandsMap();
 	
 	std::istringstream	iss(line);
@@ -31,6 +30,7 @@ Command::Command(std::string const &line, Client &client, Server &server) :
 	std::string arg;
 	while (iss >> arg) {
 		if (!arg.empty() && arg[0] == ':') { // Trailing detected
+			this->_hasTrailor = true;
 			arg = arg.substr(1);
 			std::getline(iss, this->_trailor);
 			this->_trailor = arg + this->_trailor;

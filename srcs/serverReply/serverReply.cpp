@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/23 11:40:39 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:20:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,12 @@ std::string serverReply::buildTopicMessage(Command &cmd) {
 						" " + cmd.getName() +
 						" " + cmd.getTargetChannel()->getName();
 	
-	//check if trailor null to clear topic ? see doc command for topic
-	msg += (!cmd.getTrailor().empty()) ? " :" + cmd.getTrailor() : "";
+    if (cmd.getHasTrailor()) {
+        // msg += " :";
+        if (!cmd.getTrailor().empty()) {
+            msg += " " + cmd.getTrailor();
+        }
+    }
 
 	return msg;
 }
@@ -222,12 +226,17 @@ void serverReply::INVITE(Command &cmd, Client &receiver) {
 
 void serverReply::INVITE(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildInviteMessage(cmd);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+}
+
+void serverReply::JOIN(Command &cmd, Client &receiver) {
+	std::string msg = buildJoinMessage(cmd);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::JOIN(Command &cmd, Channel &receiver) {
 	std::string msg = buildJoinMessage(cmd);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::PART(Command &cmd, Client &receiver) {
@@ -237,17 +246,27 @@ void serverReply::PART(Command &cmd, Client &receiver) {
 
 void serverReply::PART(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildPartMessage(cmd);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+}
+
+void serverReply::KICK(Command &cmd, Client &receiver) {
+	const std::string& msg = buildKickMessage(cmd);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::KICK(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildKickMessage(cmd);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+}
+
+void serverReply::MODE(Command &cmd, Client &receiver) {
+	const std::string& msg = buildModeMessage(cmd);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::MODE(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildModeMessage(cmd);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::PRIVMSG(Command &cmd, Client &receiver) {
@@ -257,12 +276,17 @@ void serverReply::PRIVMSG(Command &cmd, Client &receiver) {
 
 void serverReply::PRIVMSG(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildPrivmsgMessage(cmd, true);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+}
+
+void serverReply::TOPIC(Command &cmd, Client &receiver) {
+	const std::string& msg = buildTopicMessage(cmd);
+	setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::TOPIC(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildTopicMessage(cmd);
-	this->_server.sendMessageToChannel(receiver, msg);
+	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 // void Server::RPL_LIST(Client &client) {

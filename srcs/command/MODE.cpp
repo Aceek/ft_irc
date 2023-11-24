@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 14:54:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:01:15 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int Command::MODE() {
 		}
 	}
 	
+	this->_server.getServerReply()->MODE(*this, this->_client);
 	this->_server.getServerReply()->MODE(*this, *this->_targetChannel);
 	
 	return ERR_NONE;

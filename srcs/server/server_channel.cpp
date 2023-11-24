@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_channel.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:51:53 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 09:54:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/24 16:43:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	Server::delChannel(std::string const &channelName) {
 	}
 }
 
-void Server::sendMessageToChannel(Channel const &channel, std::string const &message) {
+void Server::sendMessageToChannel(Client const &sender, Channel const &channel, std::string const &message) {
 	
 	if (!isChannelPresent(channel.getName()) || message.empty()) {
 		return;
@@ -32,10 +32,14 @@ void Server::sendMessageToChannel(Channel const &channel, std::string const &mes
 	
 	for (std::set<Client *>::iterator it = channel.getUsers().begin();
 		it != channel.getUsers().end(); ++it) {
-			_serverReply->setMessageQueue((*it)->getClientFd(), message);
+			if (*it != &sender) {
+				this->_serverReply->setMessageQueue((*it)->getClientFd(), message);
+			}
 	}
 	for (std::set<Client *>::iterator it = channel.getOperators().begin();
 		it != channel.getOperators().end(); ++it) {
-			_serverReply->setMessageQueue((*it)->getClientFd(), message);
+			if (*it != &sender) {
+				this->_serverReply->setMessageQueue((*it)->getClientFd(), message);
+			}
 	}
 }

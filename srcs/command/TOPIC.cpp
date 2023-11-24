@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 14:51:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:15:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int Command::TOPIC() {
 		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
+
+	
 
 	this->_targetChannelName = this->_args[0];
 	this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
@@ -34,15 +36,16 @@ int Command::TOPIC() {
 		return ERR_CHANOPRIVSNEEDED;
 	}
 
-	if (this->_trailor.empty()) {
-		// this->_server.RPL_TOPIC(*channel, this->_client);
+	if (this->_hasTrailor) {
+		if (this->_trailor.empty()) {
+			this->_targetChannel->setTopic("");
+		}
 	} else {
 		this->_targetChannel->setTopic(this->_trailor);
-
-		//to be rework with formated server response
-		//should we send RPL_TOPIC ?
-		this->_server.getServerReply()->TOPIC(*this, *this->_targetChannel);
 	}
 
+	this->_server.getServerReply()->TOPIC(*this, this->_client);
+	this->_server.getServerReply()->TOPIC(*this, *this->_targetChannel);
+	
 	return ERR_NONE;
 }

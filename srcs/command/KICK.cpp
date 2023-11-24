@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:12 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 12:38:30 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:00:55 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int Command::KICK() {
 		return ERR_USERNOTINCHANNEL;
 	}
 
+	this->_server.getServerReply()->KICK(*this, this->_client);
 	this->_server.getServerReply()->KICK(*this, *this->_targetChannel);
 	
 	this->_targetChannel->delUser(*this->_targetClient);

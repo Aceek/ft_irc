@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:24:10 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/24 15:46:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 03:13:50 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ std::string const &Command::getTargetChannelName(void) const {
 
 std::string const &Command::getNick(void) const {
 	return this->_nick;
+}
+
+std::string const &Command::getTopic(void) const {
+	return this->_topic;
 }
 
 std::string const &Command::getModeSet(void) const {

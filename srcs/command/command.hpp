@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/24 15:45:57 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 03:14:05 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ class Command {
 		Client							*getTargetClient(void) const;
 		std::string const				&getTargetChannelName(void) const;
 		std::string const				&getNick(void) const;
+		std::string const				&getTopic(void) const;
 		std::string const				&getModeSet(void) const;
 		std::vector<std::string> const	&getModeArgs(void) const;
 		
@@ -85,6 +86,7 @@ class Command {
 		Client						*_targetClient;
 		std::string					_targetChannelName;
 		std::string					_nick;
+		std::string					_topic;
 		std::string					_modeSet;
 		std::vector<std::string>	_modeArgs;
 

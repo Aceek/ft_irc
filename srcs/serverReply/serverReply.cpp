@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 02:50:49 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 02:53:04 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void serverReply::NOTONCHANNEL(Command const &cmd, Client &receiver) {
 void serverReply::USERONCHANNEL(Command const &cmd, Client &receiver) {
     std::string const &server = cmd.getClient().getHostname();
     std::string const &client = cmd.getClient().getNicknameOrUsername(true);
-    std::string const &nick = cmd.getClient().getNicknameOrUsername(true);
+    std::string const &nick = cmd.getNick();
     std::string const &channel = cmd.getTargetChannel()->getName();
     std::string msg = ":" + server + " 443 " + client + " " + nick + " " + channel + " :is already on channel";
     setMessageQueue(receiver.getClientFd(), msg);

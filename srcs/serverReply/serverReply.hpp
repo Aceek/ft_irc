@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/24 17:02:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 09:21:23 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ public:
 	void			PONG_RPL(const int errorCode, const Command &command);
 	void			PASS_RPL(const int errorCode, const Command &command);
 	void			USER_RPL(const int errorCode, const Client &client);	
+	void			LOGOUT(const Client &client);
 	void			printServerInput(const std::string &message) const;
 	void 			displayClientCommand(const std::string& command, const Client& client) const;
 	void			displayServerMessage(messageServer event) const;

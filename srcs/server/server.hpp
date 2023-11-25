@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/24 16:42:41 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 09:14:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ class Server {
 		void		addClientsToPoll();
 		int			acceptClient();
 		void		routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+		void		deconectionClients();
 
 
 
@@ -51,7 +52,7 @@ class Server {
 		Client 				*getClientByNickname(std::string const &nickname);
 		const ClientMap		&getClients() const;
 		Channel				*getChannel(std::string const &channelName);
-		const ChannelMap	&getChannels();
+		ChannelMap			&getChannels();
 		std::string			getChannelsNames() const;
 		void				setClientToRemove(const int clientFd);
 

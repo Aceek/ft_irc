@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 10:53:19 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/25 09:27:14 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,6 @@ void	Server::routine() {
 		removeClients();
 		addClientsToPoll();
 	}
-	closingFdClients();
-	close(this->_serverFd);
-	this->_serverReply->displayServerMessage(SERVER_CLOSING);
 }
 
 void	Server::addClientsToPoll() {
@@ -103,40 +100,6 @@ void	Server::removeClients() {
 	}
 	this->_clientsToRemove.clear();
 }
-
-void Server::removeClient(const int clientFd) {
-	
-
-	// Suppression client dans pollfd 
-	std::vector<pollfd>::iterator itPoll = this->_fds.begin();
-	while (itPoll != _fds.end())
-	{
-		if (itPoll->fd == clientFd) {
-			itPoll = this->_fds.erase(itPoll);
-		} else {
-			itPoll++;
-		}
-	}
-	
-	// Suppression client dans map client
-	ClientMap::iterator itClient = this->_clients.find(clientFd);
-	if (itClient != this->_clients.end()) {
-		this->_clients.erase(clientFd);
-	}
-
-	messages &messages = this->_serverReply->getMessageQueue();
-	std::map<int, std::deque<std::string> >::iterator itMsg
-		= messages.find(clientFd);
-	if (itMsg != messages.end()) {
-		messages.erase(clientFd);
-	}
-
-	if (close (clientFd) == -1) {
-		perror("Error closing client socket");
-	}
-
-	this->_serverReply->displayServerMessage(SERVER_DELCLIENT);
-}	
 
 int	Server::acceptClient() {
 	struct sockaddr_in	clientAdress;
@@ -161,8 +124,11 @@ int	Server::acceptClient() {
 
 Server::Server() {};
 Server::~Server() {
+	deconectionClients();
+	closingFdClients();
 	close(this->_serverFd);
 	delete(this->_serverReply);
+	this->_serverReply->displayServerMessage(SERVER_CLOSING);
 };
 
 void Server::tryCommand(Client &client) {
@@ -178,8 +144,6 @@ void Server::tryCommand(Client &client) {
 	}
 	client.clearCommand();
 }
-
-
 
 bool	Server::processCommand(const int &clientFd) {
 	
@@ -199,13 +163,3 @@ bool	Server::processCommand(const int &clientFd) {
 	}
 	return (true);
 }
-
-// void Server::verifyMessageSend(const int clientFd) {
-	
-// 	std::deque<std::string>& messages = this->_messageQueue[clientFd];
-// 	for (std::deque<std::string>::iterator msgIt = messages.begin();
-// 	msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
-// 		this->_serverReply->sendMessage(clientFd, *msgIt);
-// 	}
-// 	messages.clear();
-// }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 10:13:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/25 09:29:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,12 @@ void serverReply::PASS_RPL(const int errorCode, const Command &command) {
     }
 
     setMessageQueue(client.getClientFd(), replyMessage);
+}
+
+
+void	serverReply::LOGOUT(const Client &client) {
+    std::string hostname = "localhost";
+	std::string replyMessage = ":" + hostname + " QUIT :Deconection server";
+
+	sendMessage(client.getClientFd(), replyMessage); 
 }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 09:40:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/25 08:48:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ Channel *Server::getChannel(std::string const &channelName) {
 	return NULL;
 }
 
-const ChannelMap &Server::getChannels() {
+ChannelMap &Server::getChannels() {
 	return this->_channels;
 }
 

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 03:13:28 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 03:21:32 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ int Command::TOPIC() {
 		return ERR_CHANOPRIVSNEEDED;
 	}
 
-	std::string topic;
-	if (this->_hasTrailor) {
+	if (this->_args.size() > 1) {
+		this->_topic = this->_args[1];
+	} else if (this->_hasTrailor) {
 		if (this->_trailor.empty()) {
 			this->_topic = "";
 		} else {
 			this->_topic = this->_trailor;
 		}
-	} else if (this->_args.size() > 1) {
-		this->_topic = this->_args[1];
 	}
 
 	this->_targetChannel->setTopic(this->_topic);

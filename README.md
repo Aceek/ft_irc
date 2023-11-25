@@ -60,3 +60,30 @@ Pour lancer le serveur, utilisez la commande suivante en spécifiant le port et 
 ./ft_irc <port> <password>
 ```
 Remplacez <port> par le numéro de port sur lequel le serveur doit écouter et <password> par le mot de passe nécessaire pour la connexion des clients.
+
+### Connexion au Serveur IRC via irssi
+
+#### Ajout du Serveur à la Liste des Serveurs
+
+Pour ajouter le serveur IRC à votre liste dans irssi, utilisez la commande suivante :
+
+```bash
+/SERVER ADD -network <name> <address> <port> [<password>]
+```
+Configuration des Options de Connexion
+Après avoir ajouté le serveur, configurez les options de connexion avec cette commande :
+
+```bash
+/SERVER MODIFY -nocap -notls -notls_verify <name>
+```
+Connexion au Serveur
+```bash
+/connect <name>
+```
+
+Accéder aux Logs d'irssi
+Pour ouvrir un fichier de log et enregistrer votre session IRC, utilisez :
+```bash
+/RAWLOG OPEN log.txt
+```
+

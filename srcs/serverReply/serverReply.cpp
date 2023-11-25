@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/24 17:20:07 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/25 02:50:49 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,125 +19,143 @@ serverReply::~serverReply() {}
 /* ************************************************************************** */
 
 void serverReply::NOSUCHNICK(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &nick = cmd.getNick();
-	std::string msg = ":" + client + " 401 * " + nick + " :No such nick/channel";
+	std::string msg = ":" + server + " 401 " + client + " " + nick + " :No such nick/channel";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::NOSUCHCHANNEL(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannelName();
-    std::string msg = ":" + client + " 403 * "  + channel + " :No such channel";
+    std::string msg = ":" + server + " 403 " + client + " "  + channel + " :No such channel";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::CANNOTSENDTOCHAN(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 404 * "  + channel + " :Cannot send to channel";
+    std::string msg = ":" + server + " 404 " + client + " " + channel + " :Cannot send to channel";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::NOTEXTTOSEND(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
-    std::string msg = ":" + client + " 412 * :No text to send";
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+    std::string msg = ":" + server + " 412 " + client + " :No text to send";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::UNKNOWNCOMMAND(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &command = cmd.getName();
-    std::string msg = ":" + client + " 421 * "  + command + " :Unknown command";
+    std::string msg = ":" + server + " 421 " + client + " " + command + " :Unknown command";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::USERNOTINCHANNEL(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &nick = cmd.getNick();
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 441 * "  + nick + " " + channel + " :They aren't on that channel";
+    std::string msg = ":" + server + " 441 " + client + " " + nick + " " + channel + " :They aren't on that channel";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::NOTONCHANNEL(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 442 * "  + channel + " :You're not on that channel";
+    std::string msg = ":" + server + " 442 " + client + " " + channel + " :You're not on that channel";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::USERONCHANNEL(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &nick = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 443 * "  + nick + " " + channel + " :is already on channel";
+    std::string msg = ":" + server + " 443 " + client + " " + nick + " " + channel + " :is already on channel";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::NEEDMOREPARAMS(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &command = cmd.getName();
-    std::string msg = ":" + client + " 461 * "  + command + " :Not enough parameters";
+    std::string msg = ":" + server + " 461 " + client + " " + command + " :Not enough parameters";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::ALREADYREGISTRED(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
-    std::string msg = ":" + client + " 462 * :You may not reregister";
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+    std::string msg = ":" + server + " 462 " + client + " :You may not reregister";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::PASSWDMISMATCH(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
-    std::string msg = ":" + client + " 464 * :Password incorrect";
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+    std::string msg = ":" + server + " 464 " + client + " :Password incorrect";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::CHANNELISFULL(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 471 * "  + channel + " :Cannot join channel (+l)";
+    std::string msg = ":" + server + " 471 " + client + " " + channel + " :Cannot join channel (+l)";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::UNKNOWNMODE(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &modechar = cmd.getModeSet();
-    std::string msg = ":" + client + " 472 * "  + modechar + " :is an unknown mode char to me";
+    std::string msg = ":" + server + " 472 " + client + " " + modechar + " :is an unknown mode char to me";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::INVITEONLYCHAN(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 473 * "  + channel + " :Cannot join channel (+i)";
+    std::string msg = ":" + server + " 473 " + client + " " + channel + " :Cannot join channel (+i)";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::BADCHANNELKEY(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 475 * "  + channel + " :Cannot join channel (+k)";
+    std::string msg = ":" + server + " 475 " + client + " " + channel + " :Cannot join channel (+k)";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::BADCHANMASK(Command const &cmd, Client &receiver) {
+    std::string const &server = cmd.getClient().getHostname();
     std::string const &channel = cmd.getTargetChannelName();
-    std::string msg = ":" + channel + " 476 * :Bad Channel Mask";
+    std::string msg = ":" + server + " 476 " + channel + " :Bad Channel Mask";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::CHANOPRIVSNEEDED(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
     std::string const &channel = cmd.getTargetChannel()->getName();
-    std::string msg = ":" + client + " 482 * "  + channel + " :You're not channel operator";
+    std::string msg = ":" + server + " 482 " + client + " " + channel + " :You're not channel operator";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 
 void serverReply::UMODEUNKNOWNFLAG(Command const &cmd, Client &receiver) {
-    std::string const &client = cmd.getClient().getPrefix();
-    std::string msg = ":" + client + " 501 * :Unknown MODE flag";
+    std::string const &server = cmd.getClient().getHostname();
+    std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+    std::string msg = ":" + server + " 501 " + client + " :Unknown MODE flag";
     setMessageQueue(receiver.getClientFd(), msg);
 }
 

@@ -48,3 +48,68 @@
 << NICK ok
 >> :acek!ilan@localhost NICK :ok
 << QUIT :parti manger :ok
+<< PASS bonjour
+<< NICK acek
+<< USER ilan ilan localhost :ilan
+>> :4!user@localhost NICK :acek
+>> :localhost 001 acek :Welcome to the ft_irc Network, acek!ilan@localhost
+<< MODE acek +i
+>> :localhost 403 acek acek :No such channel
+<< NAMES 
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+<< NAMES 
+<< NAMES 
+<< HELP 
+>> Available commands:
+>> CAP - Parameters: <subcommand> [:<capabilities>]
+<< CAP END
+>> HELP - Parameters: none
+>> INVITE - Parameters: <nickname> <channel>
+>> JOIN - Parameters: <channel>{,<channel>} [<key>{,<key>}]
+>> KICK - Parameters: <channel> <user> [<comment>]
+>> LIST - Parameters: none
+>> MODE - Parameters: <channel> <+/-modes> [parameters]
+>> NAMES - Parameters: [<channel>{,<channel>}]
+>> NICK - Parameters: <nickname>
+>> PART - Parameters: <channel>{,<channel>}
+>> PASS - Parameters: <password>
+>> PING - Parameters: <token>
+<< PONG Parameters: :-
+>> PRIVMSG - Parameters: <receiver>{,<receiver>} <text to be sent>
+>> QUIT - Parameters: none
+>> TOPIC - Parameters: <channel> [<topic>]
+>> USER - Parameters: <username> <hostname> <servername> <realname>
+>> 
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+<< NAMES 
+<< HELP 
+>> Available commands:
+>> CAP - Parameters: <subcommand> [:<capabilities>]
+>> HELP - Parameters: none
+>> INVITE - Parameters: <nickname> <channel>
+>> JOIN - Parameters: <channel>{,<channel>} [<key>{,<key>}]
+>> KICK - Parameters: <channel> <user> [<comment>]
+>> LIST - Parameters: none
+>> MODE - Parameters: <channel> <+/-modes> [parameters]
+>> NAMES - Parameters: [<channel>{,<channel>}]
+>> NICK - Parameters: <nickname>
+>> PART - Parameters: <channel>{,<channel>}
+>> PASS - Parameters: <password>
+>> PING - Parameters: <token>
+<< PONG Parameters: :-
+>> PRIVMSG - Parameters: <receiver>{,<receiver>} <text to be sent>
+>> QUIT - Parameters: none
+>> TOPIC - Parameters: <channel> [<topic>]
+>> USER - Parameters: <username> <hostname> <servername> <realname>
+>> 
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+>> :localhost QUIT :Deconection server

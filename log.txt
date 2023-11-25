@@ -34,3 +34,17 @@
 << NICK testtt
 >> :test!ilan@localhost NICK :testtt
 >> :localhost QUIT :Deconection server
+<< PASS bonjour
+<< NICK acek
+<< USER ilan ilan localhost :ilan
+>> :4!user@localhost NICK :acek
+>> :localhost 001 acek :Welcome to the ft_irc Network, acek!ilan@localhost
+<< MODE acek +i
+>> 
+>> :localhost 403 acek acek :No such channel
+<< PING localhost
+>> :localhost PONG localhost :acek
+--> lag pong
+<< NICK ok
+>> :acek!ilan@localhost NICK :ok
+<< QUIT :parti manger :ok

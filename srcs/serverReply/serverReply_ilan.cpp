@@ -6,14 +6,14 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 09:29:10 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:30:07 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "serverReply.hpp"
 
 void	serverReply::CAP_RPL(const int clientFd) {
-	std::string message = ":localhost CAP * LS :\r\n";
+	std::string message = ":localhost CAP * LS :";
 	setMessageQueue(clientFd, message);
 }
 
@@ -84,10 +84,7 @@ void serverReply::WELCOME_RPL(const Client &client) {
 		message += "!" + user + "@" + serverName;
 	}
 
-	message += "\r\n";
-
 	setMessageQueue(client.getClientFd(), message);
-
 }
 
 void	serverReply::PONG_RPL(const int errorCode, const Command &command) {

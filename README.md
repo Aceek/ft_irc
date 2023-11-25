@@ -22,12 +22,12 @@ Le serveur est optimisé pour une utilisation avec le client IRC Irssi. Des scri
 ### Compilation
 Exécutez dans le répertoire racine du projet :
 ```bash
-make```
+make
 
 ## Lancement
 Pour lancer le serveur, utilisez la commande suivante en spécifiant le port et le mot de passe :
 
 ```bash
-./ft_irc <port> <password>```
+./ft_irc <port> <password>
 
 Remplacez <port> par le numéro de port sur lequel le serveur doit écouter et <password> par le mot de passe nécessaire pour la connexion des clients.

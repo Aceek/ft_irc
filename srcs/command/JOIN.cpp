@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/26 01:29:19 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 18:20:07 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ int Command::JOIN() {
 		this->_server.getServerReply()->JOIN(*this, this->_client);
 		this->_server.getServerReply()->JOIN(*this, *this->_targetChannel);
 		
-		this->_server.getServerReply()->RPL_TOPIC(*this, this->_client);
+		if (!this->_targetChannel->getTopic().empty()) {
+			this->_server.getServerReply()->RPL_TOPIC(*this, this->_client);
+		}
 		this->_server.getServerReply()->RPL_NAMREPLY(*this, this->_client);
 		this->_server.getServerReply()->RPL_ENDOFNAMES(*this, this->_client);
 	}

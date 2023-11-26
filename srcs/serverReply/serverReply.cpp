@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/26 19:16:36 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 19:59:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,9 +256,15 @@ std::string serverReply::buildModeMessage(Command &cmd) {
 }
 
 std::string serverReply::buildPartMessage(Command &cmd) {
-	return	":" + cmd.getClient().getPrefix() +
-			" " + cmd.getName() +
-			" " + cmd.getTargetChannel()->getName();
+	std::string msg =	":" + cmd.getClient().getPrefix() +
+						" " + cmd.getName() +
+						" " + cmd.getTargetChannel()->getName();
+
+	if (!cmd.getTrailor().empty()) {
+		msg += " " + cmd.getTrailor();
+	}
+	
+	return msg;
 }
 
 std::string serverReply::buildPrivmsgMessage(Command &cmd, bool channel) {

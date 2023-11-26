@@ -6,20 +6,20 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:38 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/22 11:34:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 19:56:38 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.hpp"
 
 int Command::PART() {
-/*   Parameters: <channel>{,<channel>}	*/
+/*   Parameters: <channel>{,<channel>} [<reason>]	*/
 	if (this->_args.size() < 1) {
 		this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 		return ERR_NEEDMOREPARAMS;
 	}
 
-	std::vector<std::string> channels = ft_split(this->_args[0], ",");    
+	std::vector<std::string> channels = ft_split(this->_args[0], ",");
 	for (std::vector<std::string>::const_iterator it = channels.begin();
 		it != channels.end(); ++it) {
 		this->_targetChannelName = *it;

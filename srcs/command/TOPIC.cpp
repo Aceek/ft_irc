@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/26 01:34:08 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 04:01:13 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int Command::TOPIC() {
 			this->_server.getServerReply()->RPL_NOTOPIC(*this, this->_client);
 		}
 	} else {
-		if (this->_trailor == ":") {
+		if (this->_trailor[0] == ':' && this->_trailor[1] == '\0') {
 			this->_topic = "";
 		} else {
 			this->_topic = this->_trailor;
@@ -51,5 +51,6 @@ int Command::TOPIC() {
 		this->_server.getServerReply()->TOPIC(*this, this->_client);
 		this->_server.getServerReply()->TOPIC(*this, *this->_targetChannel);
 	}
+
 	return ERR_NONE;
 }

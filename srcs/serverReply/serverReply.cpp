@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 23:05:36 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 01:31:59 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ std::string serverReply::buildTopicMessage(Command &cmd) {
 		msg += " " + cmd.getTopic();
 	}
 
-	return msg;
+	return msg + "\r\n";
 }
 
 /* ************************************************************************** */

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 23:47:40 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 01:34:08 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,22 @@ int Command::TOPIC() {
 		return ERR_CHANOPRIVSNEEDED;
 	}
 
-	if (this->_args.size() < 2 && !this->_hasTrailor) {
+	if (this->_trailor.empty()) {
 		if (!this->_targetChannel->getTopic().empty()) {
 			this->_server.getServerReply()->RPL_TOPIC(*this, this->_client);
 		} else {
 			this->_server.getServerReply()->RPL_NOTOPIC(*this, this->_client);
 		}
-		return ERR_NONE;
-	}
-
-	if (this->_args.size() > 1) {
-		this->_topic = this->_args[1];
-	} else if (this->_hasTrailor && !this->_trailor.empty()) {
-		this->_topic = this->_trailor;
 	} else {
-		this->_topic = "";
+		if (this->_trailor == ":") {
+			this->_topic = "";
+		} else {
+			this->_topic = this->_trailor;
+		}
+		this->_targetChannel->setTopic(this->_topic);
+
+		this->_server.getServerReply()->TOPIC(*this, this->_client);
+		this->_server.getServerReply()->TOPIC(*this, *this->_targetChannel);
 	}
-
-	this->_targetChannel->setTopic(this->_topic);
-
-	this->_server.getServerReply()->TOPIC(*this, this->_client);
-	this->_server.getServerReply()->TOPIC(*this, *this->_targetChannel);
-	
 	return ERR_NONE;
 }

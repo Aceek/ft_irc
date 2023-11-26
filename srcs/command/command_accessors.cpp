@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:24:10 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 03:13:50 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 01:35:28 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ std::vector<std::string> const &Command::getArgs(void) const {
 
 std::string const &Command::getTrailor(void) const {
 	return this->_trailor;
-}
-
-bool const &Command::getHasTrailor(void) const {
-	return this->_hasTrailor;
 }
 
 Client &Command::getClient(void) const {

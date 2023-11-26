@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 09:21:23 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/25 22:56:56 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,11 @@ public:
 	serverReply(Server &server);
 	~serverReply();
 
-	// void	RPL_LIST(Client &client);
-	// void	RPL_LISTEND(Client &client);
-	// void	RPL_TOPIC(Channel const &channel, Client &client);
-	// void	RPL_NAMREPLY(Channel const &channel, Client &client);
-	// void	RPL_ENDOFNAMES(Channel const &channel, Client &client);
-	
+    void RPL_NOTOPIC(Command const &cmd, Client &receiver);
+    void RPL_TOPIC(Command const &cmd, Client &receiver);
+    void RPL_INVITING(Command const &cmd, Client &receiver);
+    void RPL_NAMREPLY(Command const &cmd, Client &receiver);
+    void RPL_ENDOFNAMES(Command const &cmd, Client &receiver);
     void NOSUCHNICK(Command const &cmd, Client &receiver);
     void NOSUCHCHANNEL(Command const &cmd, Client &receiver);
     void CANNOTSENDTOCHAN(Command const &cmd, Client &receiver);

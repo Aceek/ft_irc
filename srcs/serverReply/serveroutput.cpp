@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serveroutput.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 08:55:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 10:32:51 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/26 04:26:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void serverReply::verifyMessageSend(const int clientFd) {
 }
 
 void serverReply::sendMessage(const int clientFd, const std::string &message) const {
-	std::string newMessage = message + "\r\n";
+	std::string newMessage = message + "\n";
 	int bytesSent = send(clientFd, newMessage.c_str(), newMessage.size(), 0);
 
 	if (bytesSent == -1) {

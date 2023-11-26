@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 03:16:45 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 03:59:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,58 @@ serverReply::serverReply(Server &server) : _server(server) {}
 serverReply::~serverReply() {}
 
 /* ************************************************************************** */
+
+void serverReply::RPL_NOTOPIC(Command const &cmd, Client &receiver) {
+	std::string const &server = cmd.getClient().getHostname();
+	std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+	std::string const &channel = cmd.getTargetChannel()->getName();
+	std::string msg =	":" + server + " 331 " + client + " " + channel + " :No topic is set";
+	
+	setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::RPL_TOPIC(Command const &cmd, Client &receiver) {
+	std::string const &server = cmd.getClient().getHostname();
+	std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+	std::string const &channel = cmd.getTargetChannel()->getName();
+	std::string const &topic = cmd.getTargetChannel()->getTopic();
+	std::string msg =	":" + server + " 332 " + client + " " + channel + " :" + topic;
+	
+	setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::RPL_INVITING(Command const &cmd, Client &receiver) {
+	std::string const &server = cmd.getClient().getHostname();
+	std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+	std::string const &nick = cmd.getNick();
+	std::string const &channel = cmd.getTargetChannel()->getName();
+	std::string msg =	":" + server + " 341 " + client + " " + nick + " " + channel;
+	
+	if (!cmd.getTargetChannel()->getTopic().empty()) {
+		msg += " :" + cmd.getTargetChannel()->getTopic();
+	}
+	
+	setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::RPL_NAMREPLY(Command const &cmd, Client &receiver) {
+	std::string const &server = cmd.getClient().getHostname();
+	std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+	std::string const &channel = cmd.getTargetChannel()->getName();
+	std::string const &nicks = cmd.getTargetChannel()->getNicknames();
+	std::string msg = ":" + server + " 353 " + client + " = " + channel + " " + nicks;
+
+	setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::RPL_ENDOFNAMES(Command const &cmd, Client &receiver) {
+	std::string const &server = cmd.getClient().getHostname();
+	std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+	std::string const &channel = cmd.getTargetChannel()->getName();
+	std::string msg = ":" + server + " 366 " + client + " " + channel + " :End of /NAMES list";
+
+	setMessageQueue(receiver.getClientFd(), msg);
+}
 
 void serverReply::NOSUCHNICK(Command const &cmd, Client &receiver) {
 	std::string const &server = cmd.getClient().getHostname();
@@ -158,6 +210,7 @@ void serverReply::UMODEUNKNOWNFLAG(Command const &cmd, Client &receiver) {
 	std::string msg = ":" + server + " 501 " + client + " :Unknown MODE flag";
 	setMessageQueue(receiver.getClientFd(), msg);
 }
+
 
 /* ************************************************************************** */
 
@@ -305,47 +358,3 @@ void serverReply::TOPIC(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildTopicMessage(cmd);
 	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
-
-// void Server::RPL_LIST(Client &client) {
-	
-// 	std::string RPL_LIST =	":server " +
-// 							client.getNicknameOrUsername(true) +
-// 							" =\n" + getChannelsNames();
-	
-// 	setMessageQueue(client.getClientFd(),  RPL_LIST);
-// }
-
-// void Server::RPL_LISTEND(Client &client) {
-//     std::string RPL_LISTEND =	":server " +
-// 								client.getNicknameOrUsername(true) +
-// 								" :End of /LIST list.";
-								
-// 	setMessageQueue(client.getClientFd(), RPL_LISTEND);
-// }
-
-// void Server::RPL_TOPIC(Channel const &channel, Client &client) {
-// 	std::string RPL_TOPIC =	":server " +
-// 							channel.getName() +
-// 							" :" + (!channel.getTopic().empty() ?
-// 							channel.getTopic() : "No topic is set");
-							
-// 	setMessageQueue(client.getClientFd(), RPL_TOPIC);
-// }
-
-// void Server::RPL_NAMREPLY(Channel const &channel, Client &client) {
-//     std::string RPL_NAMREPLY =	":server " + 
-// 								client.getNicknameOrUsername(true) + 
-// 								" = " + channel.getName() +
-// 								" :" + channel.getNicknames();
-
-//    setMessageQueue(client.getClientFd(), RPL_NAMREPLY);
-// }
-
-// void Server::RPL_ENDOFNAMES(Channel const &channel, Client &client) {
-//     std::string RPL_ENDOFNAMES =	":server " +
-// 									client.getNicknameOrUsername(true) +
-// 									" " + channel.getName() +
-// 									" :End of /NAMES list.";
-								
-// 	setMessageQueue(client.getClientFd(), RPL_ENDOFNAMES);
-// }

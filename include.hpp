@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/22 15:00:11 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 18:31:04 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 enum ErrorCode {
 	ERR_NONE = 0,
-	ERR_PASSFORMAT = 2,      // variable perso
 	ERR_NOSUCHNICK = 401,
 	ERR_NOSUCHCHANNEL = 403,
 	ERR_NOTEXTTOSEND = 412,

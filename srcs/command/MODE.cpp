@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 16:40:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 18:31:38 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,6 @@ int Command::MODE() {
 						this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
 						return ERR_NEEDMOREPARAMS;
 					} 
-					if (!isValidPassword(this->_modeArgs[i])) {
-						++i;
-						//REPLY TO BE DONE
-						return ERR_PASSFORMAT;
-					}
 					this->_targetChannel->setKey(this->_modeArgs[i]);
 					++i;
 				} else {

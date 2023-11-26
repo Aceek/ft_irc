@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/21 15:06:43 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 19:01:53 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,21 @@ int Channel::getCount(void) const {
 }
 
 std::string const Channel::getNicknames(void) const {
-	std::string userNicks;
+	std::string nicks;
 
 	for (std::set<Client *>::iterator it = this->_operators.begin();
 		 it != this->_operators.end(); ++it) {
-		userNicks += "@" + (*it)->getNicknameOrUsername(true) + " ";
+		nicks += "@" + (*it)->getNicknameOrUsername(true) + " ";
 	}
 	for (std::set<Client *>::iterator it = this->_users.begin();
 		 it != this->_users.end(); ++it) {
-		userNicks += (*it)->getNicknameOrUsername(true) + " ";
+		nicks += (*it)->getNicknameOrUsername(true) + " ";
 	}
-	if (!userNicks.empty()) {
-		userNicks.erase(userNicks.size() - 1);
+	if (!nicks.empty()) {
+		nicks.erase(nicks.size() - 1);
 	}
 
-	return userNicks;
+	return nicks;
 }
 
 bool Channel::getInviteOnly(void) const {

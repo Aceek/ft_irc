@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NAMES.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:24 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 15:00:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:50:05 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int Command::NAMES() {
 		 	it != this->_server.getChannels().end(); ++it) {
 			Channel const &channel = it->second;
 			if (channel.isClientPresent(this->_client)) {
-				// this->_server.RPL_NAMREPLY(channel, this->_client);
-				// this->_server.RPL_ENDOFNAMES(channel, this->_client);
+				this->_server.getServerReply()->RPL_NAMREPLY(*this, this->_client);
+				this->_server.getServerReply()->RPL_ENDOFNAMES(*this, this->_client);
 			}
 		}
 		
@@ -33,8 +33,8 @@ int Command::NAMES() {
 			return ERR_NOSUCHCHANNEL;
 		}
 		if (channel->isClientPresent(this->_client)) {
-			// this->_server.RPL_NAMREPLY(*channel, this->_client);
-	   		// this->_server.RPL_ENDOFNAMES(*channel, this->_client);
+			this->_server.getServerReply()->RPL_NAMREPLY(*this, this->_client);
+			this->_server.getServerReply()->RPL_ENDOFNAMES(*this, this->_client);
 		}
 	}
 

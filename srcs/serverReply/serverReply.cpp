@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/26 03:59:10 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/26 19:16:36 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void serverReply::RPL_NAMREPLY(Command const &cmd, Client &receiver) {
 	std::string const &client = cmd.getClient().getNicknameOrUsername(true);
 	std::string const &channel = cmd.getTargetChannel()->getName();
 	std::string const &nicks = cmd.getTargetChannel()->getNicknames();
-	std::string msg = ":" + server + " 353 " + client + " = " + channel + " " + nicks;
+	std::string msg = ":" + server + " 353 " + client + " = " + channel + " :" + nicks;
 
 	setMessageQueue(receiver.getClientFd(), msg);
 }
@@ -234,8 +234,10 @@ std::string serverReply::buildKickMessage(Command &cmd) {
 						" " + cmd.getTargetChannel()->getName() +
 						" " + cmd.getTargetClient()->getNicknameOrUsername(true);
 	
-	msg += (!cmd.getTrailor().empty()) ? " :" + cmd.getTrailor() : "";
-	
+	if (!cmd.getTrailor().empty()) {
+		msg += " " + cmd.getTrailor();
+	}
+
 	return msg;
 }
 

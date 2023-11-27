@@ -6,11 +6,11 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 18:05:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:07:52 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.hpp"
+#include "srcs/server/server.hpp"
 
 Server::Server(int port, std::string password)
     : _port(port), _password(password), _serverReply(new serverReply(*this)) {
@@ -70,7 +70,8 @@ void Server::routine() {
   }
 }
 
-void Server::routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt) {
+void Server::routinePOLLIN(
+    const std::vector<struct pollfd>::iterator &pollfdIt) {
   if (pollfdIt->fd == this->_serverFd) {
     acceptClient();
   } else {
@@ -102,18 +103,18 @@ int Server::acceptClient() {
   return (clientFd);
 }
 
-void Server::tryCommand(Client &client) {
-  std::string clientCommand = client.getClientCommand();
+void Server::tryCommand(Client *client) {
+  std::string clientCommand = client->getClientCommand();
   size_t newlinePos = clientCommand.find('\n');
 
   while (newlinePos != std::string::npos) {
     std::string currentCommand = clientCommand.substr(0, newlinePos);
-    Command command(currentCommand, client, *this);
+    Command command(currentCommand, *client, *this);
     command.exec();
     clientCommand = clientCommand.substr(newlinePos + 1);
     newlinePos = clientCommand.find('\n');
   }
-  client.clearCommand();
+  client->clearCommand();
 }
 
 bool Server::processCommand(const int &clientFd) {
@@ -129,7 +130,7 @@ bool Server::processCommand(const int &clientFd) {
   buffer[bytesReceived] = '\0';
   client.addToCommand(buffer);
   if (client.verifyCommand()) {
-    tryCommand(client);
+    tryCommand(&client);
   }
   return (true);
 }
@@ -140,4 +141,4 @@ Server::~Server() {
   close(this->_serverFd);
   delete (this->_serverReply);
   this->_serverReply->displayServerMessage(SERVER_CLOSING);
-};
+}

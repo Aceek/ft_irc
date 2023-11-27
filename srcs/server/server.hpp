@@ -6,13 +6,17 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 18:04:27 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:14:21 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_HPP
-#define SERVER_HPP
+#ifndef SRCS_SERVER_SERVER_HPP_
+#define SRCS_SERVER_SERVER_HPP_
 
+#include <deque>
+#include <vector>
+#include <map>
+#include <string>
 #include "../../include.hpp"
 
 class Client;
@@ -33,9 +37,9 @@ class Server {
 
   /*server_process*/
   void routine();
-  void routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+  void routinePOLLIN(const std::vector<struct pollfd>::iterator &pollfdIt);
   int acceptClient();
-  void tryCommand(Client &client);
+  void tryCommand(Client *client);
   bool processCommand(const int &clientFd);
 
   /*server utils*/
@@ -72,4 +76,4 @@ class Server {
   serverReply *_serverReply;
 };
 
-#endif  // SERVER_HPP
+#endif  // SRCS_SERVER_SERVER_HPP_

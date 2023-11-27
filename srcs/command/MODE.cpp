@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/26 18:31:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 15:26:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ int Command::MODE() {
 		return ERR_NEEDMOREPARAMS;
 	}
 
+	//User mode not supported
+	if (this->_server.getClientByNickname(this->_args[0])) {
+		return ERR_NONE;
+	}
 	this->_targetChannelName = this->_args[0];
 	this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
 	if (!this->_targetChannel) {

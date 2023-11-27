@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:59:38 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:15:52 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void Command::JOIN() {
     this->_targetChannelName = channels[i];
     if (!isValidChannelName(this->_targetChannelName)) {
       this->_server.getServerReply()->BADCHANMASK(*this, this->_client);
-      continue; // Remplacez "return" par "continue" pour passer au canal suivant
+      continue;  // Remplacez "return" par "continue" pour passer au canal
+                 // suivant
     }
 
     std::string key = (i < keys.size()) ? keys[i] : "";

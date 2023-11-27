@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:46:40 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 21:03:46 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:14:50 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,4 @@ void Command::HELP() {
   helpMessage += ":" + serverName + " 376 " + clientNick + " :End of HELP\r\n";
 
   serverReply->setMessageQueue(this->_client.getClientFd(), helpMessage);
-
 }

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 21:06:32 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:16:06 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void Command::MODE() {
         // Set/unset the channel key (password)
         if (s == '+') {
           if (i >= this->_modeArgs.size()) {
-            this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
+            this->_server.getServerReply()->NEEDMOREPARAMS(*this,
+                                                           this->_client);
             return;
           }
           this->_targetChannel->setKey(this->_modeArgs[i]);
@@ -102,7 +103,8 @@ void Command::MODE() {
         // Set/unset the limit of users for the channel
         if (s == '+') {
           if (i >= this->_modeArgs.size()) {
-            this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
+            this->_server.getServerReply()->NEEDMOREPARAMS(*this,
+                                                           this->_client);
             return;
           }
           this->_targetChannel->setUserLimit(atoi(this->_modeArgs[i].c_str()));

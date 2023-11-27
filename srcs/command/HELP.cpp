@@ -6,13 +6,13 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:46:40 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:01:43 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:03:46 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/command/command.hpp"
 
-int Command::HELP() {
+void Command::HELP() {
   serverReply *serverReply = this->_server.getServerReply();
   std::string clientNick = this->_client.getNicknameOrUsername(true);
   std::string serverName =
@@ -35,5 +35,4 @@ int Command::HELP() {
 
   serverReply->setMessageQueue(this->_client.getClientFd(), helpMessage);
 
-  return ERR_NONE;
 }

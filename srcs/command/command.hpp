@@ -6,16 +6,17 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 19:58:19 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:03:30 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SRCS_COMMAND_COMMAND_HPP_
 #define SRCS_COMMAND_COMMAND_HPP_
 
-#include <vector>
 #include <map>
 #include <string>
+#include <vector>
+
 #include "../../include.hpp"
 
 class Command {
@@ -28,20 +29,20 @@ class Command {
   void initCommandsMap(void);
   void exec();
 
-  int INVITE();
-  int JOIN();
-  int KICK();
-  int MODE();
-  int PART();
-  int PRIVMSG();
-  int TOPIC();
-  int USER();
-  int NICK();
-  int PASS();
-  int QUIT();
-  int HELP();
-  int CAP();
-  int PONG();
+  void INVITE();
+  void JOIN();
+  void KICK();
+  void MODE();
+  void PART();
+  void PRIVMSG();
+  void TOPIC();
+  void USER();
+  void NICK();
+  void PASS();
+  void QUIT();
+  void HELP();
+  void CAP();
+  void PONG();
 
   /*command_accessors*/
   std::string const &getPrefix(void) const;
@@ -92,7 +93,7 @@ class Command {
   Client &_client;
   Server &_server;
 
-  typedef int (Command::*cmdFt)();
+  typedef void (Command::*cmdFt)();
 
   struct CommandInfo {
     cmdFt func;

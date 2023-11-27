@@ -13,15 +13,15 @@
 
 #include "srcs/command/command.hpp"
 
-int Command::PRIVMSG() {
+void Command::PRIVMSG() {
   /* Parameters: <receiver>{,<receiver>} <text to be sent> */
   if (this->_args.size() < 1) {
     this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
-    return ERR_NEEDMOREPARAMS;
+    return;
   }
   if (this->_trailor.empty()) {
     this->_server.getServerReply()->NOTEXTTOSEND(*this, this->_client);
-    return ERR_NOTEXTTOSEND;
+    return;
   }
 
   std::vector<std::string> receivers = ft_split(this->_args[0], ",");
@@ -32,11 +32,11 @@ int Command::PRIVMSG() {
       this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
       if (!this->_targetChannel) {
         this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
-        return ERR_NOSUCHCHANNEL;
+        continue;
       }
       if (!this->_targetChannel->isClientPresent(&this->_client)) {
         this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
-        return ERR_NOTONCHANNEL;
+        continue;
       }
 
       this->_server.getServerReply()->PRIVMSG(*this, *this->_targetChannel);
@@ -45,12 +45,10 @@ int Command::PRIVMSG() {
       this->_targetClient = this->_server.getClientByNickname(this->_nick);
       if (!this->_targetClient) {
         this->_server.getServerReply()->NOSUCHNICK(*this, this->_client);
-        return ERR_NOSUCHNICK;
+        continue;
       }
 
       this->_server.getServerReply()->PRIVMSG(*this, *this->_targetClient);
     }
   }
-
-  return ERR_NONE;
 }

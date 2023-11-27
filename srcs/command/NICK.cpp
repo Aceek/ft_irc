@@ -6,24 +6,24 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:27 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:05:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:08:08 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/command/command.hpp"
 
-int Command::NICK() {
+void Command::NICK() {
   serverReply* serverReply = this->_server.getServerReply();
 
   if (this->_args.empty() || this->_args[0].empty()) {
     serverReply->NICK_RPL(ERR_NONICKNAMEGIVEN, *this);
-    return (ERR_NONICKNAMEGIVEN);
+    return;
   } else if (!isValidNicknameorUsername()) {
     serverReply->NICK_RPL(ERR_ERRONEUSNICKNAME, *this);
-    return (ERR_ERRONEUSNICKNAME);
+    return;
   } else if (!isNicknameAvailable(true)) {
     serverReply->NICK_RPL(ERR_NICKNAMEINUSE, *this);
-    return (ERR_NICKNAMEINUSE);
+    return;
   }
 
   std::string oldNickname = this->_client.getNicknameOrUsername(true);
@@ -40,6 +40,4 @@ int Command::NICK() {
     serverReply->WELCOME_RPL(this->_client);
   }
   this->_client.setNickRegister();
-
-  return (ERR_NONE);
 }

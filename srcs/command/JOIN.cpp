@@ -6,17 +6,17 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:03:11 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:59:38 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/command/command.hpp"
 
-int Command::JOIN() {
+void Command::JOIN() {
   /* Parameters: <channel>{,<channel>} [<key>{,<key>}] */
   if (this->_args.size() < 1) {
     this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
-    return ERR_NEEDMOREPARAMS;
+    return;
   }
 
   std::vector<std::string> channels = ft_split(this->_args[0], ",");
@@ -28,22 +28,22 @@ int Command::JOIN() {
     this->_targetChannelName = channels[i];
     if (!isValidChannelName(this->_targetChannelName)) {
       this->_server.getServerReply()->BADCHANMASK(*this, this->_client);
-      return ERR_BADCHANMASK;
+      continue; // Remplacez "return" par "continue" pour passer au canal suivant
     }
 
     std::string key = (i < keys.size()) ? keys[i] : "";
     this->_targetChannel = getOrCreateChannel(this->_targetChannelName, key);
     if (!isValidChannelKey(this->_targetChannel, key)) {
       this->_server.getServerReply()->BADCHANNELKEY(*this, this->_client);
-      return ERR_BADCHANNELKEY;
+      continue;
     }
     if (checkInviteOnlyAndNotInvited(this->_targetChannel)) {
       this->_server.getServerReply()->INVITEONLYCHAN(*this, this->_client);
-      return ERR_INVITEONLYCHAN;
+      continue;
     }
     if (checkChannelFull(this->_targetChannel)) {
       this->_server.getServerReply()->CHANNELISFULL(*this, this->_client);
-      return ERR_CHANNELISFULL;
+      continue;
     }
 
     addUserToChannel(this->_targetChannel);
@@ -57,6 +57,4 @@ int Command::JOIN() {
     this->_server.getServerReply()->RPL_NAMREPLY(*this, this->_client);
     this->_server.getServerReply()->RPL_ENDOFNAMES(*this, this->_client);
   }
-
-  return ERR_NONE;
 }

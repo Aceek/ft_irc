@@ -6,25 +6,25 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:49:03 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:07:50 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:10:31 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/command/command.hpp"
 
-int Command::USER() {
+void Command::USER() {
   serverReply* serverReply = this->_server.getServerReply();
 
   if (this->_client.isUserRegister()) {
     serverReply->USER_RPL(ERR_ALREADYREGISTERED, this->_client);
-    return (ERR_ALREADYREGISTERED);
+    return;
   }
   if (this->_args.empty() || this->_args[0].empty() || this->_trailor.empty()) {
     serverReply->USER_RPL(ERR_NEEDMOREPARAMS, this->_client);
-    return (ERR_NEEDMOREPARAMS);
+    return;
   }
   if (!isValidNicknameorUsername()) {
-    return (ERR_ERRONEUSNICKNAME);
+    return;
   }
 
   this->_client.setRealName(this->_trailor);
@@ -34,6 +34,4 @@ int Command::USER() {
     serverReply->WELCOME_RPL(this->_client);
   }
   this->_client.setUserRegister();
-
-  return (ERR_NONE);
 }

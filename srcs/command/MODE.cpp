@@ -6,42 +6,43 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:21:04 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:06:32 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/command/command.hpp"
 
-int Command::MODE() {
+void Command::MODE() {
   /* Parameters: <channel> <+/-modes> [parameters] */
   if (this->_args.size() < 2) {
     this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
-    return ERR_NEEDMOREPARAMS;
+    return;
   }
 
   /* User mode not supported */
   if (this->_server.getClientByNickname(this->_args[0])) {
-    return ERR_NONE;
+    return;
   }
+
   this->_targetChannelName = this->_args[0];
   this->_targetChannel = this->_server.getChannel(this->_targetChannelName);
   if (!this->_targetChannel) {
     this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
-    return ERR_NOSUCHCHANNEL;
+    return;
   }
   if (!this->_targetChannel->isOperator(&this->_client)) {
     this->_server.getServerReply()->CHANOPRIVSNEEDED(*this, this->_client);
-    return ERR_CHANOPRIVSNEEDED;
+    return;
   }
 
   this->_modeSet = this->_args[1];
   if (!isValidMode(this->_modeSet)) {
     this->_server.getServerReply()->UMODEUNKNOWNFLAG(*this, this->_client);
-    return ERR_UMODEUNKNOWNFLAG;
+    return;
   }
   if (!isRecognizedMode(this->_modeSet)) {
     this->_server.getServerReply()->UNKNOWNMODE(*this, this->_client);
-    return ERR_UNKNOWNMODE;
+    return;
   }
 
   for (std::vector<std::string>::const_iterator it = this->_args.begin() + 2;
@@ -72,9 +73,8 @@ int Command::MODE() {
         // Set/unset the channel key (password)
         if (s == '+') {
           if (i >= this->_modeArgs.size()) {
-            this->_server.getServerReply()->NEEDMOREPARAMS(*this,
-                                                           this->_client);
-            return ERR_NEEDMOREPARAMS;
+            this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
+            return;
           }
           this->_targetChannel->setKey(this->_modeArgs[i]);
           ++i;
@@ -86,14 +86,14 @@ int Command::MODE() {
         // Give/take operator privilege from a user
         if (i >= this->_modeArgs.size()) {
           this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
-          return ERR_NEEDMOREPARAMS;
+          return;
         }
         this->_nick = this->_modeArgs[i];
         this->_targetClient = this->_server.getClientByNickname(this->_nick);
         ++i;
         if (!this->_targetClient) {
           this->_server.getServerReply()->NOSUCHNICK(*this, this->_client);
-          return ERR_NOSUCHNICK;
+          return;
         }
         this->_targetChannel->addUser(this->_targetClient, s == '+');
         break;
@@ -102,9 +102,8 @@ int Command::MODE() {
         // Set/unset the limit of users for the channel
         if (s == '+') {
           if (i >= this->_modeArgs.size()) {
-            this->_server.getServerReply()->NEEDMOREPARAMS(*this,
-                                                           this->_client);
-            return ERR_NEEDMOREPARAMS;
+            this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
+            return;
           }
           this->_targetChannel->setUserLimit(atoi(this->_modeArgs[i].c_str()));
           ++i;
@@ -114,12 +113,10 @@ int Command::MODE() {
         break;
       default:
         this->_server.getServerReply()->UNKNOWNMODE(*this, this->_client);
-        return ERR_UNKNOWNMODE;
+        return;
     }
   }
 
   this->_server.getServerReply()->MODE(*this, this->_client);
   this->_server.getServerReply()->MODE(*this, *this->_targetChannel);
-
-  return ERR_NONE;
 }

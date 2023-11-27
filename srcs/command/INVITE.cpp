@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:47:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 21:36:53 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 02:45:34 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ int Command::INVITE() {
 	this->_targetChannel->inviteUser(*this->_targetClient);
 	
 	this->_server.getServerReply()->RPL_INVITING(*this, this->_client);
-	// this->_server.getServerReply()->INVITE(*this, this->_client);
 	this->_server.getServerReply()->INVITE(*this, *this->_targetClient);
-	// this->_server.getServerReply()->INVITE(*this, *this->_targetChannel);
 	
 
 	return ERR_NONE;

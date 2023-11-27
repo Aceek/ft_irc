@@ -25,7 +25,6 @@ int Command::PRIVMSG() {
 	}
 
 	std::vector<std::string> receivers = ft_split(this->_args[0], ",");
-	//!!! is it possible to send a message to ourselve ? if so check double output msg
 	for (std::vector<std::string>::iterator it = receivers.begin();
 		it != receivers.end(); ++it) {
 			this->_targetChannelName = *it;
@@ -49,7 +48,6 @@ int Command::PRIVMSG() {
 					return ERR_NOSUCHNICK;
 				}
 
-				//msg send back to sender ?
 				this->_server.getServerReply()->PRIVMSG(*this, *this->_targetClient);
 			}
 	}

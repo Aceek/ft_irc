@@ -13,17 +13,19 @@ fi
 # Boucle pour créer plusieurs connexions simultanées
 for ((i = 1; i <= NUM_CONNECTIONS; i++)); do
     echo "Connexion $i au serveur sur le port $SERVER_PORT..."
-    nc $SERVER_HOST $SERVER_PORT &
+
+    # Générez un nom de nick unique en ajoutant un numéro d'incrémentation
+    NICK="nickname$i"
+
+    # Générez un nom d'utilisateur unique en ajoutant un numéro d'incrémentation
+    USER="username$i"
+
+    # Envoie la commande "PASS bonjour", "NICK <nickname>", et "USER <username> :<realName>"
+    echo -e "PASS bonjour\r\nNICK $NICK\r\nUSER $USER :realName" | nc $SERVER_HOST $SERVER_PORT &
 done
 
 # Attendez un peu pour permettre aux connexions de s'établir
 sleep 1
-
-# Si vous voulez envoyer des données au serveur depuis chaque connexion, vous pouvez le faire ici.
-# Par exemple, pour envoyer "Hello, Server!" suivi d'un retour à la ligne depuis chaque connexion :
-for ((i = 1; i <= NUM_CONNECTIONS; i++)); do
-    echo "pass bonjour" | nc $SERVER_HOST $SERVER_PORT &
-done
 
 # Attendez que toutes les connexions se terminent (pour éviter de fermer prématurément les connexions)
 wait

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 22:56:56 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:19:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ public:
 	void			displayServerMessage(messageServer event) const;
 
 	void			sendMessage(const int clientFd, const std::string &message) const;
+	void		 	sendMessageToChannel(Client const &sender, Channel const &channel, std::string const &message);
+
 	void 			verifyMessageSend(const int clientFd);
 	void			setMessageQueue(const int clientfd, const std::string &message);
 	messages		&getMessageQueue();

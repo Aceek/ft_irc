@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/26 19:59:09 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:21:23 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ void serverReply::INVITE(Command &cmd, Client &receiver) {
 
 void serverReply::INVITE(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildInviteMessage(cmd);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::JOIN(Command &cmd, Client &receiver) {
@@ -314,7 +314,7 @@ void serverReply::JOIN(Command &cmd, Client &receiver) {
 
 void serverReply::JOIN(Command &cmd, Channel &receiver) {
 	std::string msg = buildJoinMessage(cmd);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::PART(Command &cmd, Client &receiver) {
@@ -324,7 +324,7 @@ void serverReply::PART(Command &cmd, Client &receiver) {
 
 void serverReply::PART(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildPartMessage(cmd);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::KICK(Command &cmd, Client &receiver) {
@@ -334,7 +334,7 @@ void serverReply::KICK(Command &cmd, Client &receiver) {
 
 void serverReply::KICK(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildKickMessage(cmd);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::MODE(Command &cmd, Client &receiver) {
@@ -344,7 +344,7 @@ void serverReply::MODE(Command &cmd, Client &receiver) {
 
 void serverReply::MODE(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildModeMessage(cmd);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::PRIVMSG(Command &cmd, Client &receiver) {
@@ -354,7 +354,7 @@ void serverReply::PRIVMSG(Command &cmd, Client &receiver) {
 
 void serverReply::PRIVMSG(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildPrivmsgMessage(cmd, true);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 
 void serverReply::TOPIC(Command &cmd, Client &receiver) {
@@ -364,5 +364,5 @@ void serverReply::TOPIC(Command &cmd, Client &receiver) {
 
 void serverReply::TOPIC(Command &cmd, Channel &receiver) {
 	const std::string& msg = buildTopicMessage(cmd);
-	this->_server.sendMessageToChannel(cmd.getClient(), receiver, msg);
+	sendMessageToChannel(cmd.getClient(), receiver, msg);
 }

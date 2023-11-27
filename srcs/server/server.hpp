@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 09:14:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:29:43 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,25 @@ typedef  std::map<int, std::deque<std::string> >	messages;
 class Server {
 	public:
 		Server(int port, std::string password);
-		Server(/* args */);
 		~Server();
 
-		void		addToPoll(int fd, short events);
-		void		routine();
-		bool		processCommand(const int &clientFd);
-		void		tryCommand(Client &client);
-		void		removeClient(const int clientFd);
-		void		removeClients();
-		void		addClientsToPoll();
-		int			acceptClient();
-		void		routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
-		void		deconectionClients();
+		/*server_process*/
+		void				routine();
+		void				routinePOLLIN(std::vector<struct pollfd>::iterator &pollfdIt);
+		int					acceptClient();
+		void				tryCommand(Client &client);
+		bool				processCommand(const int &clientFd);
 
-
+		/*server utils*/
+		bool				isChannelPresent(std::string const &channelName);
+		void				closingFdClients();
+		void				removeClient(const int clientFd);
+		void				deconectionClients();
+		void				addToPoll(int fd, short events);
+		void				removeClients();
+		void				addClientsToPoll();
+		void				addChannel(std::string const &channelName);
+		void				delChannel(std::string const &channelName);
 
 		/*server_accessors*/
 		const std::string	&getPassword() const;
@@ -55,15 +59,6 @@ class Server {
 		ChannelMap			&getChannels();
 		std::string			getChannelsNames() const;
 		void				setClientToRemove(const int clientFd);
-
-		/*server_channel*/
-		void	addChannel(std::string const &channelName);
-		void	delChannel(std::string const &channelName);
-		void 	sendMessageToChannel(Client const &sender, Channel const &channel, std::string const &message);
-
-		/*server_utlis*/
-		bool	isChannelPresent(std::string const &channelName);
-		void	closingFdClients();
 
 	private:
 		int 									_port;

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/25 10:30:07 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:20:09 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,4 +133,25 @@ void	serverReply::LOGOUT(const Client &client) {
 	std::string replyMessage = ":" + hostname + " QUIT :Deconection server";
 
 	sendMessage(client.getClientFd(), replyMessage); 
+}
+
+
+void serverReply::sendMessageToChannel(Client const &sender, Channel const &channel, std::string const &message) {
+	
+	if (!this->_server.isChannelPresent(channel.getName()) || message.empty()) {
+		return;
+	}
+	
+	for (std::set<Client *>::iterator it = channel.getUsers().begin();
+		it != channel.getUsers().end(); ++it) {
+			if (*it != &sender) {
+				setMessageQueue((*it)->getClientFd(), message);
+			}
+	}
+	for (std::set<Client *>::iterator it = channel.getOperators().begin();
+		it != channel.getOperators().end(); ++it) {
+			if (*it != &sender) {
+				setMessageQueue((*it)->getClientFd(), message);
+			}
+	}
 }

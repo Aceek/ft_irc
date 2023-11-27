@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/25 09:21:57 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:24:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,40 @@ void		Server::deconectionClients() {
 		}
 	}
 	
+}
+
+void	Server::addToPoll(int fd, short events) {
+	// Push info about fd / event / revent into vector struct fds;
+	struct pollfd tmpFd;
+	tmpFd.events = events;
+	tmpFd.fd = fd;
+	tmpFd.revents = 0;
+	this->_fds.push_back(tmpFd);
+}
+
+void	Server::removeClients() {
+	for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
+		removeClient(this->_clientsToRemove[i]);
+	}
+	this->_clientsToRemove.clear();
+}
+
+void	Server::addChannel(std::string const &channelName) {
+	this->_channels[channelName] = Channel(channelName, this);
+}
+
+void	Server::delChannel(std::string const &channelName) {
+	ChannelMap::iterator it = this->_channels.find(channelName);
+	
+	if (it != this->_channels.end()) {
+			this->_channels.erase(it);	
+	}
+}
+
+void	Server::addClientsToPoll() {
+	for (std::vector<int>::iterator it = this->_clientsToAdd.begin(); 
+									it != this->_clientsToAdd.end(); it++) {
+		addToPoll(*it, POLLIN | POLLOUT | POLLERR | POLLHUP | POLLNVAL);
+	}
+	this->_clientsToAdd.clear();
 }

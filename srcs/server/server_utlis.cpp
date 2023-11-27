@@ -6,14 +6,14 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 19:14:01 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:23:47 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/server/server.hpp"
 
 bool Server::isChannelPresent(std::string const &channelName) {
-  ChannelMap::iterator it = this->_channels.find(channelName);
+  const ChannelMap::iterator it = this->_channels.find(channelName);
 
   if (it != this->_channels.end()) {
     return true;
@@ -46,8 +46,8 @@ void Server::removeClient(const int clientFd) {
   Client &client = this->_clients.find(clientFd)->second;
   ChannelMap::iterator chanIt = getChannels().begin();
   for (; chanIt != getChannels().end(); chanIt++) {
-    if (chanIt->second.isClientPresent(client)) {
-      chanIt->second.delUser(client);
+    if (chanIt->second.isClientPresent(&client)) {
+      chanIt->second.delUser(&client);
     }
   }
 

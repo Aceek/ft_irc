@@ -6,14 +6,14 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:07:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:58:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/server/server.hpp"
 
 Server::Server(int port, std::string password)
-    : _port(port), _password(password), _serverReply(new serverReply(*this)) {
+    : _port(port), _password(password), _serverReply(new serverReply(this)) {
   // Creer la socket et on la relie a un fd
   this->_serverFd = socket(AF_INET, SOCK_STREAM, 0);
   if (this->_serverFd == -1) {
@@ -109,7 +109,7 @@ void Server::tryCommand(Client *client) {
 
   while (newlinePos != std::string::npos) {
     std::string currentCommand = clientCommand.substr(0, newlinePos);
-    Command command(currentCommand, *client, *this);
+    Command command(currentCommand, client, this);
     command.exec();
     clientCommand = clientCommand.substr(newlinePos + 1);
     newlinePos = clientCommand.find('\n');

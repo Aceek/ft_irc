@@ -3,68 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/26 19:02:02 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 20:25:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string>
+#include <set>
 #include "../../include.hpp"
 
-#ifndef CHANNEL_HPP
-#define CHANNEL_HPP
+#ifndef SRCS_CHANNEL_CHANNEL_HPP_
+#define SRCS_CHANNEL_CHANNEL_HPP_
 
 class Client;
 class Server;
 
 class Channel {
-	public:
-		Channel(void);
-		Channel(std::string const &name, Server *server);
-		Channel(Channel const &rhs);
-		Channel &operator=(Channel const &rhs);
-		~Channel(void);
-		
-		void	addUser(Client &client, bool asOperator);
-		void	delUser(Client &client);
-		void	inviteUser(Client &client);
-	
-		/*channel_accessors*/
-		std::string const			&getName(void) const;
-		std::string const			&getTopic(void) const;
-		void						setTopic(std::string const &topic);
-		std::string const			&getKey(void) const;
-		void						setKey(std::string const &key);
-		int							getCount(void) const;
-		std::string const			getNicknames(void) const;
-		bool 						getInviteOnly(void) const;
-		void 						setInviteOnly(bool inviteOnly);
-		bool						getTopicRestricted(void) const;
-		void						setTopicRestricted(bool topicRestricted);
-		int							getUserLimit(void) const;
-		void						setUserLimit(int userLimit);
-		std::set<Client *> const	&getUsers(void) const;
-		std::set<Client *> const 	&getOperators(void) const;
+ public:
+  Channel(void);
+  Channel(std::string const &name, Server *server);
+  Channel(Channel const &rhs);
+  Channel &operator=(Channel const &rhs);
+  ~Channel(void);
 
-		/*channel_utils*/
-		bool	isUser(Client &client) const;
-		bool	isOperator(Client &client) const;
-		bool	isClientPresent(Client &client) const;
-		bool	isClientInvited(Client &client) const;
-		
-	private:
-		std::string			_name;
-		std::string			_topic;
-		std::string			_key;
-		std::set<Client *>	_users;
-		std::set<Client *>	_invitedUsers;
-		std::set<Client *>	_operators;
-		bool 				_inviteOnly;
-		bool 				_topicRestricted;
-		int 				_userLimit;
-		Server				*_server;
+  void addUser(Client *client, bool asOperator);
+  void delUser(Client *client);
+  void inviteUser(Client *client);
+
+  /*channel_accessors*/
+  std::string const &getName(void) const;
+  std::string const &getTopic(void) const;
+  void setTopic(std::string const &topic);
+  std::string const &getKey(void) const;
+  void setKey(std::string const &key);
+  int getCount(void) const;
+  std::string const getNicknames(void) const;
+  bool getInviteOnly(void) const;
+  void setInviteOnly(bool inviteOnly);
+  bool getTopicRestricted(void) const;
+  void setTopicRestricted(bool topicRestricted);
+  int getUserLimit(void) const;
+  void setUserLimit(int userLimit);
+  std::set<Client *> const &getUsers(void) const;
+  std::set<Client *> const &getOperators(void) const;
+
+  /*channel_utils*/
+  bool isUser(Client *client) const;
+  bool isOperator(Client *client) const;
+  bool isClientPresent(Client *client) const;
+  bool isClientInvited(Client *client) const;
+
+ private:
+  std::string _name;
+  std::string _topic;
+  std::string _key;
+  std::set<Client *> _users;
+  std::set<Client *> _invitedUsers;
+  std::set<Client *> _operators;
+  bool _inviteOnly;
+  bool _topicRestricted;
+  int _userLimit;
+  Server *_server;
 };
 
-
-#endif
+#endif  // SRCS_CHANNEL_CHANNEL_HPP_

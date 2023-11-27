@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/26 04:28:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 02:21:25 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void Command::initCommandsMap(void) {
 	this->_commands["JOIN"] = CommandInfo(&Command::JOIN, "<channel>{,<channel>} [<key>{,<key>}]");
 	this->_commands["KICK"] = CommandInfo(&Command::KICK, "<channel> <user> [<comment>]");
 	this->_commands["MODE"] = CommandInfo(&Command::MODE, "<channel> <+/-modes> [parameters]");
-	this->_commands["NAMES"] = CommandInfo(&Command::NAMES, "[<channel>{,<channel>}]");
 	this->_commands["NICK"] = CommandInfo(&Command::NICK, "<nickname>");
 	this->_commands["PART"] = CommandInfo(&Command::PART, "<channel>{,<channel>}");
 	this->_commands["PASS"] = CommandInfo(&Command::PASS, "<password>");

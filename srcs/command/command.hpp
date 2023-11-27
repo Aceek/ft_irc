@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/26 01:35:19 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/27 02:21:08 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ class Command {
 		int USER();
 		int	NICK();
 		int	PASS();
-		int	NAMES();
 		int	QUIT();
 		int	HELP();
 		int	CAP();

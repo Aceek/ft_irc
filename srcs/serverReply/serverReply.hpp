@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:42:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:23:05 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class serverReply {
   explicit serverReply(Server *server);
   ~serverReply();
 
+  void RPL_CHANNELMODEIS(Command const &cmd, const Client &receiver);
   void RPL_NOTOPIC(Command const &cmd, const Client &receiver);
   void RPL_TOPIC(Command const &cmd, const Client &receiver);
   void RPL_INVITING(Command const &cmd, const Client &receiver);

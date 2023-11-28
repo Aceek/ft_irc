@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 21:03:30 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:44:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ class Command {
   std::string const &getTargetChannelName(void) const;
   std::string const &getNick(void) const;
   std::string const &getTopic(void) const;
-  std::string const &getModeSet(void) const;
+  std::string const &getModeStr(void) const;
   std::vector<std::string> const &getModeArgs(void) const;
 
   /*command_utlis*/
@@ -84,7 +84,7 @@ class Command {
   std::string _trailor;
   std::string _nick;
   std::string _topic;
-  std::string _modeSet;
+  std::string _modeStr;
   std::vector<std::string> _modeArgs;
   std::string _targetChannelName;
   Channel *_targetChannel;

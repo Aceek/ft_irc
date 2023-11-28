@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:44:03 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:46:10 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ serverReply::serverReply(Server *server) : _server(*server) {}
 serverReply::~serverReply() {}
 
 /* ************************************************************************** */
+
+void serverReply::RPL_CHANNELMODEIS(Command const &cmd, const Client &receiver) {
+  std::string const &server = cmd.getClient().getHostname();
+  std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+  std::string const &channel = cmd.getTargetChannel()->getName();
+  std::string const &modeStr = cmd.getTargetChannel()->getModeStr();
+  std::string const &modeArgs = cmd.getTargetChannel()->getModeArgs();
+  std::string msg = ":" + server + " 324 " + client + " " + channel +
+  					" " + modeStr + " " + modeArgs;
+
+  setMessageQueue(receiver.getClientFd(), msg);
+}
 
 void serverReply::RPL_NOTOPIC(Command const &cmd, const Client &receiver) {
   std::string const &server = cmd.getClient().getHostname();
@@ -184,8 +196,8 @@ void serverReply::CHANNELISFULL(Command const &cmd, const Client &receiver) {
 void serverReply::UNKNOWNMODE(Command const &cmd, const Client &receiver) {
   std::string const &server = cmd.getClient().getHostname();
   std::string const &client = cmd.getClient().getNicknameOrUsername(true);
-  std::string const &modechar = cmd.getModeSet();
-  std::string msg = ":" + server + " 472 " + client + " " + modechar +
+  std::string const &modeStr = cmd.getModeStr();
+  std::string msg = ":" + server + " 472 " + client + " " + modeStr +
                     " :is an unknown mode char to me";
   setMessageQueue(receiver.getClientFd(), msg);
 }
@@ -259,7 +271,7 @@ std::string serverReply::buildKickMessage(const Command &cmd) {
 std::string serverReply::buildModeMessage(const Command &cmd) {
   std::string msg = ":" + cmd.getClient().getPrefix() + " " + cmd.getName() +
                     " " + cmd.getTargetChannel()->getName() + " " +
-                    cmd.getModeSet();
+                    cmd.getModeStr();
 
   for (std::vector<std::string>::const_iterator it = cmd.getModeArgs().begin();
        it != cmd.getModeArgs().end(); ++it) {

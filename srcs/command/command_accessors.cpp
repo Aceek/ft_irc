@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_accessors.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:24:10 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:01:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:44:17 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ std::string const &Command::getNick(void) const { return this->_nick; }
 
 std::string const &Command::getTopic(void) const { return this->_topic; }
 
-std::string const &Command::getModeSet(void) const { return this->_modeSet; }
+std::string const &Command::getModeStr(void) const { return this->_modeStr; }
 
 std::vector<std::string> const &Command::getModeArgs(void) const {
   return this->_modeArgs;

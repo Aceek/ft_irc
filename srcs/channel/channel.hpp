@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:25:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:31:37 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ class Channel {
   void setUserLimit(int userLimit);
   std::set<Client *> const &getUsers(void) const;
   std::set<Client *> const &getOperators(void) const;
+  std::string const &getModeStr() const;
+  void setModeStr(std::string const &modeStr);
+  std::string const &getModeArgs() const;
+  void setModeArgs(std::string const &modeArgs);
 
   /*channel_utils*/
   bool isUser(Client *client) const;
@@ -65,6 +69,8 @@ class Channel {
   bool _inviteOnly;
   bool _topicRestricted;
   int _userLimit;
+  std::string _modeStr;
+  std::string _modeArgs;
   Server *_server;
 };
 

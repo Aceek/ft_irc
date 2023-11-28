@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 02:44:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 03:49:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void Command::MODE() {
   /* Parameters: <channel> <+/-modes> [parameters] */
-  if (this->_args.size() < 2) {
+  if (this->_args.size() < 1) {
     this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
     return;
   }
+
 
   /* User mode not supported */
   if (this->_server.getClientByNickname(this->_args[0])) {
@@ -30,17 +31,21 @@ void Command::MODE() {
     this->_server.getServerReply()->NOSUCHCHANNEL(*this, this->_client);
     return;
   }
+  if (this->_args.size() == 1) {
+    this->_server.getServerReply()->RPL_CHANNELMODEIS(*this, this->_client);
+    return;
+  }
   if (!this->_targetChannel->isOperator(&this->_client)) {
     this->_server.getServerReply()->CHANOPRIVSNEEDED(*this, this->_client);
     return;
   }
 
-  this->_modeSet = this->_args[1];
-  if (!isValidMode(this->_modeSet)) {
+  this->_modeStr = this->_args[1];
+  if (!isValidMode(this->_modeStr)) {
     this->_server.getServerReply()->UMODEUNKNOWNFLAG(*this, this->_client);
     return;
   }
-  if (!isRecognizedMode(this->_modeSet)) {
+  if (!isRecognizedMode(this->_modeStr)) {
     this->_server.getServerReply()->UNKNOWNMODE(*this, this->_client);
     return;
   }
@@ -51,9 +56,9 @@ void Command::MODE() {
   }
 
   size_t i = 0;
-  char s = this->_modeSet[0];
-  for (std::string::const_iterator it = this->_modeSet.begin() + 1;
-       it != this->_modeSet.end(); ++it) {
+  char s = this->_modeStr[0];
+  for (std::string::const_iterator it = this->_modeStr.begin() + 1;
+       it != this->_modeStr.end(); ++it) {
     switch (*it) {
       case 'i':
         // Set/unset the channel on invitation only
@@ -112,6 +117,9 @@ void Command::MODE() {
         return;
     }
   }
+
+  this->_targetChannel->setModeStr(this->_modeStr);
+  this->_targetChannel->setModeArgs(joinWithSpace(this->_modeArgs));
 
   this->_server.getServerReply()->MODE(*this, this->_client);
   this->_server.getServerReply()->MODE(*this, *this->_targetChannel);

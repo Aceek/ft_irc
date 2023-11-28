@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   JOIN.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:07 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 21:15:52 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:56:41 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ void Command::JOIN() {
 
     if (!this->_targetChannel->getTopic().empty()) {
       this->_server.getServerReply()->RPL_TOPIC(*this, this->_client);
+    }
+	if (!this->_targetChannel->getModeArgs().empty()) {
+      this->_server.getServerReply()->RPL_CHANNELMODEIS(*this, this->_client);
     }
     this->_server.getServerReply()->RPL_NAMREPLY(*this, this->_client);
     this->_server.getServerReply()->RPL_ENDOFNAMES(*this, this->_client);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_accessors.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:08:53 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:32:47 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,3 +63,13 @@ void Channel::setTopicRestricted(bool topicRestricted) {
 int Channel::getUserLimit(void) const { return this->_userLimit; }
 
 void Channel::setUserLimit(int userLimit) { this->_userLimit = userLimit; }
+
+std::string const &Channel::getModeStr() const { return this->_modeStr; }
+
+void Channel::setModeStr(std::string const &modeStr)
+{this->_modeStr = modeStr; }
+
+std::string const &Channel::getModeArgs() const { return this->_modeArgs; }
+
+void Channel::setModeArgs(std::string const &modeArgs)
+{ this->_modeArgs = modeArgs; }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 01:03:06 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:30:17 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 03:39:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,15 @@ void toUpperCase(std::string *str) {
 }
 
 char toLowerCase(char c) { return std::tolower(static_cast<unsigned char>(c)); }
+
+std::string joinWithSpace(const std::vector<std::string>& elements) {
+  std::ostringstream oss;
+  for (std::vector<std::string>::const_iterator it = elements.begin();
+       it != elements.end(); ++it) {
+    if (it != elements.begin()) {
+      oss << ' ';
+    }
+    oss << *it;
+  }
+  return oss.str();
+}

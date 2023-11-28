@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 05:54:47 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 07:27:11 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ class Channel {
   int _userLimit;
   std::string _modeStr;
   std::string _modeArgs;
-  std::map<char, std::string> _modeMap;
+  std::map<char, std::string> _modeInfo;
   Server *_server;
 };
 

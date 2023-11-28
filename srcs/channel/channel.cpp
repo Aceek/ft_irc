@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 07:16:48 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 07:27:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,17 +99,17 @@ void Channel::updateModeInfo(const std::string &modeStr,
         this->_modeStr.push_back(mode);
       }
       if (hasModeArgs(mode) && argIndex < modeArgs.size()) {
-        this->_modeMap[mode] = modeArgs[argIndex++];
+        this->_modeInfo[mode] = modeArgs[argIndex++];
       }
     } else if (modeStr[0] == '-' && foundPos != std::string::npos) {
       this->_modeStr.erase(foundPos, 1);
-      if (this->_modeMap.find(mode) != this->_modeMap.end()) {
-        this->_modeMap.erase(mode);
+      if (this->_modeInfo.find(mode) != this->_modeInfo.end()) {
+        this->_modeInfo.erase(mode);
       }
     }
   }
 
-  this->_modeArgs = joinWithSpace(this->_modeMap);
+  this->_modeArgs = joinWithSpace(this->_modeInfo);
   if (this->_modeStr.size() == 1) {
     this->_modeStr.clear();
   }

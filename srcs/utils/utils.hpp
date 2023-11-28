@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 01:16:57 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 03:39:38 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 06:04:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@ std::vector<std::string> ft_split(std::string const& str,
 void toUpperCase(std::string* str);
 char toLowerCase(char c);
 std::string joinWithSpace(const std::vector<std::string>& elements);
+std::string joinWithSpace(const std::map<char, std::string>& elements);
+int convertToInt(const std::string& str);
 
 #endif  // SRCS_UTILS_UTILS_HPP_

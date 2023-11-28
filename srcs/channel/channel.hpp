@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 03:31:37 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 05:54:47 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ class Channel {
   void addUser(Client *client, bool asOperator);
   void delUser(Client *client);
   void inviteUser(Client *client);
+  void updateModeInfo(const std::string &modeStr,
+    const std::vector<std::string> &modeArgs);
+
 
   /*channel_accessors*/
   std::string const &getName(void) const;
@@ -58,6 +61,7 @@ class Channel {
   bool isOperator(Client *client) const;
   bool isClientPresent(Client *client) const;
   bool isClientInvited(Client *client) const;
+  bool hasModeArgs(const char &c);
 
  private:
   std::string _name;
@@ -71,6 +75,7 @@ class Channel {
   int _userLimit;
   std::string _modeStr;
   std::string _modeArgs;
+  std::map<char, std::string> _modeMap;
   Server *_server;
 };
 

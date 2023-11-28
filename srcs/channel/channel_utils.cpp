@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_utils.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:17:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:24:20 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 05:48:09 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,8 @@ bool Channel::isClientPresent(Client *client) const {
 
 bool Channel::isClientInvited(Client *client) const {
   return this->_invitedUsers.find(client) != this->_invitedUsers.end();
+}
+
+bool Channel::hasModeArgs(const char &c) {
+	return c == 'k'  || c == 'l';
 }

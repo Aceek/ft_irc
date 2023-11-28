@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:18:21 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 07:11:33 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,40 @@ void Channel::delUser(Client *client) {
 
 void Channel::inviteUser(Client *client) {
   this->_invitedUsers.insert(client);
+}
+
+void Channel::updateModeInfo(const std::string &modeStr,
+  const std::vector<std::string> &modeArgs) {
+  // Add a '+' at the beginning if it's the first mode being added
+  if (this->_modeStr.empty() && !modeStr.empty() && modeStr[0] == '+') {
+    this->_modeStr.push_back('+');
+  }
+
+  size_t argIndex = 0; 
+  for (std::string::const_iterator it = modeStr.begin() + 1; it != modeStr.end(); ++it) {
+    char mode = *it;
+    if (mode == 'o') {
+      continue;
+    }
+  
+    std::size_t foundPos = this->_modeStr.find(mode);
+    if (modeStr[0] == '+') {
+      if (foundPos == std::string::npos) {
+        this->_modeStr.push_back(mode);
+      }
+      if (hasModeArgs(mode) && argIndex < modeArgs.size()) {
+        this->_modeMap[mode] = modeArgs[argIndex++];
+      }
+    } else if (modeStr[0] == '-' && foundPos != std::string::npos) {
+      this->_modeStr.erase(foundPos, 1);
+      if (this->_modeMap.find(mode) != this->_modeMap.end()) {
+        this->_modeMap.erase(mode);
+      }
+    }
+  }
+
+  this->_modeArgs = joinWithSpace(this->_modeMap);
+  if (this->_modeStr.size() == 1) {
+    this->_modeStr.clear();
+  }
 }

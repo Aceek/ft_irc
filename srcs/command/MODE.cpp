@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 03:49:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 06:51:31 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,11 @@ void Command::MODE() {
                                                            this->_client);
             return;
           }
-          this->_targetChannel->setUserLimit(atoi(this->_modeArgs[i].c_str()));
+          int userLimit = convertToInt(this->_modeArgs[i]);
+          if (userLimit == -1) {
+			this->_modeArgs[i] = "none";
+		  }
+          this->_targetChannel->setUserLimit(userLimit);
           ++i;
         } else {
           this->_targetChannel->setUserLimit(-1);
@@ -118,8 +122,7 @@ void Command::MODE() {
     }
   }
 
-  this->_targetChannel->setModeStr(this->_modeStr);
-  this->_targetChannel->setModeArgs(joinWithSpace(this->_modeArgs));
+  this->_targetChannel->updateModeInfo(this->_modeStr, this->_modeArgs);
 
   this->_server.getServerReply()->MODE(*this, this->_client);
   this->_server.getServerReply()->MODE(*this, *this->_targetChannel);

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 07:11:33 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 07:16:48 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ Channel::~Channel(void) {}
 
 void Channel::addUser(Client *client, bool asOperator) {
   if (asOperator || (this->_users.empty() && this->_operators.empty())) {
-    // add to operators list if there's no duplicate and erase it if needed in
-    // users list
     if (this->_operators.insert(client).second) {
       this->_users.erase(client);
     }
@@ -72,7 +70,6 @@ void Channel::addUser(Client *client, bool asOperator) {
 }
 
 void Channel::delUser(Client *client) {
-  // !!! what happened if there is no more operators on the channel ?
   this->_users.erase(client);
   this->_operators.erase(client);
   this->_invitedUsers.erase(client);
@@ -85,7 +82,6 @@ void Channel::inviteUser(Client *client) {
 
 void Channel::updateModeInfo(const std::string &modeStr,
   const std::vector<std::string> &modeArgs) {
-  // Add a '+' at the beginning if it's the first mode being added
   if (this->_modeStr.empty() && !modeStr.empty() && modeStr[0] == '+') {
     this->_modeStr.push_back('+');
   }

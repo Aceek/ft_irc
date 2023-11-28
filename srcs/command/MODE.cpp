@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 06:51:31 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 23:49:13 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ void Command::MODE() {
        it != this->_modeStr.end(); ++it) {
     switch (*it) {
       case 'i':
-        // Set/unset the channel on invitation only
+        /* Set/unset the channel on invitation only */
         this->_targetChannel->setInviteOnly(s == '+');
         break;
       case 't':
-        // Set/unset restrictions on the TOPIC command for channel operators
+        /*  Set/unset restrictions on the TOPIC command for channel operators */
         this->_targetChannel->setTopicRestricted(s == '+');
         break;
       case 'k':
-        // Set/unset the channel key (password)
+        /* Set/unset the channel key (password) */
         if (s == '+') {
           if (i >= this->_modeArgs.size()) {
             this->_server.getServerReply()->NEEDMOREPARAMS(*this,
@@ -83,7 +83,7 @@ void Command::MODE() {
         }
         break;
       case 'o': {
-        // Give/take operator privilege from a user
+        /* Give/take operator privilege from a user */
         if (i >= this->_modeArgs.size()) {
           this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
           return;
@@ -99,7 +99,7 @@ void Command::MODE() {
         break;
       }
       case 'l':
-        // Set/unset the limit of users for the channel
+        /* Set/unset the limit of users for the channel */
         if (s == '+') {
           if (i >= this->_modeArgs.size()) {
             this->_server.getServerReply()->NEEDMOREPARAMS(*this,

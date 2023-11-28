@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 03:44:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 23:32:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ class Command {
   std::string _targetChannelName;
   Channel *_targetChannel;
   Client *_targetClient;
-
   Client &_client;
   Server &_server;
 

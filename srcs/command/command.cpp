@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:30:00 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 23:37:12 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ Command::Command(std::string const &line, Client *client, Server *server)
       _trailor(""),
       _nick(""),
       _topic(""),
+      _modeStr(""),
+      _modeArgs(),
+      _targetChannelName(""),
+      _targetChannel(NULL),
+      _targetClient(NULL),
       _client(*client),
       _server(*server) {
   initCommandsMap();
@@ -45,10 +50,18 @@ Command::Command(std::string const &line, Client *client, Server *server)
 }
 
 Command::Command(Command const &rhs)
-    : _prefix(rhs._prefix),
+    : _command(rhs._command),
+      _prefix(rhs._prefix),
       _name(rhs._name),
       _args(rhs._args),
       _trailor(rhs._trailor),
+      _nick(rhs._nick),
+      _topic(rhs._topic),
+      _modeStr(rhs._modeStr),
+      _modeArgs(rhs._modeArgs),
+      _targetChannelName(rhs._targetChannelName),
+      _targetChannel(rhs._targetChannel),
+      _targetClient(rhs._targetClient),
       _client(rhs._client),
       _server(rhs._server) {}
 
@@ -57,10 +70,18 @@ Command &Command::operator=(Command const &rhs) {
     return *this;
   }
 
+  this->_command = rhs._command;
   this->_prefix = rhs._prefix;
   this->_name = rhs._name;
   this->_args = rhs._args;
   this->_trailor = rhs._trailor;
+  this->_nick = rhs._nick;
+  this->_topic = rhs._topic;
+  this->_modeStr = rhs._modeStr;
+  this->_modeArgs = rhs._modeArgs;
+  this->_targetChannelName = rhs._targetChannelName;
+  this->_targetChannel = rhs._targetChannel;
+  this->_targetClient = rhs._targetClient;
   this->_client = rhs._client;
   this->_server = rhs._server;
 

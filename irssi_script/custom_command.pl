@@ -8,10 +8,10 @@ sub cmd_help {
     redirect_command($server, "HELP", $args);
 }
 
-sub cmd_names {
-    my ($args, $server, $win) = @_;
-    redirect_command($server, "NAMES", $args);
-}
+# sub cmd_names {
+#     my ($args, $server, $win) = @_;
+#     redirect_command($server, "NAMES", $args);
+# }
 
 sub redirect_command {
     my ($server, $command, $args) = @_;

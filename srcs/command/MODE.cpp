@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MODE.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 21:16:06 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:44:24 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,9 @@ void Command::MODE() {
 
   size_t i = 0;
   char s = this->_modeSet[0];
-  for (std::string::const_iterator it = this->_modeSet.begin();
+  for (std::string::const_iterator it = this->_modeSet.begin() + 1;
        it != this->_modeSet.end(); ++it) {
     switch (*it) {
-      case '+':
-        s = '+';
-        break;
-      case '-':
-        s = '-';
-        break;
       case 'i':
         // Set/unset the channel on invitation only
         this->_targetChannel->setInviteOnly(s == '+');

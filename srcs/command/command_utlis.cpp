@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utlis.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:24:30 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:40:26 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,22 +130,12 @@ bool Command::isValidMode(const std::string &str) {
   if (str.empty() || (str[0] != '+' && str[0] != '-')) {
     return false;
   }
-
-  bool hasAlpha = false;
-
   for (size_t i = 1; i < str.length(); ++i) {
-    char c = str[i];
-
-    if (!(std::isalpha(c) || c == '+' || c == '-')) {
+    if (!(std::isalpha(str[i]))) {
       return false;
     }
-
-    if (std::isalpha(c)) {
-      hasAlpha = true;
-    }
   }
-
-  return hasAlpha;
+  return true;
 }
 
 bool Command::isRecognizedMode(const std::string &str) {
@@ -153,23 +143,12 @@ bool Command::isRecognizedMode(const std::string &str) {
     return false;
   }
 
-  const char validChars[] = {'i', 't', 'k', 'o', 'l', '+', '-'};
   const char validModes[] = {'i', 't', 'k', 'o', 'l'};
-  bool hasValidMode = false;
-
   for (size_t i = 1; i < str.length(); ++i) {
-    char c = std::tolower(str[i]);
-
-    if (std::find(validChars, validChars + sizeof(validChars), c) ==
-        validChars + sizeof(validChars)) {
+    if (std::find(validModes, validModes + sizeof(validModes), str[i]) ==
+        validModes + sizeof(validModes)) {
       return false;
     }
-
-    if (std::find(validModes, validModes + sizeof(validModes), c) !=
-        validModes + sizeof(validModes)) {
-      hasValidMode = true;
-    }
   }
-
-  return hasValidMode;
+  return true;
 }

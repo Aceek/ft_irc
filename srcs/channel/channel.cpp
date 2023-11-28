@@ -6,31 +6,50 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 07:27:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 23:46:18 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string>
 #include "srcs/channel/channel.hpp"
 
-Channel::Channel(void) {}
-
-Channel::Channel(std::string const &name, Server *server)
-    : _name(name),
+Channel::Channel(void)
+    : _name(""),
+      _topic(""),
+      _key(""),
       _inviteOnly(false),
       _topicRestricted(false),
       _userLimit(-1),
+      _modeStr(""),
+      _modeArgs(""),
+      _modeInfo(),
+      _server(NULL) {}
+
+Channel::Channel(std::string const &name, Server *server)
+    : _name(name),
+      _topic(""),
+      _key(""),
+      _inviteOnly(false),
+      _topicRestricted(false),
+      _userLimit(-1),
+      _modeStr(""),
+      _modeArgs(""),
+      _modeInfo(),
       _server(server) {}
 
 Channel::Channel(Channel const &rhs)
     : _name(rhs._name),
       _topic(rhs._topic),
       _key(rhs._key),
-      _users(rhs._users),
-      _operators(rhs._operators),
       _inviteOnly(rhs._inviteOnly),
       _topicRestricted(rhs._topicRestricted),
       _userLimit(rhs._userLimit),
+      _modeStr(rhs._modeStr),
+      _modeArgs(rhs._modeArgs),
+      _modeInfo(rhs._modeInfo),
+      _users(rhs._users),
+      _invitedUsers(rhs._invitedUsers),
+      _operators(rhs._operators),
       _server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const &rhs) {
@@ -41,11 +60,15 @@ Channel &Channel::operator=(Channel const &rhs) {
   this->_name = rhs._name;
   this->_topic = rhs._topic;
   this->_key = rhs._key;
-  this->_users = rhs._users;
-  this->_operators = rhs._operators;
   this->_inviteOnly = rhs._inviteOnly;
   this->_topicRestricted = rhs._topicRestricted;
   this->_userLimit = rhs._userLimit;
+  this->_modeStr = rhs._modeStr;
+  this->_modeArgs = rhs._modeArgs;
+  this->_modeInfo = rhs._modeInfo;
+  this->_users = rhs._users;
+  this->_invitedUsers = rhs._invitedUsers;
+  this->_operators = rhs._operators;
   this->_server = rhs._server;
 
   return *this;

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 07:27:11 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/11/28 23:40:57 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ class Channel {
   std::string _name;
   std::string _topic;
   std::string _key;
-  std::set<Client *> _users;
-  std::set<Client *> _invitedUsers;
-  std::set<Client *> _operators;
   bool _inviteOnly;
   bool _topicRestricted;
   int _userLimit;
   std::string _modeStr;
   std::string _modeArgs;
   std::map<char, std::string> _modeInfo;
+  std::set<Client *> _users;
+  std::set<Client *> _invitedUsers;
+  std::set<Client *> _operators;
   Server *_server;
 };
 

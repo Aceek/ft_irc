@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/28 04:48:27 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 23:21:01 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,17 @@ std::string serverReply::buildKickMessage(const Command &cmd) {
   return msg;
 }
 
+std::string serverReply::buildKickBotMessage(const Command &cmd) {
+  std::string msg = ":irc-bot KICK " + cmd.getTargetChannel()->getName() +
+					" " + cmd.getTargetClient()->getNicknameOrUsername(true);
+
+  if (!cmd.getBadWord().empty()) {
+    msg += " using inappropriate language <" + cmd.getBadWord() + ">";
+  }
+  
+  return msg;
+}
+
 std::string serverReply::buildModeMessage(const Command &cmd) {
   std::string msg = ":" + cmd.getClient().getPrefix() + " " + cmd.getName() +
                     " " + cmd.getTargetChannel()->getName() + " " +
@@ -356,6 +367,16 @@ void serverReply::KICK(const Command &cmd, const Client &receiver) {
 
 void serverReply::KICK(const Command &cmd, const Channel &receiver) {
   const std::string &msg = buildKickMessage(cmd);
+  sendMessageToChannel(cmd.getClient(), receiver, msg);
+}
+
+void serverReply::KICKBOT(const Command &cmd, const Client &receiver) {
+  const std::string &msg = buildKickBotMessage(cmd);
+  setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::KICKBOT(const Command &cmd, const Channel &receiver) {
+  const std::string &msg = buildKickBotMessage(cmd);
   sendMessageToChannel(cmd.getClient(), receiver, msg);
 }
 

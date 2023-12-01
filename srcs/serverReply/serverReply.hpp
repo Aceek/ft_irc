@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/28 03:23:05 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 22:36:03 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,15 @@ class serverReply {
   std::string buildJoinMessage(const Command &cmd);
   std::string buildPartMessage(const Command &cmd);
   std::string buildKickMessage(const Command &cmd);
+  std::string buildKickBotMessage(const Command &cmd);
   std::string buildPrivmsgMessage(const Command &cmd, bool channel);
   std::string buildModeMessage(const Command &cmd);
   std::string buildTopicMessage(const Command &cmd);
 
   void INVITE(const Command &cmd, const Client &receiver);
   void INVITE(const Command &cmd, const Channel &receiver);
+  void KICKBOT(const Command &cmd, const Client &receiver);
+  void KICKBOT(const Command &cmd, const Channel &receiver);
   void KICK(const Command &cmd, const Client &receiver);
   void KICK(const Command &cmd, const Channel &receiver);
   void JOIN(const Command &cmd, const Client &receiver);

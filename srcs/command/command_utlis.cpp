@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 02:40:26 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 23:19:40 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,3 +152,20 @@ bool Command::isRecognizedMode(const std::string &str) {
   }
   return true;
 }
+
+bool Command::botMessageCheck(Command &cmd) {	
+  Bot bot;
+  bot.activate();
+  if (bot.isMessageForbidden(cmd.getTrailor())) {
+    cmd.setBadWord("");
+    cmd.setTargetClient(&cmd.getClient());
+    cmd.getServer().getServerReply()->KICKBOT(cmd, cmd.getClient());
+    cmd.getServer().getServerReply()->KICKBOT(cmd, *cmd.getTargetChannel());
+    cmd.getTargetChannel()->delUser(cmd.getTargetClient());
+  
+    return true;
+  }
+  
+  return false;
+}
+	  

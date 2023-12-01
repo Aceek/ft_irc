@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:24:10 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 03:44:17 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 22:58:28 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,18 @@ std::string const &Command::getNick(void) const { return this->_nick; }
 
 std::string const &Command::getTopic(void) const { return this->_topic; }
 
+std::string const &Command::getBadWord(void) const { return this->_badWord; }
+
 std::string const &Command::getModeStr(void) const { return this->_modeStr; }
 
 std::vector<std::string> const &Command::getModeArgs(void) const {
   return this->_modeArgs;
+}
+
+void Command::setTargetClient(Client *client) {
+	this->_targetClient = client;
+}
+
+void Command::setBadWord(std::string const &badWord) {
+	this->_badWord = badWord;
 }

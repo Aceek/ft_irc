@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 23:32:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 22:59:43 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,12 @@ class Command {
   std::string const &getTargetChannelName(void) const;
   std::string const &getNick(void) const;
   std::string const &getTopic(void) const;
+  std::string const &getBadWord(void) const;
   std::string const &getModeStr(void) const;
   std::vector<std::string> const &getModeArgs(void) const;
+  void setTargetClient(Client *client);
+  void setBadWord(std::string const &badWord);
+
 
   /*command_utlis*/
   bool isValidNicknameorUsername() const;
@@ -75,6 +79,7 @@ class Command {
                               std::string const &key);
   bool isValidMode(const std::string &str);
   bool isRecognizedMode(const std::string &str);
+  bool botMessageCheck(Command &cmd);
 
  private:
   std::string _command;
@@ -84,6 +89,7 @@ class Command {
   std::string _trailor;
   std::string _nick;
   std::string _topic;
+  std::string _badWord;
   std::string _modeStr;
   std::vector<std::string> _modeArgs;
   std::string _targetChannelName;

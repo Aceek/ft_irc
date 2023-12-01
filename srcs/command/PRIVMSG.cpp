@@ -24,11 +24,6 @@ void Command::PRIVMSG() {
     return;
   }
   
-  Bot bot;
-  bot.activate();
-  if (bot.isMessageForbidden(this->_trailor)) {
-	return;
-  }
 
   std::vector<std::string> receivers = ft_split(this->_args[0], ",");
   for (std::vector<std::string>::iterator it = receivers.begin();
@@ -43,6 +38,9 @@ void Command::PRIVMSG() {
       if (!this->_targetChannel->isClientPresent(&this->_client)) {
         this->_server.getServerReply()->NOTONCHANNEL(*this, this->_client);
         continue;
+      }
+      if (botMessageCheck(*this)) {
+      	continue;
       }
 
       this->_server.getServerReply()->PRIVMSG(*this, *this->_targetChannel);

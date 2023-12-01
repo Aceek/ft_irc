@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/01 23:30:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 00:16:23 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,8 +273,8 @@ std::string serverReply::buildKickBotMessage(const Command &cmd) {
   					"-bot KICK " + cmd.getTargetChannel()->getName() +
 					" " + cmd.getTargetClient()->getNicknameOrUsername(true);
 
-  if (!cmd.getBadWord().empty()) {
-    msg += " using inappropriate language <" + cmd.getBadWord() + ">";
+  if (!cmd.getForbiddenWord().empty()) {
+    msg += " using inappropriate language <" + cmd.getForbiddenWord() + ">";
   }
   
   return msg;

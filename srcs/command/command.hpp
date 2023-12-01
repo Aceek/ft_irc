@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/01 22:59:43 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 00:13:59 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ class Command {
   std::string const &getTargetChannelName(void) const;
   std::string const &getNick(void) const;
   std::string const &getTopic(void) const;
-  std::string const &getBadWord(void) const;
+  std::string const &getForbiddenWord(void) const;
   std::string const &getModeStr(void) const;
   std::vector<std::string> const &getModeArgs(void) const;
   void setTargetClient(Client *client);
-  void setBadWord(std::string const &badWord);
+  void setForbiddenWord(std::string const &forbiddenWord);
 
 
   /*command_utlis*/
@@ -89,7 +89,7 @@ class Command {
   std::string _trailor;
   std::string _nick;
   std::string _topic;
-  std::string _badWord;
+  std::string _forbiddenWord;
   std::string _modeStr;
   std::vector<std::string> _modeArgs;
   std::string _targetChannelName;

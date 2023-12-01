@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/01 21:28:45 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 00:16:57 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Command::Command(std::string const &line, Client *client, Server *server)
       _trailor(""),
       _nick(""),
       _topic(""),
-      _badWord(""),
+      _forbiddenWord(""),
       _modeStr(""),
       _modeArgs(),
       _targetChannelName(""),
@@ -58,7 +58,7 @@ Command::Command(Command const &rhs)
       _trailor(rhs._trailor),
       _nick(rhs._nick),
       _topic(rhs._topic),
-      _badWord(rhs._badWord),
+      _forbiddenWord(rhs._forbiddenWord),
       _modeStr(rhs._modeStr),
       _modeArgs(rhs._modeArgs),
       _targetChannelName(rhs._targetChannelName),
@@ -79,7 +79,7 @@ Command &Command::operator=(Command const &rhs) {
   this->_trailor = rhs._trailor;
   this->_nick = rhs._nick;
   this->_topic = rhs._topic;
-  this->_badWord = rhs._badWord;
+  this->_forbiddenWord = rhs._forbiddenWord;
   this->_modeStr = rhs._modeStr;
   this->_modeArgs = rhs._modeArgs;
   this->_targetChannelName = rhs._targetChannelName;

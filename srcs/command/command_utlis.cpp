@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/01 23:49:16 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 00:12:16 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ bool Command::botMessageCheck(Command &cmd) {
   Bot bot;
   bot.init();
   if (bot.isMessageForbidden(cmd.getTrailor())) {
-    cmd.setBadWord(bot.getForbiddenWord(cmd.getTrailor()));
+    cmd.setForbiddenWord(bot.getForbiddenWord(cmd.getTrailor()));
     cmd.setTargetClient(&cmd.getClient());
     cmd.getServer().getServerReply()->KICKBOT(cmd, cmd.getClient());
     cmd.getServer().getServerReply()->KICKBOT(cmd, *cmd.getTargetChannel());

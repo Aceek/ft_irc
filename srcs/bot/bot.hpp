@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bot.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:19:43 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/12/01 23:20:46 by rlouvrie         ###   ########.fr       */
+/*   Updated: 2023/12/01 23:49:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Bot {
   std::string getForbiddenWord(const std::string& message);
   void setFilename(std::string filename);
   void loadFile(void);
-  int activate(void);
+  void init(void);
   class FileDoesNotExistException : public std::exception {
     const char* what() const throw() { return ("No such file or directory"); }
   };
@@ -56,6 +56,5 @@ class Bot {
  private:
   std::set<std::string> _forbiddenWords;
   std::string _filename;
-  bool _isOn;
 };
 #endif  // SRCS_BOT_BOT_HPP_

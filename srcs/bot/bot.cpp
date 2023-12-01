@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:21:15 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/12/01 23:50:22 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 00:02:15 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/bot/bot.hpp"
 
-Bot::Bot(void) : _filename("srcs/bot/blacklist.txt") {}
+Bot::Bot(void) : _filename("srcs/bot/forbidden_words.txt") {}
 
 Bot::Bot(const Bot &cp) : _filename(cp.getFilename()) {}
 
@@ -98,7 +98,10 @@ void Bot::init(void) {
   try {
     this->loadFile();
   } catch (const std::exception &e) {
-	
+    std::cerr
+      << "Bot: Exception caught: "
+      << e.what()
+      << "\n";
   }
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bot.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:19:43 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/12/01 23:49:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 00:08:07 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,15 @@ class Bot {
   void loadFile(void);
   void init(void);
   class FileDoesNotExistException : public std::exception {
-    const char* what() const throw() { return ("No such file or directory"); }
+    const char* what() const throw() { 
+      return ("File 'forbidden_words.txt' does not exist."); }
   };
   class PermissionDeniedException : public std::exception {
-    const char* what() const throw() { return ("Permission denied"); }
+    const char* what() const throw() { 
+      return ("Permission denied to open file 'forbidden_words.txt'."); }
   };
   class UnknownFileExecption : public std::exception {
-    const char* what() const throw() { return ("Unknown"); }
+    const char* what() const throw() { return ("Unknown exception"); }
   };
   class DirectoryNotFileException : public std::exception {
     const char* what() const throw() { return ("Is a directory"); }

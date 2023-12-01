@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bot.cpp                                            :+:      :+:    :+:   */
+/*   bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:21:15 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/11/27 20:27:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:22:15 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "srcs/bot/Bot.hpp"
+#include "srcs/bot/bot.hpp"
 
 Bot::Bot(void) : _filename("blacklist.txt"), _isOn(false) {}
 
@@ -82,9 +82,9 @@ bool Bot::isMessageForbidden(const std::string &message) const {
 
   while (iss >> word) {
     std::transform(word.begin(), word.end(), word.begin(), toLowerCase);
-    if (_forbiddenWords.find(word) != _forbiddenWords.end()) return (true);
+    if (_forbiddenWords.find(word) != _forbiddenWords.end()) return (false);
   }
-  return (false);
+  return (true);
 }
 
 int Bot::activate(void) {

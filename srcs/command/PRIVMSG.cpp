@@ -23,6 +23,12 @@ void Command::PRIVMSG() {
     this->_server.getServerReply()->NOTEXTTOSEND(*this, this->_client);
     return;
   }
+  
+  Bot bot;
+  bot.activate();
+  if (bot.isMessageForbidden(this->_trailor)) {
+	return;
+  }
 
   std::vector<std::string> receivers = ft_split(this->_args[0], ",");
   for (std::vector<std::string>::iterator it = receivers.begin();

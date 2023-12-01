@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 21:12:11 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:49:13 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ enum messageServer {
 #include <string>
 #include <vector>
 
+#include "srcs/bot/bot.hpp"
 #include "srcs/channel/channel.hpp"
 #include "srcs/client/client.hpp"
 #include "srcs/command/command.hpp"

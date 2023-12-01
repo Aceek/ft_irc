@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bot.hpp                                            :+:      :+:    :+:   */
+/*   bot.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:19:43 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/11/27 20:27:42 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/01 23:20:46 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <cstring>
 
 #include "../utils/utils.hpp"
 
@@ -35,6 +36,7 @@ class Bot {
   bool isDirectory(void) const;
   bool isValidWord(const std::string& word) const;
   bool isMessageForbidden(const std::string& message) const;
+  std::string getForbiddenWord(const std::string& message);
   void setFilename(std::string filename);
   void loadFile(void);
   int activate(void);

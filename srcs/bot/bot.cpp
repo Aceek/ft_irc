@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:21:15 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/12/01 21:22:15 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 23:30:31 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/bot/bot.hpp"
 
-Bot::Bot(void) : _filename("blacklist.txt"), _isOn(false) {}
+Bot::Bot(void) : _filename("srcs/bot/blacklist.txt"), _isOn(false) {}
 
 Bot::Bot(const Bot &cp) : _filename(cp.getFilename()), _isOn(false) {}
 
@@ -76,15 +76,23 @@ void Bot::setFilename(std::string filename) {
   this->_forbiddenWords.clear();
 }
 
-bool Bot::isMessageForbidden(const std::string &message) const {
+bool Bot::isMessageForbidden(const std::string& message) const {
   std::istringstream iss(message);
   std::string word;
 
   while (iss >> word) {
     std::transform(word.begin(), word.end(), word.begin(), toLowerCase);
-    if (_forbiddenWords.find(word) != _forbiddenWords.end()) return (false);
+    for (std::set<std::string>::const_iterator it = this->_forbiddenWords.begin();
+      it != this->_forbiddenWords.end(); it++) {
+      std::string lowerForbiddenWord = *it;
+      std::transform(lowerForbiddenWord.begin(), lowerForbiddenWord.end(),
+        lowerForbiddenWord.begin(), toLowerCase);
+      if (strcmp(lowerForbiddenWord.c_str(), word.c_str()) == 0) {
+        return (true);
+      }
+    }
   }
-  return (true);
+  return (false);
 }
 
 int Bot::activate(void) {
@@ -95,4 +103,31 @@ int Bot::activate(void) {
   }
   this->_isOn = true;
   return (0);
+}
+
+std::string Bot::getForbiddenWord(const std::string& message) {
+  std::istringstream iss(message);
+  std::string word;
+
+  while (iss >> word) {
+    std::transform(word.begin(), word.end(), word.begin(), toLowerCase);
+    for (std::set<std::string>::const_iterator it = this->_forbiddenWords.begin();
+      it != this->_forbiddenWords.end(); it++) {
+      std::string lowerForbiddenWord = *it;
+      std::transform(lowerForbiddenWord.begin(), lowerForbiddenWord.end(),
+        lowerForbiddenWord.begin(), toLowerCase);
+      if (strcmp(lowerForbiddenWord.c_str(), word.c_str()) == 0) {
+        if (word.length() == 1) {
+          return ("*");
+        } else if (word.length() == 2) {
+          return (word.substr(0, 1) + "*");
+        } else {
+          return word.substr(0, 1)
+            + std::string(word.length() - 2, '*')
+            + word.substr(word.length() - 1, 1);
+        }
+      }
+    }
+  }
+  return ("");
 }

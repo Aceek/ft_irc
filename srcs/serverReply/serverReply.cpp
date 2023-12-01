@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/01 23:21:01 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/01 23:30:22 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,20 +246,20 @@ void serverReply::UMODEUNKNOWNFLAG(Command const &cmd, const Client &receiver) {
 /* ************************************************************************** */
 
 std::string serverReply::buildInviteMessage(const Command &cmd) {
-  return ":" + cmd.getClient().getPrefix() + " " + cmd.getName() + " " +
-         cmd.getTargetClient()->getNicknameOrUsername(true) + " " +
-         cmd.getTargetChannel()->getName();
+  return ":" + cmd.getClient().getPrefix() + " " + cmd.getName() +
+         " " + cmd.getTargetClient()->getNicknameOrUsername(true) +
+         " " + cmd.getTargetChannel()->getName();
 }
 
 std::string serverReply::buildJoinMessage(const Command &cmd) {
-  return ":" + cmd.getClient().getPrefix() + " " + cmd.getName() + " " +
-         cmd.getTargetChannel()->getName();
+  return ":" + cmd.getClient().getPrefix() + " " + cmd.getName() +
+         " " + cmd.getTargetChannel()->getName();
 }
 
 std::string serverReply::buildKickMessage(const Command &cmd) {
   std::string msg = ":" + cmd.getClient().getPrefix() + " " + cmd.getName() +
-                    " " + cmd.getTargetChannel()->getName() + " " +
-                    cmd.getTargetClient()->getNicknameOrUsername(true);
+                    " " + cmd.getTargetChannel()->getName() + 
+                    " " + cmd.getTargetClient()->getNicknameOrUsername(true);
 
   if (!cmd.getTrailor().empty()) {
     msg += " " + cmd.getTrailor();
@@ -269,7 +269,8 @@ std::string serverReply::buildKickMessage(const Command &cmd) {
 }
 
 std::string serverReply::buildKickBotMessage(const Command &cmd) {
-  std::string msg = ":irc-bot KICK " + cmd.getTargetChannel()->getName() +
+  std::string msg = ":" + cmd.getTargetChannel()->getName() +
+  					"-bot KICK " + cmd.getTargetChannel()->getName() +
 					" " + cmd.getTargetClient()->getNicknameOrUsername(true);
 
   if (!cmd.getBadWord().empty()) {

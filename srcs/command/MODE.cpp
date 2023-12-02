@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/02 02:18:28 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 02:36:43 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void Command::MODE() {
     this->_server.getServerReply()->NEEDMOREPARAMS(*this, this->_client);
     return;
   }
-
 
   /* User mode not supported */
   if (this->_server.getClientByNickname(this->_args[0])) {

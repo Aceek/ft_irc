@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/01 22:36:03 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 02:15:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class serverReply {
   void RPL_INVITING(Command const &cmd, const Client &receiver);
   void RPL_NAMREPLY(Command const &cmd, const Client &receiver);
   void RPL_ENDOFNAMES(Command const &cmd, const Client &receiver);
+  void RPL_ENDOFBANLIST(Command const &cmd, const Client &receiver);
   void NOSUCHNICK(Command const &cmd, const Client &receiver);
   void NOSUCHCHANNEL(Command const &cmd, const Client &receiver);
   void CANNOTSENDTOCHAN(Command const &cmd, const Client &receiver);

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/02 00:16:23 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 02:15:16 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,16 @@ void serverReply::RPL_ENDOFNAMES(Command const &cmd, const Client &receiver) {
   std::string const &channel = cmd.getTargetChannel()->getName();
   std::string msg =
       ":" + server + " 366 " + client + " " + channel + " :End of /NAMES list";
+
+  setMessageQueue(receiver.getClientFd(), msg);
+}
+
+void serverReply::RPL_ENDOFBANLIST(Command const &cmd, const Client &receiver) {
+  std::string const &server = cmd.getClient().getHostname();
+  std::string const &client = cmd.getClient().getNicknameOrUsername(true);
+  std::string const &channel = cmd.getTargetChannel()->getName();
+  std::string msg =
+      ":" + server + " 368 " + client + " " + channel + " :End of /NAMES list";
 
   setMessageQueue(receiver.getClientFd(), msg);
 }

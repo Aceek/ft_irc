@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:48:18 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 23:49:13 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/02 02:18:28 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ void Command::MODE() {
   }
 
   this->_modeStr = this->_args[1];
+  /* Ban list not supported */
+  if (this->_modeStr == "b") {
+	this->_server.getServerReply()->RPL_ENDOFBANLIST(*this, this->_client);
+	return;
+  }
   if (!isValidMode(this->_modeStr)) {
     this->_server.getServerReply()->UMODEUNKNOWNFLAG(*this, this->_client);
     return;

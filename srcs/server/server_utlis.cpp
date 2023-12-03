@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_utlis.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 20:23:47 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 20:44:45 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,14 @@ void Server::removeClients() {
 }
 
 void Server::addChannel(std::string const &channelName) {
-  this->_channels[channelName] = Channel(channelName, this);
+  Channel &newChannel = this->_channels[channelName];
+  newChannel.init(channelName, this);
 }
 
 void Server::delChannel(std::string const &channelName) {
   ChannelMap::iterator it = this->_channels.find(channelName);
-
   if (it != this->_channels.end()) {
-    this->_channels.erase(it);
+	this->_channels.erase(it);
   }
 }
 

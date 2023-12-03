@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:26:29 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 04:30:47 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 02:22:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,11 @@ void Channel::setUserLimit(int userLimit) { this->_userLimit = userLimit; }
 std::string const &Channel::getModeStr() const { return this->_modeStr; }
 
 void Channel::setModeStr(std::string const &modeStr)
-{this->_modeStr = modeStr; }
+{ this->_modeStr = modeStr; }
 
-std::string const &Channel::getModeArgs() const { return this->_modeArgs; }
+std::string const &Channel::getModeArgs(void) const { return this->_modeArgs; }
 
 void Channel::setModeArgs(std::string const &modeArgs)
 { this->_modeArgs = modeArgs; }
+
+Bot *Channel::getBot(void) const { return this->_bot; }

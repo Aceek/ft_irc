@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/01 20:49:13 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 01:05:21 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ enum messageServer {
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #include <algorithm>
 #include <cctype>

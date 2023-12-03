@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/02 02:15:16 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 02:23:29 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,8 +279,8 @@ std::string serverReply::buildKickMessage(const Command &cmd) {
 }
 
 std::string serverReply::buildKickBotMessage(const Command &cmd) {
-  std::string msg = ":" + cmd.getTargetChannel()->getName() +
-  					"-bot KICK " + cmd.getTargetChannel()->getName() +
+  std::string msg = ":" + cmd.getTargetChannel()->getBot()->getName() +
+  					" KICK " + cmd.getTargetChannel()->getName() +
 					" " + cmd.getTargetClient()->getNicknameOrUsername(true);
 
   if (!cmd.getForbiddenWord().empty()) {

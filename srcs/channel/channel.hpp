@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 23:40:57 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 03:26:49 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,17 @@
 
 class Client;
 class Server;
+class Bot;
 
 class Channel {
  public:
   Channel(void);
-  Channel(std::string const &name, Server *server);
+//   Channel(std::string const &name, Server *server);
   Channel(Channel const &rhs);
   Channel &operator=(Channel const &rhs);
   ~Channel(void);
 
+  void init(std::string const &channelName, Server *server);
   void addUser(Client *client, bool asOperator);
   void delUser(Client *client);
   void inviteUser(Client *client);
@@ -53,8 +55,9 @@ class Channel {
   std::set<Client *> const &getOperators(void) const;
   std::string const &getModeStr() const;
   void setModeStr(std::string const &modeStr);
-  std::string const &getModeArgs() const;
+  std::string const &getModeArgs(void) const;
   void setModeArgs(std::string const &modeArgs);
+  Bot *getBot(void) const;
 
   /*channel_utils*/
   bool isUser(Client *client) const;
@@ -76,6 +79,7 @@ class Channel {
   std::set<Client *> _users;
   std::set<Client *> _invitedUsers;
   std::set<Client *> _operators;
+  Bot *_bot;
   Server *_server;
 };
 

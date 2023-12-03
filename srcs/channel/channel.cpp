@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 23:46:18 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 20:47:11 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,25 @@ Channel::Channel(void)
       _modeStr(""),
       _modeArgs(""),
       _modeInfo(),
-      _server(NULL) {}
+	  _bot(NULL),
+      _server(NULL) {
+	//   std::cout << this << " - [Channel] Constructor" << std::endl;
+	  }
 
-Channel::Channel(std::string const &name, Server *server)
-    : _name(name),
-      _topic(""),
-      _key(""),
-      _inviteOnly(false),
-      _topicRestricted(false),
-      _userLimit(-1),
-      _modeStr(""),
-      _modeArgs(""),
-      _modeInfo(),
-      _server(server) {}
+// Channel::Channel(std::string const &name, Server *server)
+//     : _name(name),
+//       _topic(""),
+//       _key(""),
+//       _inviteOnly(false),
+//       _topicRestricted(false),
+//       _userLimit(-1),
+//       _modeStr(""),
+//       _modeArgs(""),
+//       _modeInfo(),
+// 	  _bot(new Bot()),
+//       _server(server) {
+// 		std::cout << "channel constr" << std::endl;
+// 	  }
 
 Channel::Channel(Channel const &rhs)
     : _name(rhs._name),
@@ -50,6 +56,7 @@ Channel::Channel(Channel const &rhs)
       _users(rhs._users),
       _invitedUsers(rhs._invitedUsers),
       _operators(rhs._operators),
+      _bot(rhs._bot),
       _server(rhs._server) {}
 
 Channel &Channel::operator=(Channel const &rhs) {
@@ -69,14 +76,24 @@ Channel &Channel::operator=(Channel const &rhs) {
   this->_users = rhs._users;
   this->_invitedUsers = rhs._invitedUsers;
   this->_operators = rhs._operators;
+  this->_bot = rhs._bot;
   this->_server = rhs._server;
 
   return *this;
 }
 
-Channel::~Channel(void) {}
+Channel::~Channel(void) {
+	delete this->_bot;
+}
 
 /* ************************************************************************** */
+
+void Channel::init(std::string const &channelName, Server *server) {
+	this->_name = channelName;
+	this->_server = server;
+	this->_bot = new Bot();
+	this->_bot->setName(this->_name + "-bot");
+}
 
 void Channel::addUser(Client *client, bool asOperator) {
   if (asOperator || (this->_users.empty() && this->_operators.empty())) {

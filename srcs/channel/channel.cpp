@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 20:47:11 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 21:02:35 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,7 @@ Channel::Channel(void)
       _modeArgs(""),
       _modeInfo(),
 	  _bot(NULL),
-      _server(NULL) {
-	//   std::cout << this << " - [Channel] Constructor" << std::endl;
-	  }
-
-// Channel::Channel(std::string const &name, Server *server)
-//     : _name(name),
-//       _topic(""),
-//       _key(""),
-//       _inviteOnly(false),
-//       _topicRestricted(false),
-//       _userLimit(-1),
-//       _modeStr(""),
-//       _modeArgs(""),
-//       _modeInfo(),
-// 	  _bot(new Bot()),
-//       _server(server) {
-// 		std::cout << "channel constr" << std::endl;
-// 	  }
+      _server(NULL) {}
 
 Channel::Channel(Channel const &rhs)
     : _name(rhs._name),

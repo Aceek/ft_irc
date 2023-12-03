@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  ft_irc:
+    image: ft_irc
+    container_name: ft_irc
+    build:
+      context: requirements/ft_irc
+      dockerfile: Dockerfile
+    restart: on-failure
+    expose:
+      - 6139
+    networks:
+      - ft_irc
+  client1:
+    image: client1
+    container_name: client1
+    build:
+      context: requirements/client1
+      dockerfile: Dockerfile
+    restart: on-failure
+    networks:
+      - ft_irc
+  client2:
+    image: client2
+    container_name: client2
+    build:
+      context: requirements/client2
+      dockerfile: Dockerfile
+    restart: on-failure
+    networks:
+      - ft_irc
+
+networks:
+  ft_irc:
+    driver: bridge

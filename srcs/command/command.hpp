@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:42 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/02 00:13:59 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 00:36:47 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class Command {
   void MODE();
   void PART();
   void PRIVMSG();
+  void NOTICE();
   void TOPIC();
   void USER();
   void NICK();

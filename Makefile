@@ -6,7 +6,7 @@
 #    By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 04:05:12 by pbeheyt           #+#    #+#              #
-#    Updated: 2023/11/21 15:07:29 by pbeheyt          ###   ########.fr        #
+#    Updated: 2023/12/03 22:13:07 by pbeheyt          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ FLAGS   := -Wall -Wextra -Werror -std=c++98 -g
 
 SRCS    := $(wildcard srcs/*.cpp) $(wildcard srcs/*/*.cpp)
 OBJS    := $(patsubst srcs/%.cpp,obj/%.o,$(SRCS))
-NAME    := ft_irc
+NAME    := ircserv
 
 HEADER  := $(wildcard srcs/*.hpp) $(wildcard srcs/*/*.hpp)
 INCLUDES := -I.

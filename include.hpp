@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   include.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 01:05:21 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 22:25:05 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ enum ErrorCode {
 enum messageServer {
   SERVER_CLOSING,
   SERVER_DELCLIENT,
+  MAX_CLIENTS,
   ERR_SERVER_ACCEPTCLIENT,
   SERVER_NEWCLIENT,
   ERR_BIND,
   ERR_POLL,
   ERR_SEND,
-  ERR_OPEN_FD
+  ERR_OPEN_FD,
+  ERR_CLOSE_FD
 };
 
 #include <arpa/inet.h>

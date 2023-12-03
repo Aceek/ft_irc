@@ -6,14 +6,17 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:58:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:26:26 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/server/server.hpp"
 
 Server::Server(int port, std::string password)
-    : _port(port), _password(password), _serverReply(new serverReply(this)) {
+    : _clientFdToRemove(0),
+      _port(port),
+      _password(password),
+      _serverReply(new serverReply(this)) {
   // Creer la socket et on la relie a un fd
   this->_serverFd = socket(AF_INET, SOCK_STREAM, 0);
   if (this->_serverFd == -1) {
@@ -58,11 +61,12 @@ void Server::routine() {
         this->_clientsToRemove.push_back(it->fd);
         continue;
       }
-      if (it->revents & POLLIN) {
+      if ((it->revents & POLLIN) && (this->_clientFdToRemove != it->fd)) {
         routinePOLLIN(it);
       }
       if (it->revents & POLLOUT) {
         this->_serverReply->verifyMessageSend(it->fd);
+        verifyMaxClient(it->fd);
       }
     }
     removeClients();
@@ -90,15 +94,20 @@ int Server::acceptClient() {
 
   if (clientFd == -1) {
     this->_serverReply->displayServerMessage(ERR_SERVER_ACCEPTCLIENT);
+    return (-1);
   }
 
   Client newClient(clientFd, clientAdress);
   this->_clients[clientFd] = newClient;
-
-  // Ajoutez le descripteur de fichier associé au client à _fds pour le suivi
-  // avec poll()
   this->_clientsToAdd.push_back(clientFd);
-  this->_serverReply->displayServerMessage(SERVER_NEWCLIENT);
+
+  if (getNumbersClients() > MAX_CLIENTS_NUMBER) {
+    this->_serverReply->MAX_CLIENT(this->_clients[clientFd]);
+    this->_serverReply->displayServerMessage(MAX_CLIENTS);
+    this->_clientFdToRemove = clientFd;
+  } else {
+    this->_serverReply->displayServerMessage(SERVER_NEWCLIENT);
+  }
 
   return (clientFd);
 }

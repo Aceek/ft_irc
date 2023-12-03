@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 03:46:40 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 21:14:50 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 21:49:01 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ void Command::HELP() {
   serverReply *serverReply = this->_server.getServerReply();
   std::string clientNick = this->_client.getNicknameOrUsername(true);
   std::string serverName =
-      "localhost";  // Remplacez par le nom réel de votre serveur
+      "localhost";
 
   std::string helpMessage;
 
-  // Commencez le message d'aide
   helpMessage +=
       ":" + serverName + " 372 " + clientNick + " :Available commands:\r\n";
 
@@ -30,7 +29,6 @@ void Command::HELP() {
                    " - Parameters: " + it->second.params + "\r\n";
   }
 
-  // Terminez le message d'aide
   helpMessage += ":" + serverName + " 376 " + clientNick + " :End of HELP\r\n";
 
   serverReply->setMessageQueue(this->_client.getClientFd(), helpMessage);

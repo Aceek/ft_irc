@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverReply.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 21:07:44 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 23:05:59 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class serverReply {
   void NICK_RPL(const int errorCode, const Command &command);
   void NICK_SUCCES(const Client &client, const std::string &oldNick);
   void WELCOME_RPL(const Client &client);
+  void MAX_CLIENT(const Client &client);
   void PONG_RPL(const int errorCode, const Command &command);
   void PASS_RPL(const int errorCode, const Command &command);
   void USER_RPL(const int errorCode, const Client &client);

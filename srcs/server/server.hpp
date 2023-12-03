@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:37:56 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:29:50 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #define SRCS_SERVER_SERVER_HPP_
 
 #include <deque>
-#include <vector>
 #include <map>
 #include <string>
+#include <vector>
+
 #include "../../include.hpp"
 
 class Client;
@@ -24,6 +25,7 @@ class Channel;
 class serverReply;
 
 #define MAX_COMMAND_SIZE 512
+#define MAX_CLIENTS_NUMBER 15
 
 extern bool serverShutdown;
 typedef std::map<const int, Client> ClientMap;
@@ -45,6 +47,7 @@ class Server {
   /*server utils*/
   bool isChannelPresent(std::string const &channelName);
   void closingFdClients();
+  void verifyMaxClient(const int clientFdToRemove);
   void removeClient(const int clientFd);
   void deconectionClients();
   void addToPoll(int fd, short events);
@@ -55,6 +58,7 @@ class Server {
 
   /*server_accessors*/
   const std::string &getPassword() const;
+  int getNumbersClients();
   serverReply *getServerReply() const;
   Client *getClientByNickname(std::string const &nickname);
   const ClientMap &getClients() const;
@@ -64,6 +68,7 @@ class Server {
   void setClientToRemove(const int clientFd);
 
  private:
+  int _clientFdToRemove;
   int _port;
   std::string _password;
   int _serverFd;

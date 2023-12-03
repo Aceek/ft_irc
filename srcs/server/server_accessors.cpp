@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:22:22 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 19:11:13 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 21:53:03 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,13 @@ std::string Server::getChannelsNames() const {
 
 void Server::setClientToRemove(const int clientFd) {
   this->_clientsToRemove.push_back(clientFd);
+}
+
+int Server::getNumbersClients() {
+  ClientMap::iterator it = this->_clients.begin();
+  int numberOfClients = 0;
+  for (; it != this->_clients.end(); it++) {
+    numberOfClients++;
+  }
+  return (numberOfClients);
 }

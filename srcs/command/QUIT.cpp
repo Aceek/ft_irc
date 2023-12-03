@@ -6,12 +6,13 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 07:07:51 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 22:37:27 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 00:17:57 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/command/command.hpp"
 
 void Command::QUIT() {
+  this->_server.getServerReply()->LOGOUT(this->_client, this->_trailor);
   this->_server.setClientToRemove(this->_client.getClientFd());
 }

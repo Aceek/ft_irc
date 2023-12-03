@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 23:22:45 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/02 00:16:57 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 00:12:28 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void Command::exec(void) {
   CommandMap::iterator it = this->_commands.find(this->_name);
   if ((it != this->_commands.end() &&
        (this->_client.isPasswordSetUp() || it->first == "PASS" ||
-        it->first == "CAP"))) {
+        it->first == "CAP" || it->first == "QUIT"))) {
     (this->*(it->second).func)();
   }
 }

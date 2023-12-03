@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 23:05:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 00:18:36 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <deque>
 #include <map>
 #include <string>
+
 #include "../../include.hpp"
 
 class Command;
@@ -40,6 +41,7 @@ class serverReply {
   void PASS_RPL(const int errorCode, const Command &command);
   void USER_RPL(const int errorCode, const Client &client);
   void LOGOUT(const Client &client);
+  void LOGOUT(const Client &client, std::string msg);
 
   /*serverReply_channel*/
   void RPL_CHANNELMODEIS(Command const &cmd, const Client &receiver);
@@ -93,7 +95,7 @@ class serverReply {
   void MODE(const Command &cmd, const Channel &receiver);
   void TOPIC(const Command &cmd, const Client &receiver);
   void TOPIC(const Command &cmd, const Channel &receiver);
-  
+
   /*serverReply_output*/
   void printServerInput(const std::string &message) const;
   void displayClientCommand(const std::string &command,

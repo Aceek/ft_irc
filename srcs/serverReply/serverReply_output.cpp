@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 08:55:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 22:08:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:59:09 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,16 @@ void serverReply::displayServerMessage(messageServer event) const {
       break;
     case SERVER_DELCLIENT:
       std::cout << "Client has been removed from the server." << std::endl;
+      std::cout << this->_server.getNumbersClients() << " Clients sur le server"
+                << std::endl;
       break;
     case ERR_SERVER_ACCEPTCLIENT:
       std::cerr << "Error occurred while accepting a new client." << std::endl;
       break;
     case SERVER_NEWCLIENT:
       std::cout << "A new client has connected to the server." << std::endl;
+      std::cout << this->_server.getNumbersClients() << " Clients sur le server"
+                << std::endl;
       break;
     case ERR_BIND:
       std::cerr << "Error occurred during binding the socket. Details: " + error

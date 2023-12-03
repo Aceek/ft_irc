@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 23:28:22 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:51:45 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void Server::removeClient(const int clientFd) {
   if (itMsg != messages.end()) {
     messages.erase(clientFd);
   }
-  
+
   shutdown(clientFd, SHUT_WR);  // new
   if (close(clientFd) == -1) {
     this->_serverReply->displayServerMessage(ERR_CLOSE_FD);
@@ -119,8 +119,10 @@ void Server::addClientsToPoll() {
 }
 
 void Server::verifyMaxClient(const int clientFdToRemove) {
-  if (clientFdToRemove == this->_clientFdToRemove) {
+  std::vector<int>::iterator it = std::find(
+      _clientFdToRemove.begin(), _clientFdToRemove.end(), clientFdToRemove);
+  if (it != _clientFdToRemove.end()) {
     setClientToRemove(clientFdToRemove);
-    this->_clientFdToRemove = 0;
+	this->_clientFdToRemove.erase(it);
   }
 }

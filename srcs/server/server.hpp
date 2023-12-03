@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 23:29:50 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:41:50 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ class Server {
   void setClientToRemove(const int clientFd);
 
  private:
-  int _clientFdToRemove;
+  std::vector<int> _clientFdToRemove;
   int _port;
   std::string _password;
   int _serverFd;

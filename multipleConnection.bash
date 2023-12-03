@@ -2,7 +2,7 @@
 
 SERVER_HOST="localhost"
 SERVER_PORT=6138
-NUM_CONNECTIONS=5  # Changer le nombre de connexions simulées selon vos besoins
+NUM_CONNECTIONS=30  # Changer le nombre de connexions simulées selon vos besoins
 
 # Vérifiez si netcat est installé
 if ! command -v nc &> /dev/null; then

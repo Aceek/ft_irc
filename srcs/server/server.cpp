@@ -6,17 +6,14 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 23:26:26 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:57:44 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/server/server.hpp"
 
 Server::Server(int port, std::string password)
-    : _clientFdToRemove(0),
-      _port(port),
-      _password(password),
-      _serverReply(new serverReply(this)) {
+    : _port(port), _password(password), _serverReply(new serverReply(this)) {
   // Creer la socket et on la relie a un fd
   this->_serverFd = socket(AF_INET, SOCK_STREAM, 0);
   if (this->_serverFd == -1) {
@@ -61,7 +58,7 @@ void Server::routine() {
         this->_clientsToRemove.push_back(it->fd);
         continue;
       }
-      if ((it->revents & POLLIN) && (this->_clientFdToRemove != it->fd)) {
+      if ((it->revents & POLLIN)) {
         routinePOLLIN(it);
       }
       if (it->revents & POLLOUT) {
@@ -76,6 +73,11 @@ void Server::routine() {
 
 void Server::routinePOLLIN(
     const std::vector<struct pollfd>::iterator &pollfdIt) {
+  std::vector<int>::iterator it = std::find(
+      _clientFdToRemove.begin(), _clientFdToRemove.end(), pollfdIt->fd);
+  if (it != _clientFdToRemove.end()) {
+    return;
+  }
   if (pollfdIt->fd == this->_serverFd) {
     acceptClient();
   } else {
@@ -104,7 +106,7 @@ int Server::acceptClient() {
   if (getNumbersClients() > MAX_CLIENTS_NUMBER) {
     this->_serverReply->MAX_CLIENT(this->_clients[clientFd]);
     this->_serverReply->displayServerMessage(MAX_CLIENTS);
-    this->_clientFdToRemove = clientFd;
+    this->_clientFdToRemove.push_back(clientFd);
   } else {
     this->_serverReply->displayServerMessage(SERVER_NEWCLIENT);
   }
@@ -141,6 +143,7 @@ bool Server::processCommand(const int &clientFd) {
   if (client.verifyCommand()) {
     tryCommand(&client);
   }
+
   return (true);
 }
 

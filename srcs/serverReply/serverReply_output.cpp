@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   serveroutput.cpp                                   :+:      :+:    :+:   */
+/*   serverReply_output.cpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 08:55:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:45:45 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 22:08:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,16 @@ void serverReply::displayServerMessage(messageServer event) const {
       std::cout << "Error occurred while opening the file descriptor for the "
                    "client. Details: " +
                        error
+                << std::endl;
+      break;
+    case ERR_CLOSE_FD:
+      std::cout
+          << "Error occurred while closing the file descriptor. Details: " +
+                 error
+          << std::endl;
+      break;
+    case MAX_CLIENTS:
+      std::cout << "Can't accept this client, max number of client already rich"
                 << std::endl;
       break;
     default:

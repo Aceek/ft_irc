@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_utlis.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 20:44:45 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 23:28:22 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ void Server::removeClient(const int clientFd) {
   if (itMsg != messages.end()) {
     messages.erase(clientFd);
   }
-
+  
+  shutdown(clientFd, SHUT_WR);  // new
   if (close(clientFd) == -1) {
-    perror("Error closing client socket");
+    this->_serverReply->displayServerMessage(ERR_CLOSE_FD);
   }
 
   this->_serverReply->displayServerMessage(SERVER_DELCLIENT);
@@ -105,7 +106,7 @@ void Server::addChannel(std::string const &channelName) {
 void Server::delChannel(std::string const &channelName) {
   ChannelMap::iterator it = this->_channels.find(channelName);
   if (it != this->_channels.end()) {
-	this->_channels.erase(it);
+    this->_channels.erase(it);
   }
 }
 
@@ -115,4 +116,11 @@ void Server::addClientsToPoll() {
     addToPoll(*it, POLLIN | POLLOUT | POLLERR | POLLHUP | POLLNVAL);
   }
   this->_clientsToAdd.clear();
+}
+
+void Server::verifyMaxClient(const int clientFdToRemove) {
+  if (clientFdToRemove == this->_clientFdToRemove) {
+    setClientToRemove(clientFdToRemove);
+    this->_clientFdToRemove = 0;
+  }
 }

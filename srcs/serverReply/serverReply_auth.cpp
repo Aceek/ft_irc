@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   serverReply_ilan.cpp                               :+:      :+:    :+:   */
+/*   serverReply_auth.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:44:59 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/03 23:23:18 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,15 @@ void serverReply::WELCOME_RPL(const Client &client) {
   if (!user.empty() && !serverName.empty()) {
     message += "!" + user + "@" + serverName;
   }
+
+  setMessageQueue(client.getClientFd(), message);
+}
+
+void serverReply::MAX_CLIENT(const Client &client) {
+  std::string serverName = "localhost";
+
+  std::string message =
+      ":" + serverName + "  Can't connect to server : Max user reach";
 
   setMessageQueue(client.getClientFd(), message);
 }

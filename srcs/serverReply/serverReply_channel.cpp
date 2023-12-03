@@ -1,23 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   serverReply.cpp                                    :+:      :+:    :+:   */
+/*   serverReply_channel.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 02:23:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 21:25:43 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vector>
 #include "srcs/serverReply/serverReply.hpp"
-
-serverReply::serverReply(Server *server) : _server(*server) {}
-
-serverReply::~serverReply() {}
-
-/* ************************************************************************** */
 
 void serverReply::RPL_CHANNELMODEIS(Command const &cmd, const Client &receiver) {
   std::string const &server = cmd.getClient().getHostname();

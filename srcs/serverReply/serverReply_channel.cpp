@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 21:25:43 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/03 22:15:47 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,11 @@ std::string serverReply::buildKickBotMessage(const Command &cmd) {
 
 std::string serverReply::buildModeMessage(const Command &cmd) {
   std::string msg = ":" + cmd.getClient().getPrefix() + " " + cmd.getName() +
-                    " " + cmd.getTargetChannel()->getName() + " " +
-                    cmd.getModeStr();
-
+                    " " + cmd.getTargetChannel()->getName();
+  
+  if (!cmd.getModeStr().empty()) {
+    msg += " " + cmd.getModeStr();
+  }
   for (std::vector<std::string>::const_iterator it = cmd.getModeArgs().begin();
        it != cmd.getModeArgs().end(); ++it) {
     msg += " " + *it;

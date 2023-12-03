@@ -8,4 +8,4 @@ RUN apt-get update \
 
 WORKDIR /ft_irc
 
-ENTRYPOINT [ "./ft_irc", "6139", "password" ]
+ENTRYPOINT [ "./ircserv", "6139", "password" ]

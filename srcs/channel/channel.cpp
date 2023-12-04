@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:55 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 21:02:35 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 06:29:21 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Channel::Channel(void)
       _modeStr(""),
       _modeArgs(""),
       _modeInfo(),
-	  _bot(NULL),
+      _bot(NULL),
       _server(NULL) {}
 
 Channel::Channel(Channel const &rhs)
@@ -66,16 +66,16 @@ Channel &Channel::operator=(Channel const &rhs) {
 }
 
 Channel::~Channel(void) {
-	delete this->_bot;
+  delete this->_bot;
 }
 
 /* ************************************************************************** */
 
 void Channel::init(std::string const &channelName, Server *server) {
-	this->_name = channelName;
-	this->_server = server;
-	this->_bot = new Bot();
-	this->_bot->setName(this->_name + "-bot");
+  this->_name = channelName;
+  this->_server = server;
+  this->_bot = new Bot();
+  this->_bot->setName(this->_name + "-bot");
 }
 
 void Channel::addUser(Client *client, bool asOperator) {

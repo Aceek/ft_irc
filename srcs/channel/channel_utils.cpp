@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:17:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/28 05:48:09 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 06:29:00 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ bool Channel::isClientInvited(Client *client) const {
 }
 
 bool Channel::hasModeArgs(const char &c) {
-	return c == 'k'  || c == 'l';
+  return c == 'k'  || c == 'l';
 }

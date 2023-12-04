@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:10 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 22:15:47 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 06:30:14 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void serverReply::RPL_CHANNELMODEIS(Command const &cmd, const Client &receiver) 
   std::string const &modeStr = cmd.getTargetChannel()->getModeStr();
   std::string const &modeArgs = cmd.getTargetChannel()->getModeArgs();
   std::string msg = ":" + server + " 324 " + client + " " + channel +
-  					" " + modeStr + " " + modeArgs;
+                    " " + modeStr + " " + modeArgs;
 
   setMessageQueue(receiver.getClientFd(), msg);
 }
@@ -274,8 +274,8 @@ std::string serverReply::buildKickMessage(const Command &cmd) {
 
 std::string serverReply::buildKickBotMessage(const Command &cmd) {
   std::string msg = ":" + cmd.getTargetChannel()->getBot()->getName() +
-  					" KICK " + cmd.getTargetChannel()->getName() +
-					" " + cmd.getTargetClient()->getNicknameOrUsername(true);
+                    " KICK " + cmd.getTargetChannel()->getName() +
+                    " " + cmd.getTargetClient()->getNicknameOrUsername(true);
 
   if (!cmd.getForbiddenWord().empty()) {
     msg += " using inappropriate language <" + cmd.getForbiddenWord() + ">";

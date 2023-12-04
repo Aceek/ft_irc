@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 01:43:04 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 05:12:02 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,19 @@ void Server::routine() {
     }
     for (std::vector<struct pollfd>::iterator it = this->_fds.begin();
          it != this->_fds.end(); ++it) {
+      if ((it->fd != this->_serverFd) && !checkClientTimeouts(it->fd)) {
+        setClientToRemove(it->fd);
+        continue;
+      }
       if (it->revents & (POLLERR | POLLHUP | POLLNVAL)) {
-        this->_clientsToRemove.push_back(it->fd);
+        setClientToRemove(it->fd);
         continue;
       }
       if ((it->revents & POLLIN)) {
         routinePOLLIN(it);
       }
       if (it->revents & POLLOUT) {
-        this->_serverReply->verifyMessageSend(it->fd);
-        verifyMaxClient(it->fd);
+        routinePOLLOUT(it);
       }
     }
     removeClients();
@@ -87,18 +90,28 @@ void Server::routine() {
   }
 }
 
+void Server::routinePOLLOUT(
+    const std::vector<struct pollfd>::iterator &pollfdIt) {
+  if (!this->_serverReply->verifyMessageSend(pollfdIt->fd)) {
+    setClientToRemove(pollfdIt->fd);
+  } else {
+    this->_clients.find(pollfdIt->fd)->second.setLastActivityTime();
+  }
+  verifyMaxClient(pollfdIt->fd);
+}
+
 void Server::routinePOLLIN(
     const std::vector<struct pollfd>::iterator &pollfdIt) {
-  std::vector<int>::iterator it = std::find(
-      _clientFdToRemove.begin(), _clientFdToRemove.end(), pollfdIt->fd);
-  if (it != _clientFdToRemove.end()) {
+  std::set<int>::iterator it =
+      std::find(_ClientsMaxReach.begin(), _ClientsMaxReach.end(), pollfdIt->fd);
+  if (it != _ClientsMaxReach.end()) {
     return;
   }
   if (pollfdIt->fd == this->_serverFd) {
     acceptClient();
   } else {
     if (!processCommand(pollfdIt->fd)) {
-      this->_clientsToRemove.push_back(pollfdIt->fd);
+      setClientToRemove(pollfdIt->fd);
     }
   }
 }
@@ -129,7 +142,7 @@ int Server::acceptClient() {
   if (getNumbersClients() > MAX_CLIENTS_NUMBER) {
     this->_serverReply->MAX_CLIENT(this->_clients[clientFd]);
     this->_serverReply->displayServerMessage(MAX_CLIENTS);
-    this->_clientFdToRemove.push_back(clientFd);
+    this->_ClientsMaxReach.insert(clientFd);
   } else {
     this->_serverReply->displayServerMessage(SERVER_NEWCLIENT);
   }
@@ -158,12 +171,14 @@ bool Server::processCommand(const int &clientFd) {
   memset(buffer, 0, sizeof(buffer));
 
   int bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
-  if (bytesReceived == 0 || (bytesReceived == -1 && (errno != EAGAIN && errno != EWOULDBLOCK))) {
+  if (bytesReceived == 0 ||
+      (bytesReceived == -1 && errno != EAGAIN && errno != EWOULDBLOCK)) {
     return (false);
   } else if (bytesReceived == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
     return (true);
   }
   buffer[bytesReceived] = '\0';
+  this->_clients.find(clientFd)->second.setLastActivityTime();
   client.addToCommand(buffer);
   if (client.verifyCommand()) {
     tryCommand(&client);

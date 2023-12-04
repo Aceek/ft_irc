@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:52:10 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 03:09:19 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,20 @@ enum messageServer {
   ERR_FCNTL,
   ERR_SOCKET,
   ERR_LISTEN,
+  TIMOUT_CLIENT,
   ERR_CLOSE_FD
 };
 
 #include <arpa/inet.h>
+#include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <poll.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+
 #include <algorithm>
 #include <cctype>
 #include <cerrno>
@@ -56,6 +58,7 @@ enum messageServer {
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <deque>
 #include <fstream>
 #include <iostream>

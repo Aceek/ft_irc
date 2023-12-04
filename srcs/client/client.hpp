@@ -6,15 +6,16 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:36:06 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/11/27 19:47:31 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 03:33:54 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SRCS_CLIENT_CLIENT_HPP_
 #define SRCS_CLIENT_CLIENT_HPP_
 
-#include <string>
 #include <set>
+#include <string>
+
 #include "../../include.hpp"
 
 class Server;
@@ -38,6 +39,8 @@ class Client {
   const struct sockaddr_in &getClientAddress() const;
   const std::string &getClientCommand() const;
   const std::string &getNicknameOrUsername(bool useNickname) const;
+  const std::time_t &getLastActivityTime() const;
+  void setLastActivityTime();
   void setNickname(std::string const &nickname);
   void setUsername(std::string const &username);
   void setRealName(std::string const &realName);
@@ -65,6 +68,7 @@ class Client {
   bool _userRegister;
   bool _nickRegister;
   std::set<Channel *> _channels;
+  std::time_t _lastActivityTime;
 };
 
 #endif  // SRCS_CLIENT_CLIENT_HPP_

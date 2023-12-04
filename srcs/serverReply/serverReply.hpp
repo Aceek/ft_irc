@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 10:51:21 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:18:36 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 02:53:35 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ class serverReply {
                             const Client &client) const;
   void displayServerMessage(messageServer event) const;
 
-  void sendMessage(const int clientFd, const std::string &message) const;
+  bool sendMessage(const int clientFd, const std::string &message) const;
   void sendMessageToChannel(Client const &sender, Channel const &channel,
                             std::string const &message);
 
-  void verifyMessageSend(const int clientFd);
+  bool verifyMessageSend(const int clientFd);
   void setMessageQueue(const int clientfd, const std::string &message);
   messages &getMessageQueue();
 };

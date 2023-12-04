@@ -6,5 +6,3 @@ chaleur
 bonheur
 clavier
 tablette
-y
-lp

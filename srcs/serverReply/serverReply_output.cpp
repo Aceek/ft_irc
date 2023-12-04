@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 08:55:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:52:28 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 04:55:56 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,29 @@ void serverReply::setMessageQueue(const int clientfd,
 
 messages &serverReply::getMessageQueue() { return (this->_messageQueue); }
 
-void serverReply::verifyMessageSend(const int clientFd) {
+bool serverReply::verifyMessageSend(const int clientFd) {
   std::deque<std::string> &messages = this->_messageQueue[clientFd];
   for (std::deque<std::string>::iterator msgIt = messages.begin();
        msgIt != this->_messageQueue[clientFd].end(); msgIt++) {
-    sendMessage(clientFd, *msgIt);
+    if (!sendMessage(clientFd, *msgIt)) {
+      messages.clear();
+      return (false);
+    }
   }
   messages.clear();
+  return (true);
 }
 
-void serverReply::sendMessage(const int clientFd,
+bool serverReply::sendMessage(const int clientFd,
                               const std::string &message) const {
   std::string newMessage = message + "\n";
   int bytesSent = send(clientFd, newMessage.c_str(), newMessage.size(), 0);
 
-  if (bytesSent == -1) {
+  if (bytesSent == -1 && errno != EINTR && errno != EAGAIN) {
     displayServerMessage(ERR_SEND);
+    return (false);
   }
+  return (true);
 }
 
 void serverReply::displayServerMessage(messageServer event) const {
@@ -94,6 +100,9 @@ void serverReply::displayServerMessage(messageServer event) const {
       break;
     case ERR_LISTEN:
       std::cerr << "Failed to listen Socket Details: " + error << std::endl;
+      break;
+    case TIMOUT_CLIENT:
+      std::cerr << "Client TIMEOUT ... deconection"<< std::endl;
       break;
     case ERR_OPEN_FD:
       std::cerr << "Error occurred while opening the file descriptor for the "

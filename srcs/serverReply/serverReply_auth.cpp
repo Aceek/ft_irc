@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 22:45:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:18:58 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 02:16:26 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,15 +145,15 @@ void serverReply::LOGOUT(const Client &client) {
   std::string hostname = "localhost";
   std::string replyMessage = ":" + hostname + " QUIT :Deconection server";
 
-  sendMessage(client.getClientFd(), replyMessage);
+  setMessageQueue(client.getClientFd(), replyMessage);
 }
 
 void serverReply::LOGOUT(const Client &client, std::string msg) {
   std::string hostname = "localhost";
   if (msg.empty()) {
-	msg = "Deconection server";
+    msg = "Deconection server";
   }
   std::string replyMessage = ":" + hostname + " QUIT :" + msg;
 
-  sendMessage(client.getClientFd(), replyMessage);
+  setMessageQueue(client.getClientFd(), replyMessage);
 }

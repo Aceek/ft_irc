@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:21:08 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 23:51:45 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 05:12:55 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void Server::removeClient(const int clientFd) {
     messages.erase(clientFd);
   }
 
-  shutdown(clientFd, SHUT_WR);  // new
+  shutdown(clientFd, SHUT_WR);
   if (close(clientFd) == -1) {
     this->_serverReply->displayServerMessage(ERR_CLOSE_FD);
   }
@@ -92,9 +92,12 @@ void Server::addToPoll(int fd, short events) {
 }
 
 void Server::removeClients() {
-  for (size_t i = 0; i < this->_clientsToRemove.size(); i++) {
-    removeClient(this->_clientsToRemove[i]);
+  for (std::set<int>::iterator it = this->_clientsToRemove.begin();
+       it != this->_clientsToRemove.end(); ++it) {
+    int clientFd = *it;
+    removeClient(clientFd);
   }
+
   this->_clientsToRemove.clear();
 }
 
@@ -119,10 +122,23 @@ void Server::addClientsToPoll() {
 }
 
 void Server::verifyMaxClient(const int clientFdToRemove) {
-  std::vector<int>::iterator it = std::find(
-      _clientFdToRemove.begin(), _clientFdToRemove.end(), clientFdToRemove);
-  if (it != _clientFdToRemove.end()) {
+  std::set<int>::iterator it = std::find(
+      _ClientsMaxReach.begin(), _ClientsMaxReach.end(), clientFdToRemove);
+  if (it != _ClientsMaxReach.end()) {
     setClientToRemove(clientFdToRemove);
-	this->_clientFdToRemove.erase(it);
+    this->_ClientsMaxReach.erase(it);
   }
+}
+
+bool Server::checkClientTimeouts(const int &clientFd) {
+  std::time_t currentTime = std::time(NULL);
+  std::time_t lastActionTime =
+      this->_clients.find(clientFd)->second.getLastActivityTime();
+  double elapsedTime = difftime(currentTime, lastActionTime);
+
+  if (elapsedTime > CLIENT_TIMEOUT_SECONDES) {
+    this->_serverReply->displayServerMessage(TIMOUT_CLIENT);
+    return (false);
+  }
+  return (true);
 }

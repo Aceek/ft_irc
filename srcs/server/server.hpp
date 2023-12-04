@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:55:11 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 05:09:12 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class serverReply;
 
 #define MAX_COMMAND_SIZE 512
 #define MAX_CLIENTS_NUMBER 15
+#define CLIENT_TIMEOUT_SECONDES 5
 
 extern bool serverShutdown;
 typedef std::map<const int, Client> ClientMap;
@@ -40,6 +41,7 @@ class Server {
   /*server_process*/
   void routine();
   void routinePOLLIN(const std::vector<struct pollfd>::iterator &pollfdIt);
+  void routinePOLLOUT(const std::vector<struct pollfd>::iterator &pollfdIt);
   int acceptClient();
   void tryCommand(Client *client);
   bool processCommand(const int &clientFd);
@@ -55,6 +57,7 @@ class Server {
   void addClientsToPoll();
   void addChannel(std::string const &channelName);
   void delChannel(std::string const &channelName);
+  bool checkClientTimeouts(const int &clientFd);
   void cleanup(messageServer errorEvent);
 
   /*server_accessors*/
@@ -69,14 +72,14 @@ class Server {
   void setClientToRemove(const int clientFd);
 
  private:
-  std::vector<int> _clientFdToRemove;
+  std::set<int> _ClientsMaxReach;
   int _port;
   std::string _password;
   int _serverFd;
   struct sockaddr_in _serverAdress;
   std::vector<struct pollfd> _fds;
   std::map<const int, Client> _clients;
-  std::vector<int> _clientsToRemove;
+  std::set<int> _clientsToRemove;
   std::vector<int> _clientsToAdd;
   std::map<std::string, Channel> _channels;
   serverReply *_serverReply;

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:25:35 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/11/27 19:51:42 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 03:42:09 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@ const std::string &Client::getNicknameOrUsername(bool useNickname) const {
   } else {
     return (this->_username);
   }
+}
+
+const std::time_t &Client::getLastActivityTime() const {
+  return (this->_lastActivityTime);
+}
+
+const struct sockaddr_in &Client::getClientAddress() const {
+  return (this->_clientAdress);
+}
+
+void Client::setLastActivityTime() {
+  this->_lastActivityTime = std::time(NULL);
 }
 
 void Client::setNickname(std::string const &nickname) {

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 05:12:02 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 05:23:45 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ Server::Server(int port, std::string password)
       throw std::runtime_error("Error lors de creation de la socket server");
     }
 
-    int flags = fcntl(this->_serverFd, F_GETFL, 0);
-    if (flags == -1 ||
-        fcntl(this->_serverFd, F_SETFL, flags | O_NONBLOCK) == -1) {
+    if (fcntl(this->_serverFd, F_SETFL, O_NONBLOCK) == -1) {
       errorEvent = ERR_FCNTL;
       throw std::runtime_error("Error lors de l'utilisation de fcntl");
     }
@@ -128,8 +126,7 @@ int Server::acceptClient() {
     return (-1);
   }
 
-  int flags = fcntl(clientFd, F_GETFL, 0);
-  if (flags == -1 || fcntl(clientFd, F_SETFL, flags | O_NONBLOCK) == -1) {
+  if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1) {
     close(clientFd);
     this->_serverReply->displayServerMessage(ERR_FCNTL);
     return (-1);

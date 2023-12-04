@@ -6,24 +6,24 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:21:15 by rlouvrie          #+#    #+#             */
-/*   Updated: 2023/12/03 20:46:42 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 01:01:17 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/bot/bot.hpp"
 
 Bot::Bot(void) :
-  _filename("srcs/bot/forbidden_words.txt"),
+  _filename("config/forbidden_words.txt"),
   _name("channel-bot") {
   init();
-  }
+}
 
 Bot::Bot(const Bot &cp) : 
   _filename(cp.getFilename()),
   _name(cp._name),
   _forbiddenWords(cp._forbiddenWords) {
   init();
-  }
+}
 
 Bot &Bot::operator=(const Bot &rhs) {
   if (this != &rhs) {

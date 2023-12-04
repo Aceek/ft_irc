@@ -6,60 +6,11 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 01:00:37 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 01:09:34 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/server/server.hpp"
-
-// Server::Server(int port, std::string password)
-//     : _port(port), _password(password), _serverReply(new serverReply(this)) {
-//   // Creer la socket et on la relie a un fd
-//   this->_serverFd = socket(AF_INET, SOCK_STREAM, 0);
-//   if (this->_serverFd == -1) {
-//     delete (this->_serverReply);
-//     throw std::runtime_error("Error lors de creation de la socket server");
-//   }
-
-//   // Configurer le socket en mode non bloquant
-//   int flags = fcntl(this->_serverFd, F_GETFL, 0);
-//   if (flags == -1) {
-//     close(this->_serverFd);
-//     delete (this->_serverReply);
-//     this->_serverReply->displayServerMessage(ERR_FCNTL);
-//     throw std::runtime_error("Error lors de l'utilisation de fcntl");
-//   }
-//   flags |= O_NONBLOCK;
-//   if (fcntl(this->_serverFd, F_SETFL, flags) == -1) {
-//     close(this->_serverFd);
-//     delete (this->_serverReply);
-//     this->_serverReply->displayServerMessage(ERR_FCNTL);
-//     throw std::runtime_error("Error lors de l'utilisation de fcntl");
-//   }
-
-//   // Configurer l'adress du server
-//   this->_serverAdress.sin_family = AF_INET;
-//   this->_serverAdress.sin_addr.s_addr = INADDR_ANY;
-//   this->_serverAdress.sin_port = htons(this->_port);
-
-//   // Liason de la socket avec info server
-
-//   if (bind(_serverFd, (struct sockaddr *)&_serverAdress,
-//            sizeof(_serverAdress)) < 0) {
-//     close(this->_serverFd);
-//     delete (this->_serverReply);
-//     this->_serverReply->displayServerMessage(ERR_BIND);
-//     throw std::runtime_error("Error lors de la liaison de la socket");
-//   }
-
-//   // Passage en mode ecoute
-//   if (listen(this->_serverFd, SOMAXCONN) < 0) {
-//     close(this->_serverFd);
-//     delete (this->_serverReply);
-//     throw std::runtime_error("Error lors de la mise en ecoute de la socket");
-//   }
-//   addToPoll(this->_serverFd, POLLIN);
-// }
 
 Server::Server(int port, std::string password)
     : _port(port), _password(password), _serverReply(new serverReply(this)) {
@@ -161,6 +112,13 @@ int Server::acceptClient() {
 
   if (clientFd == -1) {
     this->_serverReply->displayServerMessage(ERR_SERVER_ACCEPTCLIENT);
+    return (-1);
+  }
+
+  int flags = fcntl(clientFd, F_GETFL, 0);
+  if (flags == -1 || fcntl(clientFd, F_SETFL, flags | O_NONBLOCK) == -1) {
+    close(clientFd);
+    this->_serverReply->displayServerMessage(ERR_FCNTL);
     return (-1);
   }
 

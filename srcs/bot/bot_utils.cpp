@@ -3,20 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   bot_utils.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rlouvrie <rlouvrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 00:49:30 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 00:51:24 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 19:07:54 by rlouvrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "srcs/bot/bot.hpp"
 
 bool Bot::isDirectory(void) const {
-  struct stat statbuf;
+    int fd;
+    struct stat statbuf;
 
-  if (stat(this->_filename.c_str(), &statbuf) != 0) return (false);
-  return (S_ISDIR(statbuf.st_mode));
+    fd = open(this->_filename.c_str(), O_RDONLY);
+    if (fd == -1)
+      return false;
+    if (fstat(fd, &statbuf) != 0) {
+      close(fd);
+      return false;
+    }
+    close(fd);
+    return S_ISDIR(statbuf.st_mode);
 }
 
 bool Bot::isMessageForbidden(const std::string& message) const {

@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 01:09:58 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 03:26:49 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 06:29:30 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ class Bot;
 class Channel {
  public:
   Channel(void);
-//   Channel(std::string const &name, Server *server);
   Channel(Channel const &rhs);
   Channel &operator=(Channel const &rhs);
   ~Channel(void);

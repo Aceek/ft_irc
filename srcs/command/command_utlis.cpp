@@ -6,7 +6,7 @@
 /*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 04:13:48 by pbeheyt           #+#    #+#             */
-/*   Updated: 2023/12/03 20:41:29 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 06:28:15 by pbeheyt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,22 +155,20 @@ bool Command::isRecognizedMode(const std::string &str) {
 
 bool Command::botMessageCheck(Command &cmd) {	
   Bot *bot = cmd.getTargetChannel()->getBot();
-//   std::cout << cmd.getTargetChannel()->getBot() << "- [Bot] Command" << std::endl;
   std::string const &msg = cmd.getTrailor();
   if (bot->isMessageForbidden(msg)) {
     
-	std::string const &forbiddenWord = bot->getForbiddenWord(msg);
-	cmd.setForbiddenWord(forbiddenWord);
+    std::string const &forbiddenWord = bot->getForbiddenWord(msg);
+    cmd.setForbiddenWord(forbiddenWord);
     cmd.setTargetClient(&cmd.getClient());
-	
+
     cmd.getServer().getServerReply()->KICKBOT(cmd, cmd.getClient());
     cmd.getServer().getServerReply()->KICKBOT(cmd, *cmd.getTargetChannel());
     
-	cmd.getTargetChannel()->delUser(cmd.getTargetClient());
-  
+    cmd.getTargetChannel()->delUser(cmd.getTargetClient());
+	
     return true;
   }
-  
+
   return false;
 }
-	  

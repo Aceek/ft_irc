@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbeheyt <pbeheyt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:04:29 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 22:15:12 by pbeheyt          ###   ########.fr       */
+/*   Updated: 2023/12/04 01:00:32 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,5 @@ int main(int ac, char** av) {
     Server test(atoi(av[1]), av[2]);
     test.routine();
   } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
   }
 }

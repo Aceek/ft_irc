@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 08:55:40 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:00:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 00:52:28 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,23 @@ void serverReply::displayServerMessage(messageServer event) const {
       std::cerr << "Failed to send data through the socket. Details: " + error
                 << std::endl;
       break;
+    case ERR_SOCKET:
+      std::cerr << "Failed to create Socket Details: " + error << std::endl;
+      break;
+    case ERR_LISTEN:
+      std::cerr << "Failed to listen Socket Details: " + error << std::endl;
+      break;
     case ERR_OPEN_FD:
-      std::cout << "Error occurred while opening the file descriptor for the "
+      std::cerr << "Error occurred while opening the file descriptor for the "
                    "client. Details: " +
                        error
                 << std::endl;
       break;
+    case ERR_FCNTL:
+      std::cerr << "Error using fcntl function. Details: " + error << std::endl;
+      break;
     case ERR_CLOSE_FD:
-      std::cout
+      std::cerr
           << "Error occurred while closing the file descriptor. Details: " +
                  error
           << std::endl;

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:22:03 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/03 22:25:05 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 00:52:10 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ enum messageServer {
   ERR_POLL,
   ERR_SEND,
   ERR_OPEN_FD,
+  ERR_FCNTL,
+  ERR_SOCKET,
+  ERR_LISTEN,
   ERR_CLOSE_FD
 };
 
@@ -45,7 +48,7 @@ enum messageServer {
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/stat.h>
-
+#include <fcntl.h>
 #include <algorithm>
 #include <cctype>
 #include <cerrno>

@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:21:48 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 00:00:50 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 00:55:11 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ class Server {
   void addClientsToPoll();
   void addChannel(std::string const &channelName);
   void delChannel(std::string const &channelName);
+  void cleanup(messageServer errorEvent);
 
   /*server_accessors*/
   const std::string &getPassword() const;

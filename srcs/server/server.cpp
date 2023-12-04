@@ -6,7 +6,7 @@
 /*   By: ilinhard <ilinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 14:25:53 by ilinhard          #+#    #+#             */
-/*   Updated: 2023/12/04 01:09:34 by ilinhard         ###   ########.fr       */
+/*   Updated: 2023/12/04 01:43:04 by ilinhard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,10 @@ bool Server::processCommand(const int &clientFd) {
   memset(buffer, 0, sizeof(buffer));
 
   int bytesReceived = recv(clientFd, buffer, sizeof(buffer), 0);
-  if (bytesReceived == -1 || bytesReceived == 0) {  // a faire
+  if (bytesReceived == 0 || (bytesReceived == -1 && (errno != EAGAIN && errno != EWOULDBLOCK))) {
     return (false);
+  } else if (bytesReceived == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+    return (true);
   }
   buffer[bytesReceived] = '\0';
   client.addToCommand(buffer);
